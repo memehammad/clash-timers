@@ -36,13 +36,23 @@ git push -u origin main      # username + token as password
    `ClashTimers.apk` and install it. Every later push builds a new version that
    installs as an update.
 
-## Build on openSUSE
+## Build on Linux
 
-Needs JDK 17+ and the Android SDK (Android Studio, or command-line tools with
-`ANDROID_HOME` set):
+Needs JDK 17 or 21 (Gradle 8.11 doesn't run on Java 25) and the Android SDK
+(Android Studio, or command-line tools with `ANDROID_HOME` set).
+
+Install the JDK:
 
 ```
-./gradlew assembleRelease
+sudo dnf install java-21-openjdk-devel       # Fedora
+sudo zypper install java-21-openjdk-devel    # openSUSE
+sudo apt install openjdk-21-jdk              # Debian / Ubuntu
+```
+
+Build (point `JAVA_HOME` at the JDK if it isn't your default):
+
+```
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk ./gradlew assembleRelease   # openSUSE: /usr/lib64/jvm/...
 # -> app/build/outputs/apk/release/app-release.apk
 ```
 
