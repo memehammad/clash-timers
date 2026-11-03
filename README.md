@@ -101,6 +101,11 @@ python3 tools/build_table.py package/data app/src/main/assets/coc_data.json
 - Game data: [clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data)
   by Christopher Pezza (MIT).
 
+## License
+
+[MIT](LICENSE). Game data, names and Clash of Clans itself remain the property
+of Supercell.
+
 ## Disclaimer
 
 This material is unofficial and is not endorsed by Supercell. For more
