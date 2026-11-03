@@ -46,6 +46,7 @@ data class ScreenExtras(
     val reminderMinutes: Int = 0,
     val liveUpdate: Boolean = false,
     val liveChip: Int = 0,
+    val timeMode: Int = 0,
 )
 
 data class ScreenActions(
@@ -55,6 +56,7 @@ data class ScreenActions(
     val onReminder: (Int) -> Unit = {},
     val onLiveUpdate: (Boolean) -> Unit = {},
     val onLiveChip: (Int) -> Unit = {},
+    val onTimeMode: (Int) -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -155,7 +157,7 @@ internal fun HeroesCard(village: Village, now: Long) {
                                 color = if (ready) scheme.onSecondaryContainer.copy(alpha = 0.75f) else scheme.onSurfaceVariant,
                             )
                             Text(
-                                if (ready) "Ready · ${h.level}" else Format.countdown(h.backSec!! * 1000 - now),
+                                if (ready) "Ready · ${h.level}" else Format.left(h.backSec!! * 1000 - now, now, short = true),
                                 style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
                                 color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
                             )
@@ -236,8 +238,8 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
                         )
                         if (before != null && after != null) {
                             Text(
-                                "Next $worker free in ${Format.countdown(after * 1000 - now)} " +
-                                    "instead of ${Format.countdown(before * 1000 - now)}",
+                                "Next $worker free ${Format.phrase(after * 1000 - now, now)} " +
+                                    "instead of ${Format.phrase(before * 1000 - now, now)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = scheme.onSurfaceVariant,
                             )
@@ -254,13 +256,13 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
-                                    Format.countdown(r.oldEndSec * 1000 - now),
+                                    Format.left(r.oldEndSec * 1000 - now, now, short = true),
                                     style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"),
                                     color = scheme.onSurfaceVariant,
                                 )
                                 Text("  →  ", style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
                                 Text(
-                                    if (r.duringBoost) "done" else Format.countdown(r.newEndSec * 1000 - now),
+                                    if (r.duringBoost) "done" else Format.left(r.newEndSec * 1000 - now, now, short = true),
                                     style = MaterialTheme.typography.titleSmall.copy(fontFeatureSettings = "tnum"),
                                     color = if (r.duringBoost) scheme.primary else scheme.onSurface,
                                 )
@@ -285,6 +287,25 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
         modifier = Modifier.fillMaxWidth().padding(top = 28.dp),
     ) {
         Column(Modifier.padding(20.dp)) {
+            Text("Show times as", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "A countdown, or when it finishes (e.g. Tomorrow 12:30).",
+                style = MaterialTheme.typography.bodyMedium,
+                color = scheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(10.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for ((mode, label) in listOf(0 to "Countdown", 1 to "Finish time")) {
+                    FilterChip(
+                        selected = extras.timeMode == mode,
+                        onClick = { actions.onTimeMode(mode) },
+                        label = { Text(label) },
+                        shape = CircleShape,
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
             Text("Idle builder reminder", style = MaterialTheme.typography.titleMedium)
             Text(
                 "Notify again if a builder stays free for a while.",

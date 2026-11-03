@@ -140,6 +140,13 @@ object Store {
         prefs(context).edit().putBoolean("live_update", enabled).apply()
     }
 
+    /** How remaining times are shown: 0 countdown, 1 finish time. */
+    fun timeMode(context: Context): Int = prefs(context).getInt("time_mode", 0)
+
+    fun setTimeMode(context: Context, mode: Int) {
+        prefs(context).edit().putInt("time_mode", mode).apply()
+    }
+
     /** What the Live Update status bar chip shows: 0 countdown, 1 finish time, 2 free builders. */
     fun liveChip(context: Context): Int = prefs(context).getInt("live_chip", 0)
 

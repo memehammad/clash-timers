@@ -30,6 +30,7 @@ provides and works fully offline.
   one is active.
 - **Optional auto-import** with [Shizuku](https://shizuku.rikka.app/): tap
   Copy in Clash and the widget updates without opening the app.
+- **Countdowns or finish times.** Show "2h 22m" or "Tomorrow 12:30", your choice.
 - **Notifications** when an upgrade, research or cooldown finishes.
 - **Optional idle-builder reminder** if a builder stays free for 15 min to 2 h.
 - **Optional live status.** An ongoing notification counting down to the next

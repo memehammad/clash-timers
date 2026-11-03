@@ -295,7 +295,7 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
                 Text(Status.builderTitle(s), style = MaterialTheme.typography.headlineSmall, color = onColor)
                 val next = s.nextFreeSec
                 Text(
-                    if (!free && next != null) "Next free in ${Format.countdown(next * 1000 - now)}"
+                    if (!free && next != null) "Next free ${Format.phrase(next * 1000 - now, now)}"
                     else Status.builderSubtitle(s),
                     style = MaterialTheme.typography.bodyLarge.copy(fontFeatureSettings = "tnum"),
                     color = onColor.copy(alpha = 0.8f),
@@ -353,7 +353,7 @@ private fun Chip(label: String, s: SlotStatus, now: Long, modifier: Modifier) {
                 when {
                     free && s.total > 1 -> "${s.free} free"
                     free -> "Idle"
-                    next != null -> Format.countdown(next * 1000 - now)
+                    next != null -> Format.left(next * 1000 - now, now, short = true)
                     else -> "Busy"
                 },
                 style = MaterialTheme.typography.titleLarge.copy(fontFeatureSettings = "tnum"),
@@ -452,7 +452,7 @@ private fun TimerRow(t: Timer, now: Long, shape: RoundedCornerShape) {
                 }
                 Spacer(Modifier.width(12.dp))
                 Text(
-                    if (done) "Done" else Format.countdown(left),
+                    if (done) "Done" else Format.left(left, now),
                     style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
                     color = if (done) scheme.onSecondaryContainer else scheme.onSurface,
                 )

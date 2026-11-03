@@ -46,6 +46,7 @@ class WidgetProvider : AppWidgetProvider() {
             val village = Store.loadForWidget(context, widgetId)
             val override = village?.let { Store.builderOverride(context, it.tag) } ?: 0
             val opts = Store.widgetOptions(context, widgetId)
+            Format.configure(context)
             val now = System.currentTimeMillis()
 
             val pkg = context.packageName
@@ -155,11 +156,12 @@ class WidgetProvider : AppWidgetProvider() {
                 val left = (next ?: 0L) * 1000 - now
                 when {
                     next == null -> v.setTextViewText(R.id.m_sub, "")
-                    left < DAY_MS -> {
+                    left < DAY_MS && !Format.clock -> {
                         v.setTextViewText(R.id.m_sub, "Free in ")
                         showChrono(v, R.id.m_chrono, left)
                     }
-                    else -> v.setTextViewText(R.id.m_sub, "Free in ${Format.countdown(left)}")
+                    framed -> v.setTextViewText(R.id.m_sub, "Free ${Format.phrase(left, now)}")
+                    else -> v.setTextViewText(R.id.m_sub, Format.left(left, now, short = true))
                 }
             }
 
@@ -254,8 +256,8 @@ class WidgetProvider : AppWidgetProvider() {
             val next = builders.nextFreeSec
             if (!free && next != null) {
                 val left = next * 1000 - now
-                if (left < DAY_MS) showChrono(v, R.id.s_chrono, left)
-                else v.setTextViewText(R.id.s_sub, "Next free in ${Format.countdown(left)}")
+                if (left < DAY_MS && !Format.clock) showChrono(v, R.id.s_chrono, left)
+                else v.setTextViewText(R.id.s_sub, "Next free ${Format.phrase(left, now)}")
             }
 
             // Chips: Lab, Pets, Builder Base, Star Lab (only those unlocked).
@@ -274,11 +276,11 @@ class WidgetProvider : AppWidgetProvider() {
                     v.setColor(valueId, "setTextColor", R.color.w_on_chip_free)
                 } else {
                     val left = (s.nextFreeSec ?: 0L) * 1000 - now
-                    if (left in 1 until DAY_MS) {
+                    if (left in 1 until DAY_MS && !Format.clock) {
                         v.setViewVisibility(valueId, View.GONE)
                         showChrono(v, chronoId, left)
                     } else {
-                        v.setTextViewText(valueId, Format.countdown(left))
+                        v.setTextViewText(valueId, Format.left(left, now, short = true))
                     }
                 }
             }
@@ -356,9 +358,9 @@ class WidgetProvider : AppWidgetProvider() {
             for (id in intArrayOf(R.id.r_done, R.id.r_chrono, R.id.r_time)) v.setViewVisibility(id, View.GONE)
             when {
                 left <= 0 -> v.setViewVisibility(R.id.r_done, View.VISIBLE)
-                left < DAY_MS -> showChrono(v, R.id.r_chrono, left)
+                left < DAY_MS && !Format.clock -> showChrono(v, R.id.r_chrono, left)
                 else -> {
-                    v.setTextViewText(R.id.r_time, Format.countdown(left))
+                    v.setTextViewText(R.id.r_time, Format.left(left, now))
                     v.setViewVisibility(R.id.r_time, View.VISIBLE)
                 }
             }

@@ -20,7 +20,7 @@ object HeroStatus {
         val ready = heroes.count { it.ready(nowMs) }
         val next = heroes.filter { !it.ready(nowMs) }.minByOrNull { it.backSec ?: Long.MAX_VALUE }
         return if (next == null) "All ${heroes.size} heroes ready"
-        else "Heroes $ready/${heroes.size} ready · ${next.short} back in ${Format.countdown(next.backSec!! * 1000 - nowMs)}"
+        else "Heroes $ready/${heroes.size} ready · ${next.short} back ${Format.phrase(next.backSec!! * 1000 - nowMs, nowMs)}"
     }
 }
 

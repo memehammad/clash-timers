@@ -90,7 +90,9 @@ class MainActivity : ComponentActivity() {
             reminderMinutes = Store.reminderMinutes(this),
             liveUpdate = Store.liveUpdate(this),
             liveChip = Store.liveChip(this),
+            timeMode = Store.timeMode(this),
         )
+        Format.configure(this)
     }
 
     private val actions = ScreenActions(
@@ -117,6 +119,12 @@ class MainActivity : ComponentActivity() {
         onLiveUpdate = { on ->
             Store.setLiveUpdate(this, on)
             LiveStatus.update(this)
+            reload()
+        },
+        onTimeMode = { mode ->
+            Store.setTimeMode(this, mode)
+            Format.configure(this)
+            WidgetProvider.updateAll(this)
             reload()
         },
         onLiveChip = { mode ->
