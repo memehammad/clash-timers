@@ -13,6 +13,14 @@ provides and works fully offline.
 - **Everything that's running.** Building and hero upgrades, Gear Ups,
   laboratory research, pets, Builder Base, helper and Clock Tower cooldowns.
 - **Status chips** for Laboratory, Pet House, Builder Base and Star Laboratory.
+- **Hero availability.** Which heroes can attack, and when an upgrading one is
+  back.
+- **Boost planner.** See what a Builder or Research Potion, Builder Bite, Study
+  Soup or Pet Potion would finish before you use it.
+- **Several villages.** Every export is saved by player tag; switch and name
+  them in the app, and pick a village per widget (long-press → widget
+  settings).
+- **Stale-data hint.** After a day the widget dims and asks for a fresh export.
 - **Boost-aware timers.** Builder, Research and Pet Potions, Builder Bite,
   Study Soup, Clock Tower and the Lab Assistant / Builder's Apprentice are
   factored into the finish times. The widget switches to a boost theme while
@@ -20,6 +28,9 @@ provides and works fully offline.
 - **Optional auto-import** with [Shizuku](https://shizuku.rikka.app/): tap
   Copy in Clash and the widget updates without opening the app.
 - **Notifications** when an upgrade, research or cooldown finishes.
+- **Optional idle-builder reminder** if a builder stays free for 15 min to 2 h.
+- **Optional live status.** An ongoing notification counting down to the next
+  free builder; a Live Update chip in the status bar on Android 16.
 - **Material 3 Expressive design** that follows your wallpaper colours, in
   light and dark mode.
 - **Any size.** The widget adapts from 1x1 (free-builder badge) through 2x1,
