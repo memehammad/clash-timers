@@ -84,6 +84,22 @@ class WidgetProvider : AppWidgetProvider() {
             v.setOnClickPendingIntent(android.R.id.background, open)
             v.setOnClickPendingIntent(R.id.m_block, open)
 
+            // The launcher re-applies updates onto the views it already shows, so every property
+            // that any state changes is reset here first; otherwise old state lingers.
+            if (framed) v.setInt(android.R.id.background, "setBackgroundResource", R.drawable.widget_bg)
+            v.setViewVisibility(R.id.m_bolt, View.GONE)
+            v.setViewVisibility(R.id.m_badge, View.VISIBLE)
+            v.setImageViewResource(R.id.m_badge, R.drawable.cookie_busy)
+            v.setViewVisibility(R.id.m_spin, View.GONE)
+            v.setViewVisibility(R.id.m_spin_boost, View.GONE)
+            v.setViewVisibility(R.id.m_chrono, View.GONE)
+            for (id in intArrayOf(R.id.m_badge, R.id.m_spin, R.id.m_spin_boost, R.id.m_count)) v.setFloat(id, "setAlpha", 1f)
+            v.setColor(R.id.m_count, "setTextColor", R.color.w_on_badge_busy)
+            v.setInt(R.id.m_block, "setBackgroundResource", R.drawable.row_single)
+            v.setColor(R.id.m_title, "setTextColor", R.color.w_text)
+            v.setInt(R.id.m_pill, "setBackgroundResource", R.drawable.pill_bg)
+            v.setColor(R.id.m_sub, "setTextColor", if (framed) R.color.w_text2 else R.color.w_text)
+
             val builders = village?.let { Status.of(it, Slot.BUILDER, now, override) }
             if (village == null || builders == null) {
                 v.setTextViewText(R.id.m_count, "?")
@@ -172,6 +188,29 @@ class WidgetProvider : AppWidgetProvider() {
             v.setOnClickPendingIntent(R.id.s_block, open)
             v.setOnClickPendingIntent(R.id.s_chips, open)
             v.setOnClickPendingIntent(R.id.s_boost, open)
+
+            // Reset everything a state can change (see fillMini).
+            v.setInt(android.R.id.background, "setBackgroundResource", R.drawable.widget_bg)
+            v.setViewVisibility(R.id.s_boost, View.GONE)
+            v.setViewVisibility(R.id.s_badge, View.VISIBLE)
+            v.setViewVisibility(R.id.s_spin, View.GONE)
+            v.setViewVisibility(R.id.s_chrono, View.GONE)
+            v.setInt(R.id.s_block, "setBackgroundResource", R.drawable.row_single)
+            v.setFloat(R.id.s_block, "setAlpha", 1f)
+            v.setColor(R.id.s_count, "setTextColor", R.color.w_on_badge_busy)
+            v.setColor(R.id.s_title, "setTextColor", R.color.w_text)
+            v.setColor(R.id.s_sub, "setTextColor", R.color.w_text2)
+            v.setViewVisibility(R.id.s_chips, View.GONE)
+            for ((root, labelId, valueId, chronoId) in CHIPS) {
+                v.setViewVisibility(root, View.GONE)
+                v.setInt(root, "setBackgroundResource", R.drawable.chip_bg)
+                v.setColor(labelId, "setTextColor", R.color.w_text2)
+                v.setColor(valueId, "setTextColor", R.color.w_text)
+                v.setViewVisibility(valueId, View.VISIBLE)
+                v.setViewVisibility(chronoId, View.GONE)
+            }
+            v.setViewVisibility(R.id.s_heroes, View.GONE)
+            v.setViewVisibility(R.id.s_stale, View.GONE)
 
             val builders = village?.let { Status.of(it, Slot.BUILDER, now, override) }
             if (village == null || builders == null) {
@@ -306,6 +345,8 @@ class WidgetProvider : AppWidgetProvider() {
             v.setTextViewText(R.id.r_name, t.name)
             v.setTextViewText(R.id.r_detail, t.detail)
 
+            // Rows can be reused for other timers: reset which time view shows.
+            for (id in intArrayOf(R.id.r_done, R.id.r_chrono, R.id.r_time)) v.setViewVisibility(id, View.GONE)
             when {
                 left <= 0 -> v.setViewVisibility(R.id.r_done, View.VISIBLE)
                 left < DAY_MS -> showChrono(v, R.id.r_chrono, left)
