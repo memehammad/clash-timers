@@ -9,6 +9,13 @@ object Store {
     private fun prefs(context: Context): SharedPreferences =
         context.getSharedPreferences("village", Context.MODE_PRIVATE)
 
+    /** Notified whenever saved exports change (e.g. an auto-import while the app is open). */
+    fun register(context: Context, l: SharedPreferences.OnSharedPreferenceChangeListener) =
+        prefs(context).registerOnSharedPreferenceChangeListener(l)
+
+    fun unregister(context: Context, l: SharedPreferences.OnSharedPreferenceChangeListener) =
+        prefs(context).unregisterOnSharedPreferenceChangeListener(l)
+
     // --- Villages ------------------------------------------------------------------------------
 
     /** tag -> raw export JSON. Migrates the single export saved by older versions. */

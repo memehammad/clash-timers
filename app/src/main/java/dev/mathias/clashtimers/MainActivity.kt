@@ -25,6 +25,9 @@ class MainActivity : ComponentActivity() {
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
     private val extras = mutableStateOf(ScreenExtras())
+    private val storeListener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "villages" || key == "current") reload()
+    }
     private val autoImport = mutableStateOf(AutoImport.State.SHIZUKU_MISSING)
     private val shizukuResult = rikka.shizuku.Shizuku.OnRequestPermissionResultListener { _, result ->
         if (result == PackageManager.PERMISSION_GRANTED) AutoImport.setEnabled(this, true)
@@ -38,6 +41,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         reload()
+        Store.register(this, storeListener)
         handleShare(intent)
 
         setContent {
@@ -118,6 +122,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         rikka.shizuku.Shizuku.removeRequestPermissionResultListener(shizukuResult)
+        Store.unregister(this, storeListener)
         super.onDestroy()
     }
 
