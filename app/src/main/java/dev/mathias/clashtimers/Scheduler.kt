@@ -149,7 +149,11 @@ class CompletionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             Scheduler.ACTION_REMINDER -> remind(context, intent)
-            else -> intent.getStringExtra(Scheduler.EXTRA_TITLE)?.let { title ->
+            // Only notify for alarms the current schedule knows. Alarms left behind by older app
+            // versions (or for timers no longer in any export) would otherwise notify twice.
+            else -> intent.getStringExtra(Scheduler.EXTRA_TITLE)?.takeIf {
+                intent.getIntExtra(Scheduler.EXTRA_CODE, 0).toString() in Store.alarmCodes(context)
+            }?.let { title ->
                 Notifier.notify(
                     context,
                     intent.getIntExtra(Scheduler.EXTRA_CODE, 0),
