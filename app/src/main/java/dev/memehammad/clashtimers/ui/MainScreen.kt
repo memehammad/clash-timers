@@ -279,12 +279,14 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
                         .size(92.dp)
                         .graphicsLayer { rotationZ = if (free) spin else 0f }
                         .clip(CookieShape)
-                        .background(if (free) scheme.primary else scheme.surfaceContainerHighest),
+                        // Free: badge in the card's text colour, number in the card colour, so contrast
+                        // holds in every palette (including the boost theme).
+                        .background(if (free) scheme.onPrimaryContainer else scheme.surfaceContainerHighest),
                 )
                 Text(
                     s.free.toString(),
                     style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Black),
-                    color = if (free) scheme.onPrimary else scheme.onSurface,
+                    color = if (free) scheme.primaryContainer else scheme.onSurface,
                 )
             }
             Spacer(Modifier.width(20.dp))
@@ -305,7 +307,7 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
                     Text(
                         "${s.total} builders" + if (manual) " (set)" else " · edit",
                         style = MaterialTheme.typography.labelLarge,
-                        color = if (free) scheme.primary else scheme.secondary,
+                        color = if (free) scheme.onPrimaryContainer.copy(alpha = 0.85f) else scheme.secondary,
                     )
                 }
             }
