@@ -22,6 +22,22 @@ object Store {
         prefs(context).edit().putStringSet("alarms", codes).apply()
     }
 
+    /** Auto-import through the Shizuku clipboard watcher. */
+    fun autoImport(context: Context): Boolean = prefs(context).getBoolean("auto_import", false)
+
+    fun setAutoImport(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean("auto_import", enabled).apply()
+    }
+
+    /** Random secret shared with the watcher, so only it can push exports to [ImportReceiver]. */
+    fun importToken(context: Context): String {
+        val p = prefs(context)
+        p.getString("import_token", null)?.let { return it }
+        val token = java.util.UUID.randomUUID().toString()
+        p.edit().putString("import_token", token).apply()
+        return token
+    }
+
     /** Home builder count set by the user; 0 = auto-detect from the export. */
     fun builderOverride(context: Context): Int = prefs(context).getInt("builders", 0)
 

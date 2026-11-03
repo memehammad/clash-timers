@@ -59,6 +59,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import dev.mathias.clashtimers.AutoImport
 import dev.mathias.clashtimers.Format
 import dev.mathias.clashtimers.Icons
 import dev.mathias.clashtimers.R
@@ -81,6 +82,8 @@ fun MainScreen(
     snackbar: SnackbarHostState,
     onPaste: () -> Unit,
     onSetBuilders: (Int) -> Unit,
+    autoImport: AutoImport.State = AutoImport.State.SHIZUKU_MISSING,
+    onAutoImport: () -> Unit = {},
 ) {
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
@@ -130,6 +133,7 @@ fun MainScreen(
                     }
                 }
             }
+            item(key = "auto") { AutoImportCard(autoImport, onAutoImport) }
         }
     }
 
@@ -528,5 +532,44 @@ private fun WavyProgress(progress: Float, modifier: Modifier, color: Color, trac
             drawLine(trackColor, Offset(trackStart, cy), Offset(endX, cy), strokeWidth = stroke, cap = StrokeCap.Round)
         }
         drawCircle(color, radius = stroke / 2f, center = Offset(endX, cy))
+    }
+}
+
+/** Optional auto-import via Shizuku: tapping Copy in Clash is enough, no need to open the app. */
+@Composable
+private fun AutoImportCard(state: AutoImport.State, onClick: () -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    val (title, body, action) = when (state) {
+        AutoImport.State.SHIZUKU_MISSING -> Triple(
+            "Auto-import",
+            "Import automatically whenever you tap Copy in Clash. Needs Shizuku running.",
+            "Get Shizuku",
+        )
+        AutoImport.State.NEEDS_PERMISSION -> Triple(
+            "Auto-import",
+            "Shizuku is running. Allow Clash Timers to use it to watch for exports.",
+            "Allow",
+        )
+        AutoImport.State.OFF -> Triple("Auto-import is off", "Turn on to import whenever you tap Copy in Clash.", "Turn on")
+        AutoImport.State.ON -> Triple(
+            "Auto-import is on",
+            "Tap Copy in Clash and the widget updates by itself. Restart Shizuku after a reboot.",
+            "Turn off",
+        )
+    }
+    Surface(
+        shape = RoundedCornerShape(28.dp),
+        color = if (state == AutoImport.State.ON) scheme.secondaryContainer else scheme.surfaceContainer,
+        modifier = Modifier.fillMaxWidth().padding(top = 28.dp),
+    ) {
+        Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(body, style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
+            }
+            Spacer(Modifier.width(12.dp))
+            FilledTonalButton(onClick = onClick, shape = CircleShape) { Text(action) }
+        }
     }
 }

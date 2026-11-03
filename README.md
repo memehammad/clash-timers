@@ -17,6 +17,8 @@ provides and works fully offline.
   Study Soup, Clock Tower and the Lab Assistant / Builder's Apprentice are
   factored into the finish times. The widget switches to a boost theme while
   one is active.
+- **Optional auto-import** with [Shizuku](https://shizuku.rikka.app/): tap
+  Copy in Clash and the widget updates without opening the app.
 - **Notifications** when an upgrade, research or cooldown finishes.
 - **Material 3 Expressive design** that follows your wallpaper colours, in
   light and dark mode.
@@ -51,6 +53,21 @@ allow installing apps from your browser or file manager.
 The export is a snapshot. Copy a new one after you start new upgrades or use
 a potion.
 
+### Auto-import (optional)
+
+Android only lets the app in front read the clipboard. With
+[Shizuku](https://shizuku.rikka.app/) running, Clash Timers can start a small
+watcher with ADB-level rights that picks up new exports in the background:
+
+1. Install and start Shizuku (wireless debugging works without a computer).
+2. In Clash Timers, tap **Allow** on the Auto-import card, then **Turn on**.
+3. From now on, tapping **Copy** in Clash is enough.
+
+The watcher only reads the clipboard when it changes while Clash of Clans is
+in front, and only hands over text that looks like a village export. Android
+may show a short "pasted from your clipboard" notice when it does. After a
+reboot, start Shizuku again; the watcher resumes by itself.
+
 ## How it works
 
 The export lists each running upgrade with its remaining time at normal speed.
@@ -63,8 +80,9 @@ wrong, tap the builder card in the app to set it manually.
 
 ### Limitations
 
-- Android only lets apps read the clipboard while they're open, so the app has
-  to be opened (or the widget tapped) after copying an export.
+- Without auto-import, the app has to be opened (or the widget tapped) after
+  copying an export, since Android only lets the app in front read the
+  clipboard.
 - Gold Pass time reductions and boosts used after the export aren't known
   until you export again.
 - The export key names for Builder Bite, Study Soup and an active Clock Tower
@@ -108,6 +126,8 @@ python3 tools/build_table.py package/data app/src/main/assets/coc_data.json
 
 ## Credits
 
+- Background clipboard access: [Shizuku](https://github.com/RikkaApps/Shizuku)
+  and [HiddenApiBypass](https://github.com/LSPosed/AndroidHiddenApiBypass).
 - Game data: [clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data)
   by Christopher Pezza (MIT).
 

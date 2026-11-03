@@ -22,6 +22,11 @@ class MainActivity : ComponentActivity() {
 
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
+    private val autoImport = mutableStateOf(AutoImport.State.SHIZUKU_MISSING)
+    private val shizukuResult = rikka.shizuku.Shizuku.OnRequestPermissionResultListener { _, result ->
+        if (result == PackageManager.PERMISSION_GRANTED) AutoImport.setEnabled(this, true)
+        autoImport.value = AutoImport.state(this)
+    }
     private val snackbar = SnackbarHostState()
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
@@ -45,6 +50,8 @@ class MainActivity : ComponentActivity() {
                         builderOverride.intValue = count
                         WidgetProvider.updateAll(this)
                     },
+                    autoImport = autoImport.value,
+                    onAutoImport = { onAutoImportClick() },
                 )
             }
         }
@@ -54,6 +61,34 @@ class MainActivity : ComponentActivity() {
         ) {
             notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        autoImport.value = AutoImport.state(this)
+        AutoImport.ensure(this)
+    }
+
+    override fun onDestroy() {
+        rikka.shizuku.Shizuku.removeRequestPermissionResultListener(shizukuResult)
+        super.onDestroy()
+    }
+
+    private fun onAutoImportClick() {
+        when (AutoImport.state(this)) {
+            AutoImport.State.SHIZUKU_MISSING -> {
+                val launch = packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")
+                    ?: Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://shizuku.rikka.app/download/"))
+                startActivity(launch)
+            }
+            AutoImport.State.NEEDS_PERMISSION -> {
+                rikka.shizuku.Shizuku.addRequestPermissionResultListener(shizukuResult)
+                rikka.shizuku.Shizuku.requestPermission(REQUEST_SHIZUKU)
+            }
+            AutoImport.State.OFF -> AutoImport.setEnabled(this, true)
+            AutoImport.State.ON -> AutoImport.setEnabled(this, false)
+        }
+        autoImport.value = AutoImport.state(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -110,5 +145,9 @@ class MainActivity : ComponentActivity() {
             snackbar.currentSnackbarData?.dismiss()
             snackbar.showSnackbar(message)
         }
+    }
+
+    companion object {
+        private const val REQUEST_SHIZUKU = 42
     }
 }
