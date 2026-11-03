@@ -19,7 +19,10 @@ provides and works fully offline.
   one is active.
 - **Notifications** when an upgrade, research or cooldown finishes.
 - **Material 3 Expressive design** that follows your wallpaper colours, in
-  light and dark mode. Resizable widget with a compact layout for small sizes.
+  light and dark mode.
+- **Any size.** The widget adapts from 1x1 (free-builder badge) through 2x1,
+  2x2 and tall or wide layouts up to the full list with live squiggly
+  progress.
 
 ## Requirements
 

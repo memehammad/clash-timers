@@ -102,49 +102,5 @@
                 android:textSize="15sp"
                 android:visibility="gone" />
         </LinearLayout>
-
-        <!--
-          Squiggly progress: an endlessly moving wave (animated vector in an indeterminate
-          ProgressBar, which the launcher animates), covered beyond the progress point by a
-          row-coloured mask, with the straight track drawn on top.
-        -->
-        <FrameLayout
-            android:id="@+id/r_progress"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_marginTop="6dp"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:id="@+id/r_wave"
-                style="@android:style/Widget.Material.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/wave_anim"
-                android:indeterminateOnly="true"
-                android:maxHeight="12dp"
-                android:minHeight="12dp" />
-
-            <ProgressBar
-                android:id="@+id/r_mask"
-                style="@android:style/Widget.Material.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:max="1000"
-                android:maxHeight="12dp"
-                android:minHeight="12dp"
-                android:progressDrawable="@drawable/progress_mask" />
-
-            <ProgressBar
-                android:id="@+id/r_track"
-                style="@android:style/Widget.Material.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:max="1000"
-                android:maxHeight="12dp"
-                android:minHeight="12dp"
-                android:progressDrawable="@drawable/progress_pill" />
-        </FrameLayout>
     </LinearLayout>
 </LinearLayout>

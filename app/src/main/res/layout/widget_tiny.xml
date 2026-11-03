@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 1x1: just the builder badge with the number of free builders. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg"
+    android:clipToOutline="true"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/m_badge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cookie_busy" />
+
+    <ProgressBar
+        android:id="@+id/m_spin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/cookie_spin"
+        android:indeterminateOnly="true"
+        android:maxWidth="400dp"
+        android:maxHeight="400dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/m_count"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:autoSizeMaxTextSize="40sp"
+        android:autoSizeMinTextSize="14sp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textColor="@color/w_on_badge_busy" />
+
+    <ImageView
+        android:id="@+id/m_bolt"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/bolt_dot"
+        android:padding="3dp"
+        android:src="@drawable/ic_bolt"
+        android:visibility="gone" />
+</FrameLayout>

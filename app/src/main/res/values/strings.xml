@@ -7,6 +7,7 @@
     <string name="widget_empty">Copy your village in Clash (Settings, More Settings, Data Export), then tap here</string>
     <string name="nothing_running">Nothing running</string>
     <string name="no_village">No village yet</string>
+    <string name="tap_to_import_short">Copy export, tap</string>
     <string name="tap_to_import">Copy the export in Clash, then tap here</string>
     <string name="all_done">All done</string>
     <string name="n_running">%1$d running</string>

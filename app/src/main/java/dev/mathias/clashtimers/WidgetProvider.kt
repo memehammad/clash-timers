@@ -42,19 +42,77 @@ class WidgetProvider : AppWidgetProvider() {
             val override = Store.builderOverride(context)
             val now = System.currentTimeMillis()
 
-            val full = RemoteViews(context.packageName, R.layout.widget)
-            val compact = RemoteViews(context.packageName, R.layout.widget_compact)
-            fillStatus(context, full, village, override, now)
-            fillStatus(context, compact, village, override, now)
+            val pkg = context.packageName
+            val tiny = RemoteViews(pkg, R.layout.widget_tiny)
+            val small = RemoteViews(pkg, R.layout.widget_small)
+            val square = RemoteViews(pkg, R.layout.widget_square)
+            val narrow = RemoteViews(pkg, R.layout.widget_narrow)
+            val compact = RemoteViews(pkg, R.layout.widget_compact)
+            val full = RemoteViews(pkg, R.layout.widget)
+
+            for (v in listOf(tiny, small, square, narrow)) fillMini(context, v, village, override, now)
+            for (v in listOf(compact, full)) fillStatus(context, v, village, override, now)
+            fillList(context, narrow, village, now)
             fillList(context, full, village, now)
 
-            // Launcher picks the largest layout that fits; small sizes get status only.
+            // The launcher shows the largest layout that fits the widget's current size (in dp).
             return RemoteViews(
                 mapOf(
-                    SizeF(140f, 80f) to compact,
-                    SizeF(200f, 230f) to full,
+                    SizeF(40f, 40f) to tiny,       // 1x1
+                    SizeF(100f, 40f) to small,     // 2x1 – 4x1
+                    SizeF(100f, 100f) to square,   // 2x2
+                    SizeF(180f, 100f) to compact,  // 3x2, 4x2
+                    SizeF(100f, 200f) to narrow,   // 2x3, 2x4
+                    SizeF(180f, 200f) to full,     // 3x3 and up
                 ),
             )
+        }
+
+        /** Small layouts (1x1, 2x1, 2x2, narrow header): badge, short title, countdown, boost dot. */
+        private fun fillMini(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long) {
+            val open = openApp(context)
+            v.setOnClickPendingIntent(android.R.id.background, open)
+            v.setOnClickPendingIntent(R.id.m_block, open)
+
+            val builders = village?.let { Status.of(it, Slot.BUILDER, now, override) }
+            if (village == null || builders == null) {
+                v.setTextViewText(R.id.m_count, "?")
+                v.setTextViewText(R.id.m_title, context.getString(R.string.no_village))
+                v.setTextViewText(R.id.m_sub, context.getString(R.string.tap_to_import_short))
+                return
+            }
+
+            val boosts = Status.activeBoosts(village, now)
+            v.setInt(
+                android.R.id.background, "setBackgroundResource",
+                if (boosts.isEmpty()) R.drawable.widget_bg else R.drawable.widget_bg_boost,
+            )
+            v.setViewVisibility(R.id.m_bolt, if (boosts.isEmpty()) View.GONE else View.VISIBLE)
+
+            val free = builders.free > 0
+            v.setTextViewText(R.id.m_count, builders.free.toString())
+            v.setViewVisibility(R.id.m_badge, if (free) View.GONE else View.VISIBLE)
+            v.setViewVisibility(R.id.m_spin, if (free) View.VISIBLE else View.GONE)
+            v.setColor(R.id.m_count, "setTextColor", if (free) R.color.w_on_badge_free else R.color.w_on_badge_busy)
+            v.setInt(R.id.m_block, "setBackgroundResource", if (free) R.drawable.block_free_bg else R.drawable.row_single)
+            v.setColor(R.id.m_title, "setTextColor", if (free) R.color.w_on_free else R.color.w_text)
+
+            if (free) {
+                v.setTextViewText(R.id.m_title, if (builders.free == 1) "1 builder free" else "${builders.free} builders free")
+                v.setTextViewText(R.id.m_sub, "${builders.busy} of ${builders.total} working")
+            } else {
+                v.setTextViewText(R.id.m_title, "All busy")
+                val next = builders.nextFreeSec
+                val left = (next ?: 0L) * 1000 - now
+                when {
+                    next == null -> v.setTextViewText(R.id.m_sub, "")
+                    left < DAY_MS -> {
+                        v.setTextViewText(R.id.m_sub, "Free in ")
+                        showChrono(v, R.id.m_chrono, left)
+                    }
+                    else -> v.setTextViewText(R.id.m_sub, "Free in ${Format.countdown(left)}")
+                }
+            }
         }
 
         private fun openApp(context: Context): PendingIntent =
@@ -160,7 +218,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             val items = RemoteViews.RemoteCollectionItems.Builder()
                 .setHasStableIds(true)
-                .setViewTypeCount(2)
+                .setViewTypeCount(2 + WaveRows.layouts.size)
             village?.timers.orEmpty().groupBy { it.section }.forEach { (section, list) ->
                 items.addItem(Long.MIN_VALUE + section.ordinal, header(pkg, section))
                 list.forEachIndexed { i, t ->
@@ -186,12 +244,15 @@ class WidgetProvider : AppWidgetProvider() {
             }
 
         private fun row(pkg: String, t: Timer, now: Long, background: Int): RemoteViews {
-            val v = RemoteViews(pkg, R.layout.widget_row)
+            val left = t.remainingMs(now)
+            val p = t.progress(now)
+            // Rows with progress use a pre-generated layout whose wave ends at that progress.
+            val layout = if (p != null && left > 0) WaveRows.forProgress(p) else R.layout.widget_row
+            val v = RemoteViews(pkg, layout)
             v.setInt(R.id.r_root, "setBackgroundResource", background)
             v.setTextViewText(R.id.r_name, t.name)
             v.setTextViewText(R.id.r_detail, t.detail)
 
-            val left = t.remainingMs(now)
             when {
                 left <= 0 -> v.setViewVisibility(R.id.r_done, View.VISIBLE)
                 left < DAY_MS -> showChrono(v, R.id.r_chrono, left)
@@ -205,14 +266,6 @@ class WidgetProvider : AppWidgetProvider() {
             v.setImageViewResource(R.id.r_shape, shape)
             v.setImageViewResource(R.id.r_icon, icon)
 
-            val p = t.progress(now)
-            if (p != null && left > 0) {
-                val done = (p * 1000).toInt().coerceIn(20, 1000)
-                // Mask hides the moving wave past the progress point; track starts after a small gap.
-                v.setInt(R.id.r_mask, "setSecondaryProgress", 1000 - done)
-                v.setInt(R.id.r_track, "setSecondaryProgress", (1000 - done - 25).coerceAtLeast(0))
-                v.setViewVisibility(R.id.r_progress, View.VISIBLE)
-            }
             v.setOnClickFillInIntent(R.id.r_root, Intent())
             return v
         }
