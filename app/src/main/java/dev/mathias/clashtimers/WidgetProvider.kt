@@ -45,6 +45,7 @@ class WidgetProvider : AppWidgetProvider() {
         private fun build(context: Context, widgetId: Int): RemoteViews {
             val village = Store.loadForWidget(context, widgetId)
             val override = village?.let { Store.builderOverride(context, it.tag) } ?: 0
+            val opts = Store.widgetOptions(context, widgetId)
             val now = System.currentTimeMillis()
 
             val pkg = context.packageName
@@ -55,13 +56,13 @@ class WidgetProvider : AppWidgetProvider() {
             val compact = RemoteViews(pkg, R.layout.widget_compact)
             val full = RemoteViews(pkg, R.layout.widget)
 
-            fillMini(context, tiny, village, override, now, framed = false)
-            fillMini(context, square, village, override, now, framed = false)
-            fillMini(context, small, village, override, now, framed = true)
-            fillMini(context, narrow, village, override, now, framed = true)
-            for (v in listOf(compact, full)) fillStatus(context, v, village, override, now)
-            fillList(context, narrow, village, now, narrowBars = true)
-            fillList(context, full, village, now, narrowBars = false)
+            fillMini(context, tiny, village, override, now, framed = false, opts)
+            fillMini(context, square, village, override, now, framed = false, opts)
+            fillMini(context, small, village, override, now, framed = true, opts)
+            fillMini(context, narrow, village, override, now, framed = true, opts)
+            for (v in listOf(compact, full)) fillStatus(context, v, village, override, now, opts)
+            fillList(context, narrow, village, now, narrowBars = true, opts)
+            fillList(context, full, village, now, narrowBars = false, opts)
 
             // The launcher shows the largest layout that fits the widget's current size (in dp).
             // Thresholds assume typical phone cells of ~90-100 dp wide and ~100-120 dp tall.
@@ -79,7 +80,10 @@ class WidgetProvider : AppWidgetProvider() {
 
         /** Small layouts (1x1, 2x1, 2x2, narrow header): badge, short title, countdown, boost dot. */
         /** [framed] = false for 1x1/2x2, which show the shape on the wallpaper with no widget background. */
-        private fun fillMini(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, framed: Boolean) {
+        private fun fillMini(
+            context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, framed: Boolean,
+            opts: WidgetOptions,
+        ) {
             val open = openApp(context)
             v.setOnClickPendingIntent(android.R.id.background, open)
             v.setOnClickPendingIntent(R.id.m_block, open)
@@ -108,7 +112,7 @@ class WidgetProvider : AppWidgetProvider() {
                 return
             }
 
-            val boosts = Status.activeBoosts(village, now)
+            val boosts = Status.activeBoosts(village, now).takeIf { opts.has(WidgetOptions.BOOST) }.orEmpty()
             if (framed) {
                 v.setInt(
                     android.R.id.background, "setBackgroundResource",
@@ -160,7 +164,7 @@ class WidgetProvider : AppWidgetProvider() {
             }
 
             // Day-old export: dim the badge and say so instead of the (likely wrong) countdown.
-            if (Stale.isStale(village, now)) {
+            if (Stale.isStale(village, now) && opts.has(WidgetOptions.STALE)) {
                 for (id in intArrayOf(R.id.m_badge, R.id.m_spin, R.id.m_spin_boost, R.id.m_count)) {
                     v.setFloat(id, "setAlpha", 0.45f)
                 }
@@ -183,7 +187,7 @@ class WidgetProvider : AppWidgetProvider() {
             v.setViewVisibility(id, View.VISIBLE)
         }
 
-        private fun fillStatus(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long) {
+        private fun fillStatus(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, opts: WidgetOptions) {
             val open = openApp(context)
             v.setOnClickPendingIntent(R.id.s_block, open)
             v.setOnClickPendingIntent(R.id.s_chips, open)
@@ -222,7 +226,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             // Boost theme: tinted background + pulsing banner while a potion/snack runs.
             // The boost's own alarm refreshes the widget when it ends.
-            val boosts = Status.activeBoosts(village, now)
+            val boosts = Status.activeBoosts(village, now).takeIf { opts.has(WidgetOptions.BOOST) }.orEmpty()
             v.setInt(
                 android.R.id.background, "setBackgroundResource",
                 if (boosts.isEmpty()) R.drawable.widget_bg else R.drawable.widget_bg_boost,
@@ -257,7 +261,7 @@ class WidgetProvider : AppWidgetProvider() {
             // Chips: Lab, Pets, Builder Base, Star Lab (only those unlocked).
             val chips = Status.chips.mapNotNull { (slot, _) ->
                 Status.of(village, slot, now)?.let { Status.shortLabel(slot) to it }
-            }.take(CHIPS.size)
+            }.take(CHIPS.size).takeIf { opts.has(WidgetOptions.CHIPS) }.orEmpty()
             v.setViewVisibility(R.id.s_chips, if (chips.isEmpty()) View.GONE else View.VISIBLE)
             chips.forEachIndexed { i, (label, s) ->
                 val (root, labelId, valueId, chronoId) = CHIPS[i]
@@ -280,12 +284,12 @@ class WidgetProvider : AppWidgetProvider() {
             }
 
             // Heroes: who can attack. Refreshed by the hero's own upgrade alarm.
-            val heroes = HeroStatus.summary(village, now)
+            val heroes = HeroStatus.summary(village, now).takeIf { opts.has(WidgetOptions.HEROES) }
             v.setViewVisibility(R.id.s_heroes, if (heroes == null) View.GONE else View.VISIBLE)
             heroes?.let { v.setTextViewText(R.id.s_heroes, it) }
 
             // Day-old export: say so, and dim the builder block since its numbers are likely off.
-            val stale = Stale.isStale(village, now)
+            val stale = Stale.isStale(village, now) && opts.has(WidgetOptions.STALE)
             v.setViewVisibility(R.id.s_stale, if (stale) View.VISIBLE else View.GONE)
             if (stale) {
                 v.setTextViewText(R.id.s_stale, "${Stale.label(village, now)} · copy a new one in Clash")
@@ -293,7 +297,9 @@ class WidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun fillList(context: Context, root: RemoteViews, village: Village?, now: Long, narrowBars: Boolean) {
+        private fun fillList(
+            context: Context, root: RemoteViews, village: Village?, now: Long, narrowBars: Boolean, opts: WidgetOptions,
+        ) {
             val pkg = context.packageName
             root.setOnClickPendingIntent(R.id.w_empty, openApp(context))
             root.setPendingIntentTemplate(
@@ -311,10 +317,11 @@ class WidgetProvider : AppWidgetProvider() {
             val items = RemoteViews.RemoteCollectionItems.Builder()
                 .setHasStableIds(true)
                 .setViewTypeCount(2 + WaveRows.COUNT)
-            village?.timers.orEmpty().groupBy { it.section }.forEach { (section, list) ->
+            val sections = opts.sections
+            village?.timers.orEmpty().filter { it.section in sections }.groupBy { it.section }.forEach { (section, list) ->
                 items.addItem(Long.MIN_VALUE + section.ordinal, header(pkg, section))
                 list.forEachIndexed { i, t ->
-                    items.addItem(t.key.hashCode().toLong(), row(pkg, t, now, rowBackground(i, list.size), narrowBars))
+                    items.addItem(t.key.hashCode().toLong(), row(pkg, t, now, rowBackground(i, list.size), narrowBars, opts.has(WidgetOptions.PROGRESS)))
                 }
             }
             root.setRemoteAdapter(R.id.w_list, items.build())
@@ -335,11 +342,11 @@ class WidgetProvider : AppWidgetProvider() {
                 setOnClickFillInIntent(R.id.h_title, Intent())
             }
 
-        private fun row(pkg: String, t: Timer, now: Long, background: Int, narrowBar: Boolean): RemoteViews {
+        private fun row(pkg: String, t: Timer, now: Long, background: Int, narrowBar: Boolean, progress: Boolean): RemoteViews {
             val left = t.remainingMs(now)
             val p = t.progress(now)
             // Rows with progress use a pre-generated layout whose wave ends at that progress.
-            val layout = if (p != null && left > 0) WaveRows.forProgress(p, narrowBar) else R.layout.widget_row
+            val layout = if (progress && p != null && left > 0) WaveRows.forProgress(p, narrowBar) else R.layout.widget_row
             val v = RemoteViews(pkg, layout)
             v.setInt(R.id.r_root, "setBackgroundResource", background)
             v.setTextViewText(R.id.r_name, t.name)

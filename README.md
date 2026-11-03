@@ -21,6 +21,9 @@ provides and works fully offline.
   them in the app, and pick a village per widget (long-press → widget
   settings).
 - **Stale-data hint.** After a day the widget dims and asks for a fresh export.
+- **Customisable widgets.** Long-press a widget → settings to pick its village
+  and what it shows: status chips, heroes, boost banner, progress bars and
+  which sections appear in the list.
 - **Boost-aware timers.** Builder, Research and Pet Potions, Builder Bite,
   Study Soup, Clock Tower and the Lab Assistant / Builder's Apprentice are
   factored into the finish times. The widget switches to a boost theme while

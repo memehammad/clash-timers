@@ -100,6 +100,13 @@ object Store {
         prefs(context).edit().putString("widget_$widgetId", tag).apply()
     }
 
+    fun widgetOptions(context: Context, widgetId: Int): WidgetOptions =
+        WidgetOptions(prefs(context).getInt("widget_opts_$widgetId", WidgetOptions.ALL))
+
+    fun setWidgetOptions(context: Context, widgetId: Int, options: WidgetOptions) {
+        prefs(context).edit().putInt("widget_opts_$widgetId", options.bits).apply()
+    }
+
     fun loadForWidget(context: Context, widgetId: Int): Village? =
         widgetTag(context, widgetId)?.let { load(context, it) } ?: load(context)
 

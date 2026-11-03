@@ -332,6 +332,13 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                     }
                 }
             }
+            Spacer(Modifier.height(20.dp))
+            Text("Widget", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "To choose what a widget shows (and which village), long-press it and pick its settings.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = scheme.onSurfaceVariant,
+            )
         }
     }
 }
