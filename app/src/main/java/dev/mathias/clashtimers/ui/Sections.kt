@@ -45,6 +45,7 @@ data class ScreenExtras(
     val currentTag: String? = null,
     val reminderMinutes: Int = 0,
     val liveUpdate: Boolean = false,
+    val liveChip: Int = 0,
 )
 
 data class ScreenActions(
@@ -53,6 +54,7 @@ data class ScreenActions(
     val onRemoveVillage: (String) -> Unit = {},
     val onReminder: (Int) -> Unit = {},
     val onLiveUpdate: (Boolean) -> Unit = {},
+    val onLiveChip: (Int) -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -130,31 +132,37 @@ internal fun StaleBanner(village: Village, now: Long, onPaste: () -> Unit) {
 
 // --- Heroes --------------------------------------------------------------------------------------
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun HeroesCard(village: Village, now: Long) {
     val scheme = MaterialTheme.colorScheme
-    Column(Modifier.padding(top = 6.dp)) {
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            for (h in village.heroes) {
-                val ready = h.ready(now)
-                Surface(
-                    shape = if (ready) CircleShape else RoundedCornerShape(12.dp),
-                    color = if (ready) scheme.secondaryContainer else scheme.surfaceContainer,
-                ) {
-                    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                        Text(
-                            "${h.name} ${h.level}",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
-                        )
-                        Text(
-                            if (ready) "Ready" else "Back in ${Format.countdown(h.backSec!! * 1000 - now)}",
-                            style = MaterialTheme.typography.bodySmall.copy(fontFeatureSettings = "tnum"),
-                            color = (if (ready) scheme.onSecondaryContainer else scheme.onSurfaceVariant),
-                        )
+    Column(Modifier.padding(top = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        for (pair in village.heroes.chunked(2)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for (h in pair) {
+                    val ready = h.ready(now)
+                    Surface(
+                        // Same shape language as the status chips: pill when available, squarer when busy.
+                        shape = if (ready) RoundedCornerShape(percent = 50) else RoundedCornerShape(12.dp),
+                        color = if (ready) scheme.secondaryContainer else scheme.surfaceContainer,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Column(Modifier.padding(horizontal = 18.dp, vertical = 10.dp)) {
+                            Text(
+                                h.name,
+                                style = MaterialTheme.typography.labelLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                color = if (ready) scheme.onSecondaryContainer.copy(alpha = 0.75f) else scheme.onSurfaceVariant,
+                            )
+                            Text(
+                                if (ready) "Ready · ${h.level}" else Format.countdown(h.backSec!! * 1000 - now),
+                                style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
+                                color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
+                            )
+                        }
                     }
                 }
+                if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
     }
@@ -308,6 +316,21 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                 }
                 Spacer(Modifier.width(12.dp))
                 Switch(checked = extras.liveUpdate, onCheckedChange = actions.onLiveUpdate)
+            }
+            if (extras.liveUpdate) {
+                Spacer(Modifier.height(10.dp))
+                Text("Status bar chip shows", style = MaterialTheme.typography.labelLarge, color = scheme.onSurfaceVariant)
+                Spacer(Modifier.height(6.dp))
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    for ((mode, label) in listOf(0 to "Countdown", 1 to "Finish time", 2 to "Free builders")) {
+                        FilterChip(
+                            selected = extras.liveChip == mode,
+                            onClick = { actions.onLiveChip(mode) },
+                            label = { Text(label) },
+                            shape = CircleShape,
+                        )
+                    }
+                }
             }
         }
     }

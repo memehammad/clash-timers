@@ -133,6 +133,13 @@ object Store {
         prefs(context).edit().putBoolean("live_update", enabled).apply()
     }
 
+    /** What the Live Update status bar chip shows: 0 countdown, 1 finish time, 2 free builders. */
+    fun liveChip(context: Context): Int = prefs(context).getInt("live_chip", 0)
+
+    fun setLiveChip(context: Context, mode: Int) {
+        prefs(context).edit().putInt("live_chip", mode).apply()
+    }
+
     /** Random secret shared with the watcher, so only it can push exports to [ImportReceiver]. */
     fun importToken(context: Context): String {
         val p = prefs(context)

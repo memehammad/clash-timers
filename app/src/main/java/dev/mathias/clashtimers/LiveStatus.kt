@@ -15,6 +15,9 @@ object LiveStatus {
     private const val CHANNEL = "live"
     private const val ID = 1
     private const val EXTRA_PROMOTED = "android.requestPromotedOngoing"
+    const val MODE_COUNTDOWN = 0
+    const val MODE_TIME = 1
+    const val MODE_COUNT = 2
 
     @SuppressLint("MissingPermission")
     fun update(context: Context) {
@@ -46,20 +49,27 @@ object LiveStatus {
             .setContentIntent(Notifier.openApp(context))
 
         val next = s.nextFreeSec
-        // Status bar chip: short text when free; when busy Android shows the countdown itself.
+        val mode = Store.liveChip(context)
         val chip: String?
         if (s.free > 0) {
             b.setContentTitle(Status.builderTitle(s))
             b.setContentText("${s.busy} of ${s.total} working")
-            chip = "${s.free} free"
+            chip = if (s.free == 1) "1 free" else "${s.free} free"
         } else if (next != null) {
+            // Clock time in the text never goes out of date; the header shows the live countdown.
+            val at = android.text.format.DateFormat.getTimeFormat(context).format(java.util.Date(next * 1000))
+            val nextJob = village.timers.firstOrNull { it.slot == Slot.BUILDER && !it.extra && it.endSec == next }
             b.setContentTitle("All builders busy")
-            b.setContentText("Next builder free in")
+            b.setContentText("Next builder free at $at" + (nextJob?.let { " · ${it.name}" } ?: ""))
             b.setWhen(next * 1000)
             b.setShowWhen(true)
             b.setUsesChronometer(true)
             b.setChronometerCountDown(true)
-            chip = null
+            chip = when (mode) {
+                MODE_TIME -> at
+                MODE_COUNT -> "0/${s.total} free"
+                else -> null // Android shows the countdown itself
+            }
         } else {
             nm.cancel(ID)
             return

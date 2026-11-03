@@ -89,6 +89,7 @@ class MainActivity : ComponentActivity() {
             currentTag = v?.tag,
             reminderMinutes = Store.reminderMinutes(this),
             liveUpdate = Store.liveUpdate(this),
+            liveChip = Store.liveChip(this),
         )
     }
 
@@ -115,6 +116,11 @@ class MainActivity : ComponentActivity() {
         },
         onLiveUpdate = { on ->
             Store.setLiveUpdate(this, on)
+            LiveStatus.update(this)
+            reload()
+        },
+        onLiveChip = { mode ->
+            Store.setLiveChip(this, mode)
             LiveStatus.update(this)
             reload()
         },
