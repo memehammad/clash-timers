@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 /** Per-widget display options (stored as a bit set; everything is on by default). */
 data class WidgetOptions(val bits: Int = ALL) {

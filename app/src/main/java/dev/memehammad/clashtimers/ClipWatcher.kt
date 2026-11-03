@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -141,7 +141,7 @@ class ClipWatcher : IClipWatcher.Stub() {
     companion object {
         private const val POLL_MS = 2000L
         private const val SHELL = "com.android.shell"
-        private const val PACKAGE = "dev.mathias.clashtimers"
+        private const val PACKAGE = "dev.memehammad.clashtimers"
         private const val CLASH = "com.supercell.clashofclans"
     }
 }

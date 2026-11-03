@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 /** Export age: after a day the timers are likely out of date (new upgrades, potions, ...). */
 object Stale {

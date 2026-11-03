@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.Manifest
 import android.content.ClipboardManager
@@ -14,10 +14,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
-import dev.mathias.clashtimers.ui.AppTheme
-import dev.mathias.clashtimers.ui.MainScreen
-import dev.mathias.clashtimers.ui.ScreenActions
-import dev.mathias.clashtimers.ui.ScreenExtras
+import dev.memehammad.clashtimers.ui.AppTheme
+import dev.memehammad.clashtimers.ui.MainScreen
+import dev.memehammad.clashtimers.ui.ScreenActions
+import dev.memehammad.clashtimers.ui.ScreenExtras
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

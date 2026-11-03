@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers.ui
+package dev.memehammad.clashtimers.ui
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -59,17 +59,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import dev.mathias.clashtimers.AutoImport
-import dev.mathias.clashtimers.Format
-import dev.mathias.clashtimers.Icons
-import dev.mathias.clashtimers.R
-import dev.mathias.clashtimers.Section
-import dev.mathias.clashtimers.Slot
-import dev.mathias.clashtimers.Stale
-import dev.mathias.clashtimers.SlotStatus
-import dev.mathias.clashtimers.Status
-import dev.mathias.clashtimers.Timer
-import dev.mathias.clashtimers.Village
+import dev.memehammad.clashtimers.AutoImport
+import dev.memehammad.clashtimers.Format
+import dev.memehammad.clashtimers.Icons
+import dev.memehammad.clashtimers.R
+import dev.memehammad.clashtimers.Section
+import dev.memehammad.clashtimers.Slot
+import dev.memehammad.clashtimers.Stale
+import dev.memehammad.clashtimers.SlotStatus
+import dev.memehammad.clashtimers.Status
+import dev.memehammad.clashtimers.Timer
+import dev.memehammad.clashtimers.Village
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.cos

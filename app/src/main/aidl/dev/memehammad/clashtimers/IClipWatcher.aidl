@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers;
+package dev.memehammad.clashtimers;
 
 // Shizuku user service: runs with shell rights and watches the clipboard for village exports.
 interface IClipWatcher {

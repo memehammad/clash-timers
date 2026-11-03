@@ -12,5 +12,5 @@
     android:targetCellHeight="3"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"
-    android:configure="dev.mathias.clashtimers.WidgetConfigActivity"
+    android:configure="dev.memehammad.clashtimers.WidgetConfigActivity"
     android:widgetFeatures="reconfigurable|configuration_optional" />

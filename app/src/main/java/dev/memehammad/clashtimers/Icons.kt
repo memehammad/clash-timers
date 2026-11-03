@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 /** Expressive shape + icon per section, shared by the widget and the app. */
 object Icons {

@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.annotation.SuppressLint
 import android.app.Notification

@@ -82,7 +82,7 @@
             android:name=".ImportReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="dev.mathias.clashtimers.IMPORT" />
+                <action android:name="dev.memehammad.clashtimers.IMPORT" />
             </intent-filter>
         </receiver>
 

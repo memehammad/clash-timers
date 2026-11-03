@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 /** Live worker status for one slot (builders, lab, ...). */
 data class SlotStatus(val slot: Slot, val total: Int, val busy: Int, val nextFreeSec: Long?) {

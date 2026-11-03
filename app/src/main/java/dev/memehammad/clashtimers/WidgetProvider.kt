@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

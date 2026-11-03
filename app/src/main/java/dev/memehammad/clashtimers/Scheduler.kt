@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,9 +19,9 @@ import android.os.Build
  * one when the export turns stale (widget refresh) and, if enabled, an idle-builder reminder.
  */
 object Scheduler {
-    private const val ACTION_DONE = "dev.mathias.clashtimers.TIMER_DONE"
-    private const val ACTION_REFRESH = "dev.mathias.clashtimers.REFRESH"
-    const val ACTION_REMINDER = "dev.mathias.clashtimers.REMINDER"
+    private const val ACTION_DONE = "dev.memehammad.clashtimers.TIMER_DONE"
+    private const val ACTION_REFRESH = "dev.memehammad.clashtimers.REFRESH"
+    const val ACTION_REMINDER = "dev.memehammad.clashtimers.REMINDER"
     const val EXTRA_TITLE = "title"
     const val EXTRA_TEXT = "text"
     const val EXTRA_CODE = "code"

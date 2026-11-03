@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -34,7 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.mathias.clashtimers.ui.AppTheme
+import dev.memehammad.clashtimers.ui.AppTheme
 
 /**
  * Widget settings (long-press the widget → settings, or shown when adding one if the launcher

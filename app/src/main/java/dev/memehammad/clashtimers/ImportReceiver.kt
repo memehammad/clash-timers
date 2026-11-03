@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers
+package dev.memehammad.clashtimers
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -18,7 +18,7 @@ class ImportReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val ACTION = "dev.mathias.clashtimers.IMPORT"
+        const val ACTION = "dev.memehammad.clashtimers.IMPORT"
         const val EXTRA_TOKEN = "token"
         const val EXTRA_JSON = "json"
     }

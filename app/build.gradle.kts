@@ -10,11 +10,11 @@ plugins {
 val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
-    namespace = "dev.mathias.clashtimers"
+    namespace = "dev.memehammad.clashtimers"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "dev.mathias.clashtimers"
+        applicationId = "dev.memehammad.clashtimers"
         minSdk = 31
         targetSdk = 35
         versionCode = buildNumber

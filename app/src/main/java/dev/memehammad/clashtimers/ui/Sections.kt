@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers.ui
+package dev.memehammad.clashtimers.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -33,10 +33,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import dev.mathias.clashtimers.Format
-import dev.mathias.clashtimers.Planner
-import dev.mathias.clashtimers.Stale
-import dev.mathias.clashtimers.Village
+import dev.memehammad.clashtimers.Format
+import dev.memehammad.clashtimers.Planner
+import dev.memehammad.clashtimers.Stale
+import dev.memehammad.clashtimers.Village
 
 /** Data for the extra sections, kept apart from the core screen parameters. */
 data class ScreenExtras(

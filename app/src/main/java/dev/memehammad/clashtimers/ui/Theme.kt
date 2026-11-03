@@ -1,4 +1,4 @@
-package dev.mathias.clashtimers.ui
+package dev.memehammad.clashtimers.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
