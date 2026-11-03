@@ -3,6 +3,10 @@ name: Build APK
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'tools/**'
+      - '.gitignore'
   workflow_dispatch:
 
 permissions:
