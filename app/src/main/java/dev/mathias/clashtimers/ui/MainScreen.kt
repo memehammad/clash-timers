@@ -65,6 +65,7 @@ import dev.mathias.clashtimers.Icons
 import dev.mathias.clashtimers.R
 import dev.mathias.clashtimers.Section
 import dev.mathias.clashtimers.Slot
+import dev.mathias.clashtimers.Stale
 import dev.mathias.clashtimers.SlotStatus
 import dev.mathias.clashtimers.Status
 import dev.mathias.clashtimers.Timer
@@ -84,6 +85,8 @@ fun MainScreen(
     onSetBuilders: (Int) -> Unit,
     autoImport: AutoImport.State = AutoImport.State.SHIZUKU_MISSING,
     onAutoImport: () -> Unit = {},
+    extras: ScreenExtras = ScreenExtras(),
+    actions: ScreenActions = ScreenActions(),
 ) {
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
@@ -109,7 +112,13 @@ fun MainScreen(
                 bottom = pad.calculateBottomPadding() + 32.dp,
             ),
         ) {
-            item(key = "header") { Header(village, now, onPaste) }
+            item(key = "header") { Header(village, now, onPaste, extras.villages.firstOrNull { it.first == village?.tag }?.second) }
+            if (extras.villages.size > 1) {
+                item(key = "villages") { VillageBar(extras, actions) }
+            }
+            if (village != null && Stale.isStale(village, now)) {
+                item(key = "stale") { StaleBanner(village, now, onPaste) }
+            }
             if (boosts.isNotEmpty()) {
                 item(key = "boost") { BoostBanner(boosts, now) }
             }
@@ -120,6 +129,10 @@ fun MainScreen(
                     BuilderCard(builders, now, builderOverride > 0) { editBuilders = true }
                 }
                 item(key = "chips") { Chips(village, now) }
+                if (village.heroes.isNotEmpty()) {
+                    item(key = "heroes") { HeroesCard(village, now) }
+                }
+                item(key = "planner") { PlannerCard(village, now, builderOverride) }
             }
 
             val timers = village?.timers.orEmpty()
@@ -133,6 +146,7 @@ fun MainScreen(
                     }
                 }
             }
+            item(key = "settings") { SettingsCard(extras, actions) }
             item(key = "auto") { AutoImportCard(autoImport, onAutoImport) }
         }
     }
@@ -203,7 +217,7 @@ private fun BoostBanner(boosts: List<Timer>, now: Long) {
 }
 
 @Composable
-private fun Header(village: Village?, now: Long, onPaste: () -> Unit) {
+private fun Header(village: Village?, now: Long, onPaste: () -> Unit, name: String? = null) {
     Row(
         Modifier.fillMaxWidth().padding(start = 8.dp, bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -212,7 +226,7 @@ private fun Header(village: Village?, now: Long, onPaste: () -> Unit) {
             Text("Clash Timers", style = MaterialTheme.typography.headlineMedium)
             if (village != null) {
                 Text(
-                    "${village.tag} · ${Format.ago(now - village.timestamp * 1000)}",
+                    "${name ?: village.tag} · ${Format.ago(now - village.timestamp * 1000)}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

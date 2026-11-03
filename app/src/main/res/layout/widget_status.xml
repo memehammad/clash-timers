@@ -325,4 +325,36 @@
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Heroes: how many can attack, and when the next upgrading one is back. -->
+    <TextView
+        android:id="@+id/s_heroes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/chip_bg"
+        android:ellipsize="end"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:textColor="@color/w_text2"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <!-- Shown when the export is a day old or more. -->
+    <TextView
+        android:id="@+id/s_stale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/pill_stale_bg"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:textColor="@color/w_on_stale"
+        android:textSize="12sp"
+        android:visibility="gone" />
 </LinearLayout>

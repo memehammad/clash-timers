@@ -17,4 +17,6 @@
     <string name="up_to_date">Already up to date</string>
     <string name="no_data">No village data in clipboard</string>
     <string name="auto_imported">Clash Timers: village imported</string>
+    <string name="channel_reminder">Idle builder reminders</string>
+    <string name="channel_live">Builder status (ongoing)</string>
 </resources>

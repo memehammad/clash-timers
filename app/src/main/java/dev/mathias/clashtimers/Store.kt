@@ -2,18 +2,101 @@ package dev.mathias.clashtimers
 
 import android.content.Context
 import android.content.SharedPreferences
+import org.json.JSONObject
 
+/** Saved exports (one per village tag) and settings. */
 object Store {
     private fun prefs(context: Context): SharedPreferences =
         context.getSharedPreferences("village", Context.MODE_PRIVATE)
 
-    fun raw(context: Context): String? = prefs(context).getString("raw", null)
+    // --- Villages ------------------------------------------------------------------------------
 
-    fun load(context: Context): Village? = raw(context)?.let { VillageParser.parse(context, it) }
-
-    fun save(context: Context, raw: String) {
-        prefs(context).edit().putString("raw", raw).apply()
+    /** tag -> raw export JSON. Migrates the single export saved by older versions. */
+    private fun rawMap(context: Context): MutableMap<String, String> {
+        val p = prefs(context)
+        val out = LinkedHashMap<String, String>()
+        p.getString("villages", null)?.let { s ->
+            val o = JSONObject(s)
+            val keys = o.keys()
+            while (keys.hasNext()) {
+                val k = keys.next()
+                out[k] = o.getString(k)
+            }
+        }
+        if (out.isEmpty()) {
+            p.getString("raw", null)?.let { old ->
+                val tag = try { JSONObject(old).optString("tag") } catch (_: Exception) { "" }
+                if (tag.isNotEmpty()) {
+                    out[tag] = old
+                    writeRawMap(context, out)
+                    setCurrentTag(context, tag)
+                }
+            }
+        }
+        return out
     }
+
+    private fun writeRawMap(context: Context, map: Map<String, String>) {
+        val o = JSONObject()
+        for ((k, v) in map) o.put(k, v)
+        prefs(context).edit().putString("villages", o.toString()).remove("raw").apply()
+    }
+
+    fun tags(context: Context): List<String> = rawMap(context).keys.toList()
+
+    fun loadAll(context: Context): List<Village> =
+        rawMap(context).values.mapNotNull { VillageParser.parse(context, it) }
+
+    fun load(context: Context, tag: String): Village? =
+        rawMap(context)[tag]?.let { VillageParser.parse(context, it) }
+
+    /** The village selected in the app (falls back to the first one). */
+    fun load(context: Context): Village? {
+        val map = rawMap(context)
+        val tag = currentTag(context)?.takeIf { it in map } ?: map.keys.firstOrNull() ?: return null
+        return map[tag]?.let { VillageParser.parse(context, it) }
+    }
+
+    fun save(context: Context, tag: String, raw: String) {
+        val map = rawMap(context)
+        map[tag] = raw
+        writeRawMap(context, map)
+    }
+
+    fun remove(context: Context, tag: String) {
+        val map = rawMap(context)
+        map.remove(tag)
+        writeRawMap(context, map)
+        if (currentTag(context) == tag) setCurrentTag(context, map.keys.firstOrNull())
+    }
+
+    fun currentTag(context: Context): String? = prefs(context).getString("current", null)
+
+    fun setCurrentTag(context: Context, tag: String?) {
+        prefs(context).edit().putString("current", tag).apply()
+    }
+
+    /** Optional nickname for a village; the tag otherwise. */
+    fun name(context: Context, tag: String): String =
+        prefs(context).getString("name_$tag", null)?.takeIf { it.isNotBlank() } ?: tag
+
+    fun setName(context: Context, tag: String, name: String?) {
+        prefs(context).edit().putString("name_$tag", name?.trim()).apply()
+    }
+
+    // --- Widgets -------------------------------------------------------------------------------
+
+    /** Village shown by a widget; null = follow the app's selection. */
+    fun widgetTag(context: Context, widgetId: Int): String? = prefs(context).getString("widget_$widgetId", null)
+
+    fun setWidgetTag(context: Context, widgetId: Int, tag: String?) {
+        prefs(context).edit().putString("widget_$widgetId", tag).apply()
+    }
+
+    fun loadForWidget(context: Context, widgetId: Int): Village? =
+        widgetTag(context, widgetId)?.let { load(context, it) } ?: load(context)
+
+    // --- Settings ------------------------------------------------------------------------------
 
     fun alarmCodes(context: Context): Set<String> =
         prefs(context).getStringSet("alarms", emptySet()) ?: emptySet()
@@ -29,6 +112,20 @@ object Store {
         prefs(context).edit().putBoolean("auto_import", enabled).apply()
     }
 
+    /** Remind again when a builder stays idle this many minutes; 0 = off. */
+    fun reminderMinutes(context: Context): Int = prefs(context).getInt("reminder_min", 0)
+
+    fun setReminderMinutes(context: Context, minutes: Int) {
+        prefs(context).edit().putInt("reminder_min", minutes).apply()
+    }
+
+    /** Ongoing "next free builder" notification (a Live Update on Android 16). */
+    fun liveUpdate(context: Context): Boolean = prefs(context).getBoolean("live_update", false)
+
+    fun setLiveUpdate(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean("live_update", enabled).apply()
+    }
+
     /** Random secret shared with the watcher, so only it can push exports to [ImportReceiver]. */
     fun importToken(context: Context): String {
         val p = prefs(context)
@@ -38,11 +135,12 @@ object Store {
         return token
     }
 
-    /** Home builder count set by the user; 0 = auto-detect from the export. */
-    fun builderOverride(context: Context): Int = prefs(context).getInt("builders", 0)
+    /** Home builder count set by the user for a village; 0 = auto-detect from the export. */
+    fun builderOverride(context: Context, tag: String): Int =
+        prefs(context).getInt("builders_$tag", prefs(context).getInt("builders", 0))
 
-    fun setBuilderOverride(context: Context, count: Int) {
-        prefs(context).edit().putInt("builders", count.coerceAtLeast(0)).apply()
+    fun setBuilderOverride(context: Context, tag: String, count: Int) {
+        prefs(context).edit().putInt("builders_$tag", count.coerceAtLeast(0)).apply()
     }
 
     /** Timestamp of the last clipboard entry already checked, so each copy is read only once. */
@@ -61,14 +159,25 @@ object Importer {
         val raw = text.toString().trim()
         val village = VillageParser.parse(context, raw) ?: return Result.INVALID
 
-        val current = Store.load(context)
-        if (current != null && current.tag == village.tag && village.timestamp <= current.timestamp) {
+        val existing = Store.load(context, village.tag)
+        // A new export always becomes the selected village.
+        Store.setCurrentTag(context, village.tag)
+        if (existing != null && village.timestamp <= existing.timestamp) {
+            Refresh.all(context)
             return Result.UNCHANGED
         }
 
-        Store.save(context, raw)
-        Scheduler.reschedule(context, village)
-        WidgetProvider.updateAll(context)
+        Store.save(context, village.tag, raw)
+        Refresh.all(context)
         return Result.IMPORTED
+    }
+}
+
+/** Re-derives everything from the saved exports: alarms, widgets, live notification. */
+object Refresh {
+    fun all(context: Context) {
+        Scheduler.reschedule(context)
+        WidgetProvider.updateAll(context)
+        LiveStatus.update(context)
     }
 }

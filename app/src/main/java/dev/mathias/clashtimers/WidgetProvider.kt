@@ -14,8 +14,11 @@ import android.widget.RemoteViews
 class WidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        val views = build(context)
-        for (id in appWidgetIds) appWidgetManager.updateAppWidget(id, views)
+        for (id in appWidgetIds) appWidgetManager.updateAppWidget(id, build(context, id))
+    }
+
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        for (id in appWidgetIds) Store.setWidgetTag(context, id, null)
     }
 
     companion object {
@@ -32,14 +35,16 @@ class WidgetProvider : AppWidgetProvider() {
         fun updateAll(context: Context) {
             val mgr = AppWidgetManager.getInstance(context)
             val ids = mgr.getAppWidgetIds(ComponentName(context, WidgetProvider::class.java))
-            if (ids.isEmpty()) return
-            val views = build(context)
-            for (id in ids) mgr.updateAppWidget(id, views)
+            for (id in ids) mgr.updateAppWidget(id, build(context, id))
         }
 
-        private fun build(context: Context): RemoteViews {
-            val village = Store.load(context)
-            val override = Store.builderOverride(context)
+        fun update(context: Context, widgetId: Int) {
+            AppWidgetManager.getInstance(context).updateAppWidget(widgetId, build(context, widgetId))
+        }
+
+        private fun build(context: Context, widgetId: Int): RemoteViews {
+            val village = Store.loadForWidget(context, widgetId)
+            val override = village?.let { Store.builderOverride(context, it.tag) } ?: 0
             val now = System.currentTimeMillis()
 
             val pkg = context.packageName
@@ -137,6 +142,17 @@ class WidgetProvider : AppWidgetProvider() {
                     else -> v.setTextViewText(R.id.m_sub, "Free in ${Format.countdown(left)}")
                 }
             }
+
+            // Day-old export: dim the badge and say so instead of the (likely wrong) countdown.
+            if (Stale.isStale(village, now)) {
+                for (id in intArrayOf(R.id.m_badge, R.id.m_spin, R.id.m_spin_boost, R.id.m_count)) {
+                    v.setFloat(id, "setAlpha", 0.45f)
+                }
+                v.setViewVisibility(R.id.m_chrono, View.GONE)
+                v.setTextViewText(R.id.m_sub, if (framed) Stale.label(village, now) else "Re-export")
+                v.setInt(R.id.m_pill, "setBackgroundResource", R.drawable.pill_stale_bg)
+                v.setColor(R.id.m_sub, "setTextColor", if (framed) R.color.w_text2 else R.color.w_on_stale)
+            }
         }
 
         private fun openApp(context: Context): PendingIntent =
@@ -222,6 +238,19 @@ class WidgetProvider : AppWidgetProvider() {
                         v.setTextViewText(valueId, Format.countdown(left))
                     }
                 }
+            }
+
+            // Heroes: who can attack. Refreshed by the hero's own upgrade alarm.
+            val heroes = HeroStatus.summary(village, now)
+            v.setViewVisibility(R.id.s_heroes, if (heroes == null) View.GONE else View.VISIBLE)
+            heroes?.let { v.setTextViewText(R.id.s_heroes, it) }
+
+            // Day-old export: say so, and dim the builder block since its numbers are likely off.
+            val stale = Stale.isStale(village, now)
+            v.setViewVisibility(R.id.s_stale, if (stale) View.VISIBLE else View.GONE)
+            if (stale) {
+                v.setTextViewText(R.id.s_stale, "${Stale.label(village, now)} · copy a new one in Clash")
+                v.setFloat(R.id.s_block, "setAlpha", 0.5f)
             }
         }
 

@@ -58,7 +58,17 @@ data class Village(
     val timers: List<Timer>,
     /** Number of workers per slot; missing = not unlocked. */
     val capacity: Map<Slot, Int>,
+    /** Home-village heroes; [Hero.backSec] is set while one is upgrading (and can't attack). */
+    val heroes: List<Hero> = emptyList(),
 )
+
+data class Hero(val id: Long, val name: String, val level: Int, val backSec: Long?) {
+    fun ready(nowMs: Long): Boolean = backSec == null || backSec * 1000 <= nowMs
+
+    /** "Barbarian King" -> "BK", "Minion Prince" -> "MP". */
+    val short: String
+        get() = name.split(' ').filter { it.isNotEmpty() }.joinToString("") { it.first().uppercase() }.take(3)
+}
 
 /** Parses the in-game "Data Export" JSON into running timers and worker counts. */
 object VillageParser {
@@ -107,7 +117,25 @@ object VillageParser {
         root.optJSONObject("boosts")?.let { collector.boosts(it) }
 
         val sorted = collector.out.sortedWith(compareBy<Timer>({ it.section.ordinal }, { it.endSec }))
-        return Village(tag, timestamp, sorted, capacity(root, sorted))
+        val heroes = heroes(root.optJSONArray("heroes"), sorted, GameData.get(context))
+        return Village(tag, timestamp, sorted, capacity(root, sorted), heroes)
+    }
+
+    /** All home heroes; an upgrading hero is back when its (boost-aware) timer ends. */
+    private fun heroes(array: JSONArray?, timers: List<Timer>, data: Map<Long, GameInfo>): List<Hero> {
+        if (array == null) return emptyList()
+        val out = mutableListOf<Hero>()
+        for (i in 0 until array.length()) {
+            val obj = array.optJSONObject(i) ?: continue
+            val id = obj.optLong("data", -1L)
+            val level = obj.optInt("lvl", 0)
+            val name = data[id]?.name ?: continue
+            val back = if (obj.optLong("timer", 0L) > 0L) {
+                timers.firstOrNull { it.key.startsWith("heroes:$id:") }?.endSec
+            } else null
+            out += Hero(id, name, level, back)
+        }
+        return out
     }
 
     private const val BUILDERS_APPRENTICE = 93000000L

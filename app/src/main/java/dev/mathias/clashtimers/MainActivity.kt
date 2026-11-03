@@ -16,12 +16,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import dev.mathias.clashtimers.ui.AppTheme
 import dev.mathias.clashtimers.ui.MainScreen
+import dev.mathias.clashtimers.ui.ScreenActions
+import dev.mathias.clashtimers.ui.ScreenExtras
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
+    private val extras = mutableStateOf(ScreenExtras())
     private val autoImport = mutableStateOf(AutoImport.State.SHIZUKU_MISSING)
     private val shizukuResult = rikka.shizuku.Shizuku.OnRequestPermissionResultListener { _, result ->
         if (result == PackageManager.PERMISSION_GRANTED) AutoImport.setEnabled(this, true)
@@ -34,8 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        village.value = Store.load(this)
-        builderOverride.intValue = Store.builderOverride(this)
+        reload()
         handleShare(intent)
 
         setContent {
@@ -46,12 +48,14 @@ class MainActivity : ComponentActivity() {
                     snackbar = snackbar,
                     onPaste = { importClipboard(manual = true) },
                     onSetBuilders = { count ->
-                        Store.setBuilderOverride(this, count)
-                        builderOverride.intValue = count
-                        WidgetProvider.updateAll(this)
+                        village.value?.let { Store.setBuilderOverride(this, it.tag, count) }
+                        Refresh.all(this)
+                        reload()
                     },
                     autoImport = autoImport.value,
                     onAutoImport = { onAutoImportClick() },
+                    extras = extras.value,
+                    actions = actions,
                 )
             }
         }
@@ -67,7 +71,50 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         autoImport.value = AutoImport.state(this)
         AutoImport.ensure(this)
+        // Auto-import may have added data while we were in the background.
+        reload()
+        LiveStatus.update(this)
     }
+
+    private fun reload() {
+        val v = Store.load(this)
+        village.value = v
+        builderOverride.intValue = v?.let { Store.builderOverride(this, it.tag) } ?: 0
+        extras.value = ScreenExtras(
+            villages = Store.tags(this).map { it to Store.name(this, it) },
+            currentTag = v?.tag,
+            reminderMinutes = Store.reminderMinutes(this),
+            liveUpdate = Store.liveUpdate(this),
+        )
+    }
+
+    private val actions = ScreenActions(
+        onSelectVillage = { tag ->
+            Store.setCurrentTag(this, tag)
+            Refresh.all(this)
+            reload()
+        },
+        onRenameVillage = { tag, name ->
+            Store.setName(this, tag, name)
+            Refresh.all(this)
+            reload()
+        },
+        onRemoveVillage = { tag ->
+            Store.remove(this, tag)
+            Refresh.all(this)
+            reload()
+        },
+        onReminder = { minutes ->
+            Store.setReminderMinutes(this, minutes)
+            Scheduler.reschedule(this)
+            reload()
+        },
+        onLiveUpdate = { on ->
+            Store.setLiveUpdate(this, on)
+            LiveStatus.update(this)
+            reload()
+        },
+    )
 
     override fun onDestroy() {
         rikka.shizuku.Shizuku.removeRequestPermissionResultListener(shizukuResult)
@@ -135,7 +182,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun report(result: Importer.Result, manual: Boolean) {
-        if (result == Importer.Result.IMPORTED) village.value = Store.load(this)
+        if (result != Importer.Result.INVALID) reload()
         val message = when (result) {
             Importer.Result.IMPORTED -> getString(R.string.imported)
             Importer.Result.UNCHANGED -> if (manual) getString(R.string.up_to_date) else null
