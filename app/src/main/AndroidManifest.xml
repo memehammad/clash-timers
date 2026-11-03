@@ -11,9 +11,11 @@
     <!-- Android 16 Live Updates for the optional ongoing builder status. -->
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
 
-    <!-- To open the Shizuku app from the auto-import card. -->
+    <!-- Apps we launch: Shizuku (auto-import card) and Clash of Clans (notifications). -->
     <queries>
         <package android:name="moe.shizuku.privileged.api" />
+        <!-- Notifications open Clash of Clans. -->
+        <package android:name="com.supercell.clashofclans" />
     </queries>
 
     <application

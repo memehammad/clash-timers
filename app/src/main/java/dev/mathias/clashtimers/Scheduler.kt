@@ -122,6 +122,17 @@ object Notifier {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
     )
 
+    /** Opens Clash of Clans, or this app if Clash isn't installed. */
+    fun openClash(context: Context): PendingIntent {
+        val launch = context.packageManager.getLaunchIntentForPackage(CLASH)
+            ?: return openApp(context)
+        return PendingIntent.getActivity(
+            context, 4, launch, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
+    }
+
+    private const val CLASH = "com.supercell.clashofclans"
+
     @SuppressLint("MissingPermission")
     fun notify(context: Context, id: Int, title: String, text: String, reminder: Boolean = false) {
         val nm = context.getSystemService(NotificationManager::class.java) ?: return
@@ -137,7 +148,14 @@ object Notifier {
             .setSmallIcon(R.drawable.ic_stat)
             .setContentTitle(title)
             .setContentText(text)
-            .setContentIntent(openApp(context))
+            .setContentIntent(openClash(context))
+            .addAction(
+                Notification.Action.Builder(
+                    android.graphics.drawable.Icon.createWithResource(context, R.drawable.ic_stat),
+                    context.getString(R.string.open_timers),
+                    openApp(context),
+                ).build(),
+            )
             .setAutoCancel(true)
             .setCategory(Notification.CATEGORY_REMINDER)
             .build()

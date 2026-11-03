@@ -46,7 +46,7 @@ object LiveStatus {
             .setOnlyAlertOnce(true)
             .setShowWhen(false)
             .setCategory(Notification.CATEGORY_PROGRESS)
-            .setContentIntent(Notifier.openApp(context))
+            .setContentIntent(Notifier.openClash(context))
 
         val next = s.nextFreeSec
         val mode = Store.liveChip(context)
