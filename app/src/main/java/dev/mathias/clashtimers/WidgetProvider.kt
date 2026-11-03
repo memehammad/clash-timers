@@ -50,7 +50,10 @@ class WidgetProvider : AppWidgetProvider() {
             val compact = RemoteViews(pkg, R.layout.widget_compact)
             val full = RemoteViews(pkg, R.layout.widget)
 
-            for (v in listOf(tiny, small, square, narrow)) fillMini(context, v, village, override, now)
+            fillMini(context, tiny, village, override, now, framed = false)
+            fillMini(context, square, village, override, now, framed = false)
+            fillMini(context, small, village, override, now, framed = true)
+            fillMini(context, narrow, village, override, now, framed = true)
             for (v in listOf(compact, full)) fillStatus(context, v, village, override, now)
             fillList(context, narrow, village, now)
             fillList(context, full, village, now)
@@ -69,7 +72,8 @@ class WidgetProvider : AppWidgetProvider() {
         }
 
         /** Small layouts (1x1, 2x1, 2x2, narrow header): badge, short title, countdown, boost dot. */
-        private fun fillMini(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long) {
+        /** [framed] = false for 1x1/2x2, which show the shape on the wallpaper with no widget background. */
+        private fun fillMini(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, framed: Boolean) {
             val open = openApp(context)
             v.setOnClickPendingIntent(android.R.id.background, open)
             v.setOnClickPendingIntent(R.id.m_block, open)
@@ -83,10 +87,12 @@ class WidgetProvider : AppWidgetProvider() {
             }
 
             val boosts = Status.activeBoosts(village, now)
-            v.setInt(
-                android.R.id.background, "setBackgroundResource",
-                if (boosts.isEmpty()) R.drawable.widget_bg else R.drawable.widget_bg_boost,
-            )
+            if (framed) {
+                v.setInt(
+                    android.R.id.background, "setBackgroundResource",
+                    if (boosts.isEmpty()) R.drawable.widget_bg else R.drawable.widget_bg_boost,
+                )
+            }
             v.setViewVisibility(R.id.m_bolt, if (boosts.isEmpty()) View.GONE else View.VISIBLE)
 
             val free = builders.free > 0
@@ -97,9 +103,14 @@ class WidgetProvider : AppWidgetProvider() {
             v.setInt(R.id.m_block, "setBackgroundResource", if (free) R.drawable.block_free_bg else R.drawable.row_single)
             v.setColor(R.id.m_title, "setTextColor", if (free) R.color.w_on_free else R.color.w_text)
 
+            // 2x2 status pill (absent in other layouts; RemoteViews skips missing views).
+            v.setInt(R.id.m_pill, "setBackgroundResource", if (free) R.drawable.pill_free_bg else R.drawable.pill_bg)
+            v.setColor(R.id.m_sub, "setTextColor", if (free && !framed) R.color.w_on_free else if (framed) R.color.w_text2 else R.color.w_text)
+
             if (free) {
-                v.setTextViewText(R.id.m_title, if (builders.free == 1) "1 builder free" else "${builders.free} builders free")
-                v.setTextViewText(R.id.m_sub, "${builders.busy} of ${builders.total} working")
+                val label = if (builders.free == 1) "1 builder free" else "${builders.free} builders free"
+                v.setTextViewText(R.id.m_title, label)
+                v.setTextViewText(R.id.m_sub, if (framed) "${builders.busy} of ${builders.total} working" else label)
             } else {
                 v.setTextViewText(R.id.m_title, "All busy")
                 val next = builders.nextFreeSec

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 2x2: big badge on top, status underneath. -->
+<!-- 2x2: big builder badge (no widget background) with a status pill underneath. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg"
-    android:clipToOutline="true"
-    android:padding="12dp">
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,41 +40,39 @@
                 android:id="@+id/m_count"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeMaxTextSize="48sp"
+                android:autoSizeMaxTextSize="56sp"
                 android:autoSizeMinTextSize="16sp"
                 android:autoSizeTextType="uniform"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:padding="14dp"
+                android:padding="18dp"
                 android:textColor="@color/w_on_badge_busy" />
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/m_title"
+        <!-- Status pill: "2 builders free" or "Free in 0:12:34". -->
+        <LinearLayout
+            android:id="@+id/m_pill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:singleLine="true"
-            android:textColor="@color/w_text"
-            android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@drawable/pill_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/m_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
                 android:singleLine="true"
-                android:textColor="@color/w_text2"
-                android:textSize="12sp" />
+                android:textColor="@color/w_text"
+                android:textSize="13sp" />
 
             <Chronometer
                 android:id="@+id/m_chrono"
@@ -86,7 +82,7 @@
                 android:fontFeatureSettings="tnum"
                 android:singleLine="true"
                 android:textColor="@color/w_text"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>

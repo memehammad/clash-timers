@@ -3,9 +3,11 @@
 
 Widgets can't draw custom paths at runtime, so progress is quantised into STEPS buckets. Each
 bucket gets:
-  - drawable/wave_pNN.xml: an animated vector that morphs a sine wave (moving phase) which starts
-    with a round cap, tapers into the line at its head (so it always ends on the centre line, like
-    the in-app indicator), then a gap, the straight track and a stop dot.
+  - drawable/wave_pNN_fKK.xml: FRAMES static vectors of a sine wave at successive phases. The wave
+    starts with a round cap and tapers into the line at its head (so it always ends on the centre
+    line, like the in-app indicator), followed by a gap, the straight track and a stop dot.
+  - drawable/wave_pNN.xml: a looping animation-list of those frames. (Morphing pathData with
+    keyframes isn't supported by Android's animator inflater, so frames it is.)
   - layout/widget_row_pNN.xml: the timer row with that drawable in an indeterminate ProgressBar,
     which the launcher animates.
   - WaveRows.kt: the layout ids in order.
@@ -20,7 +22,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 RES = os.path.join(ROOT, "app", "src", "main", "res")
 KT = os.path.join(ROOT, "app", "src", "main", "java", "dev", "mathias", "clashtimers", "WaveRows.kt")
 
-STEPS = 30            # progress buckets (+1 for 100%)
+STEPS = 20            # progress buckets (+1 for 100%)
 W, H = 240.0, 12.0    # viewport, ~dp
 STROKE = 3.0
 AMP = 2.5
@@ -28,8 +30,9 @@ WAVELENGTH = 22.0
 GAP = 6.0
 TAPER = WAVELENGTH * 0.75
 STEP_X = 2.0
-FRAMES = 8            # phase keyframes per wavelength
+FRAMES = 18           # animation frames per wavelength
 DURATION = 1100       # ms per wavelength
+FRAME_MS = round(DURATION / FRAMES)
 CY = H / 2
 START = STROKE / 2
 END = W - STROKE / 2
@@ -52,55 +55,49 @@ def wave_path(wave_end, phase):
     return "M" + " L".join(f"{px:.2f},{y(px):.2f}" for px in xs)
 
 
-def drawable(progress):
-    wave_end = START + (END - START) * progress
-    wave_end = max(wave_end, START + 4)
-    frames = "\n".join(
-        f'                    <keyframe android:fraction="{k / FRAMES:.4f}" '
-        f'android:value="{wave_path(wave_end, k / FRAMES)}" />'
-        for k in range(FRAMES + 1)
-    )
+def frame(progress, phase):
+    """One static frame: track, stop dot and the wave at the given phase."""
+    wave_end = max(START + (END - START) * progress, START + 4)
     track_start = wave_end + GAP + STROKE
-    track = ""
+    parts = []
     if track_start < END - 1:
-        track = (
-            f'            <path android:pathData="M{track_start:.2f},{CY} L{END:.2f},{CY}"\n'
-            '                android:strokeColor="@color/w_track" android:strokeWidth="3"\n'
-            '                android:strokeLineCap="round" />\n'
+        parts.append(
+            f'    <path android:pathData="M{track_start:.2f},{CY} L{END:.2f},{CY}"\n'
+            '        android:strokeColor="@color/w_track" android:strokeWidth="3" android:strokeLineCap="round" />\n'
         )
-    dot = ""
     if progress < 1:
         r = STROKE / 2
-        dot = (
-            f'            <path android:fillColor="@color/w_accent"\n'
-            f'                android:pathData="M{END:.2f},{CY} m-{r},0 a{r},{r} 0,1 0,{2 * r},0 a{r},{r} 0,1 0,-{2 * r},0z" />\n'
+        parts.append(
+            '    <path android:fillColor="@color/w_accent"\n'
+            f'        android:pathData="M{END:.2f},{CY} m-{r},0 a{r},{r} 0,1 0,{2 * r},0 a{r},{r} 0,1 0,-{2 * r},0z" />\n'
         )
+    parts.append(
+        f'    <path android:pathData="{wave_path(wave_end, phase)}"\n'
+        '        android:strokeColor="@color/w_accent" android:strokeWidth="3"\n'
+        '        android:strokeLineCap="round" android:strokeLineJoin="round" />\n'
+    )
     return (
         HEADER
-        + '<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"\n'
-        '    xmlns:aapt="http://schemas.android.com/aapt">\n'
-        '    <aapt:attr name="android:drawable">\n'
-        f'        <vector android:width="{W:g}dp" android:height="{H:g}dp"\n'
-        f'            android:viewportWidth="{W:g}" android:viewportHeight="{H:g}">\n'
-        + track
-        + dot
-        + '            <path android:name="wave"\n'
-        f'                android:pathData="{wave_path(wave_end, 0)}"\n'
-        '                android:strokeColor="@color/w_accent" android:strokeWidth="3"\n'
-        '                android:strokeLineCap="round" android:strokeLineJoin="round" />\n'
-        "        </vector>\n"
-        "    </aapt:attr>\n"
-        '    <target android:name="wave">\n'
-        '        <aapt:attr name="android:animation">\n'
-        f'            <objectAnimator android:duration="{DURATION}" android:repeatCount="infinite"\n'
-        '                android:interpolator="@android:anim/linear_interpolator">\n'
-        '                <propertyValuesHolder android:propertyName="pathData" android:valueType="pathType">\n'
-        + frames
-        + "\n                </propertyValuesHolder>\n"
-        "            </objectAnimator>\n"
-        "        </aapt:attr>\n"
-        "    </target>\n"
-        "</animated-vector>\n"
+        + '<vector xmlns:android="http://schemas.android.com/apk/res/android"\n'
+        f'    android:width="{W:g}dp" android:height="{H:g}dp"\n'
+        f'    android:viewportWidth="{W:g}" android:viewportHeight="{H:g}">\n'
+        + "".join(parts)
+        + "</vector>\n"
+    )
+
+
+def animation(name):
+    """Looping frame animation (ProgressBar loops AnimationDrawables in widgets)."""
+    items = "".join(
+        f'    <item android:drawable="@drawable/{name}_f{k:02d}" android:duration="{FRAME_MS}" />\n'
+        for k in range(FRAMES)
+    )
+    return (
+        HEADER
+        + '<animation-list xmlns:android="http://schemas.android.com/apk/res/android"\n'
+        '    android:oneshot="false">\n'
+        + items
+        + "</animation-list>\n"
     )
 
 
@@ -132,8 +129,11 @@ def main():
     names = []
     for i in range(STEPS + 1):
         name = f"wave_p{i:02d}"
+        for k in range(FRAMES):
+            with open(os.path.join(RES, "drawable", f"{name}_f{k:02d}.xml"), "w") as f:
+                f.write(frame(i / STEPS, k / FRAMES))
         with open(os.path.join(RES, "drawable", name + ".xml"), "w") as f:
-            f.write(drawable(i / STEPS))
+            f.write(animation(name))
         with open(os.path.join(RES, "layout", f"widget_row_p{i:02d}.xml"), "w") as f:
             f.write(row_layout(template, name))
         names.append(f"R.layout.widget_row_p{i:02d}")

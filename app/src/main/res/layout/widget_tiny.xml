@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 1x1: just the builder badge with the number of free builders. -->
+<!-- 1x1: just the builder badge (no widget background), with the number of free builders. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_bg"
-    android:clipToOutline="true"
-    android:padding="6dp">
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/m_badge"
