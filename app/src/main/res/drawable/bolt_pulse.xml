@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pulsing bolt for the widget boost banner (runs as an indeterminate ProgressBar drawable). -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <group
+                android:name="pulse"
+                android:pivotX="12"
+                android:pivotY="12">
+                <path
+                    android:fillColor="@color/w_on_boost"
+                    android:pathData="M13.2,2.2c0.4,-0.6 1.3,-0.2 1.2,0.5L13.3,10H19c0.6,0 1,0.7 0.6,1.2l-8.8,10.6c-0.4,0.6 -1.3,0.2 -1.2,-0.5L10.7,14H5c-0.6,0 -1,-0.7 -0.6,-1.2z" />
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="pulse">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleX"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse"
+                    android:valueFrom="0.85"
+                    android:valueTo="1.1"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="700"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleY"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse"
+                    android:valueFrom="0.85"
+                    android:valueTo="1.1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

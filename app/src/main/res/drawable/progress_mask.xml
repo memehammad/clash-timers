@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hides the moving wave beyond the current progress (row-coloured cover from the right). -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background"
+        android:drawable="@android:color/transparent" />
+    <item android:id="@android:id/secondaryProgress">
+        <clip
+            android:clipOrientation="horizontal"
+            android:drawable="@color/w_row"
+            android:gravity="right" />
+    </item>
+    <item
+        android:id="@android:id/progress"
+        android:drawable="@android:color/transparent" />
+</layer-list>

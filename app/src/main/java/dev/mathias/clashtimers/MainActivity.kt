@@ -1,0 +1,114 @@
+package dev.mathias.clashtimers
+
+import android.Manifest
+import android.content.ClipboardManager
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.lifecycleScope
+import dev.mathias.clashtimers.ui.AppTheme
+import dev.mathias.clashtimers.ui.MainScreen
+import kotlinx.coroutines.launch
+
+class MainActivity : ComponentActivity() {
+
+    private val village = mutableStateOf<Village?>(null)
+    private val builderOverride = mutableIntStateOf(0)
+    private val snackbar = SnackbarHostState()
+    private val notificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        village.value = Store.load(this)
+        builderOverride.intValue = Store.builderOverride(this)
+        handleShare(intent)
+
+        setContent {
+            AppTheme {
+                MainScreen(
+                    village = village.value,
+                    builderOverride = builderOverride.intValue,
+                    snackbar = snackbar,
+                    onPaste = { importClipboard(manual = true) },
+                    onSetBuilders = { count ->
+                        Store.setBuilderOverride(this, count)
+                        builderOverride.intValue = count
+                        WidgetProvider.updateAll(this)
+                    },
+                )
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= 33 &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleShare(intent)
+    }
+
+    // Android only allows clipboard reads while the app has focus, so check here.
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) importClipboard(manual = false)
+    }
+
+    private fun handleShare(intent: Intent?) {
+        if (intent == null || intent.action != Intent.ACTION_SEND) return
+        val text = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
+        intent.action = null
+        report(Importer.import(this, text), manual = true)
+    }
+
+    private fun importClipboard(manual: Boolean) {
+        val cm = getSystemService(ClipboardManager::class.java) ?: return
+        val desc = cm.primaryClipDescription
+        if (desc == null) {
+            if (manual) report(Importer.Result.INVALID, true)
+            return
+        }
+        // Read each new clipboard entry only once (avoids the "pasted" toast on every open).
+        if (!manual) {
+            if (desc.timestamp == Store.clipStamp(this)) return
+            Store.setClipStamp(this, desc.timestamp)
+        }
+        if (!desc.hasMimeType("text/*")) {
+            report(Importer.Result.INVALID, manual)
+            return
+        }
+        val text = try {
+            cm.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(this)
+        } catch (e: Exception) {
+            null
+        }
+        report(Importer.import(this, text), manual)
+    }
+
+    private fun report(result: Importer.Result, manual: Boolean) {
+        if (result == Importer.Result.IMPORTED) village.value = Store.load(this)
+        val message = when (result) {
+            Importer.Result.IMPORTED -> getString(R.string.imported)
+            Importer.Result.UNCHANGED -> if (manual) getString(R.string.up_to_date) else null
+            Importer.Result.INVALID -> if (manual) getString(R.string.no_data) else null
+        } ?: return
+        lifecycleScope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            snackbar.showSnackbar(message)
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Track for the remaining part: secondaryProgress reveals it from the right. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background"
+        android:drawable="@android:color/transparent" />
+    <item android:id="@android:id/secondaryProgress">
+        <clip
+            android:clipOrientation="horizontal"
+            android:drawable="@drawable/wave_track"
+            android:gravity="right" />
+    </item>
+    <item
+        android:id="@android:id/progress"
+        android:drawable="@android:color/transparent" />
+</layer-list>

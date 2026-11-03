@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Clash Timers</string>
+    <string name="widget_name">Clash upgrades</string>
+    <string name="widget_desc">Running upgrades, research and cooldowns</string>
+    <string name="widget_title">Upgrades</string>
+    <string name="widget_empty">Copy your village in Clash (Settings, More Settings, Data Export), then tap here</string>
+    <string name="nothing_running">Nothing running</string>
+    <string name="no_village">No village yet</string>
+    <string name="tap_to_import">Copy the export in Clash, then tap here</string>
+    <string name="all_done">All done</string>
+    <string name="n_running">%1$d running</string>
+    <string name="done">Done</string>
+    <string name="channel_done">Upgrade complete</string>
+    <string name="imported">Village imported</string>
+    <string name="up_to_date">Already up to date</string>
+    <string name="no_data">No village data in clipboard</string>
+</resources>
