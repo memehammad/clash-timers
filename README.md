@@ -27,7 +27,13 @@ Android 12 or newer.
 
 ## Install
 
-Download `ClashTimers.apk` from the latest
+[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="54">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers)
+
+**With [Obtainium](https://github.com/ImranR98/Obtainium)** (recommended, gets
+updates automatically): tap the badge above on your phone, or add
+`https://github.com/memehammad/clash-timers` in Obtainium.
+
+**Manually:** download `ClashTimers.apk` from the latest
 [release](../../releases/latest) and open it on your phone. You may need to
 allow installing apps from your browser or file manager.
 
@@ -64,7 +70,8 @@ wrong, tap the builder card in the app to set it manually.
 
 ## Building from source
 
-Releases are built automatically by GitHub Actions on every push to `main`.
+Releases are built automatically by GitHub Actions on every push to `main`
+and tagged `v1.0.<build>`, matching the app version.
 
 To build locally you need JDK 17 or 21 (Gradle 8.11 doesn't run on Java 25)
 and the Android SDK, via Android Studio or the command-line tools with

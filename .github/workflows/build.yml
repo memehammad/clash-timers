@@ -45,6 +45,8 @@ jobs:
       - name: Publish release (download the APK here from your phone)
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.run_number }}
-          name: Clash Timers ${{ github.run_number }}
+          # Tag matches the app's versionName (1.0.<run>) so Obtainium can detect updates.
+          tag_name: v1.0.${{ github.run_number }}
+          name: Clash Timers 1.0.${{ github.run_number }}
+          make_latest: true
           files: ClashTimers.apk
