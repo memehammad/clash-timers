@@ -55,18 +55,19 @@ class WidgetProvider : AppWidgetProvider() {
             fillMini(context, small, village, override, now, framed = true)
             fillMini(context, narrow, village, override, now, framed = true)
             for (v in listOf(compact, full)) fillStatus(context, v, village, override, now)
-            fillList(context, narrow, village, now)
-            fillList(context, full, village, now)
+            fillList(context, narrow, village, now, narrowBars = true)
+            fillList(context, full, village, now, narrowBars = false)
 
             // The launcher shows the largest layout that fits the widget's current size (in dp).
+            // Thresholds assume typical phone cells of ~90-100 dp wide and ~100-120 dp tall.
             return RemoteViews(
                 mapOf(
-                    SizeF(40f, 40f) to tiny,       // 1x1
-                    SizeF(100f, 40f) to small,     // 2x1 – 4x1
-                    SizeF(100f, 100f) to square,   // 2x2
-                    SizeF(180f, 100f) to compact,  // 3x2, 4x2
-                    SizeF(100f, 200f) to narrow,   // 2x3, 2x4
-                    SizeF(180f, 200f) to full,     // 3x3 and up
+                    SizeF(40f, 40f) to tiny,       // 1x1, 1x2 and other single columns
+                    SizeF(150f, 40f) to small,     // 2x1 – 4x1
+                    SizeF(150f, 150f) to square,   // 2x2
+                    SizeF(260f, 150f) to compact,  // 3x2, 4x2
+                    SizeF(150f, 300f) to narrow,   // 2x3, 2x4
+                    SizeF(260f, 300f) to full,     // 3x3 and up
                 ),
             )
         }
@@ -93,13 +94,25 @@ class WidgetProvider : AppWidgetProvider() {
                     if (boosts.isEmpty()) R.drawable.widget_bg else R.drawable.widget_bg_boost,
                 )
             }
-            v.setViewVisibility(R.id.m_bolt, if (boosts.isEmpty()) View.GONE else View.VISIBLE)
+            val boosted = boosts.isNotEmpty()
+            v.setViewVisibility(R.id.m_bolt, if (boosted) View.VISIBLE else View.GONE)
 
             val free = builders.free > 0
             v.setTextViewText(R.id.m_count, builders.free.toString())
+            // 1x1/2x2 show a boost by colouring the badge itself (they have no room for an extra dot).
+            val boostBadge = boosted && !framed
             v.setViewVisibility(R.id.m_badge, if (free) View.GONE else View.VISIBLE)
-            v.setViewVisibility(R.id.m_spin, if (free) View.VISIBLE else View.GONE)
-            v.setColor(R.id.m_count, "setTextColor", if (free) R.color.w_on_badge_free else R.color.w_on_badge_busy)
+            v.setImageViewResource(R.id.m_badge, if (boostBadge) R.drawable.cookie_boost else R.drawable.cookie_busy)
+            v.setViewVisibility(R.id.m_spin, if (free && !boostBadge) View.VISIBLE else View.GONE)
+            v.setViewVisibility(R.id.m_spin_boost, if (free && boostBadge) View.VISIBLE else View.GONE)
+            v.setColor(
+                R.id.m_count, "setTextColor",
+                when {
+                    boostBadge -> R.color.w_on_boost
+                    free -> R.color.w_on_badge_free
+                    else -> R.color.w_on_badge_busy
+                },
+            )
             v.setInt(R.id.m_block, "setBackgroundResource", if (free) R.drawable.block_free_bg else R.drawable.row_single)
             v.setColor(R.id.m_title, "setTextColor", if (free) R.color.w_on_free else R.color.w_text)
 
@@ -212,7 +225,7 @@ class WidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun fillList(context: Context, root: RemoteViews, village: Village?, now: Long) {
+        private fun fillList(context: Context, root: RemoteViews, village: Village?, now: Long, narrowBars: Boolean) {
             val pkg = context.packageName
             root.setOnClickPendingIntent(R.id.w_empty, openApp(context))
             root.setPendingIntentTemplate(
@@ -229,11 +242,11 @@ class WidgetProvider : AppWidgetProvider() {
 
             val items = RemoteViews.RemoteCollectionItems.Builder()
                 .setHasStableIds(true)
-                .setViewTypeCount(2 + WaveRows.layouts.size)
+                .setViewTypeCount(2 + WaveRows.COUNT)
             village?.timers.orEmpty().groupBy { it.section }.forEach { (section, list) ->
                 items.addItem(Long.MIN_VALUE + section.ordinal, header(pkg, section))
                 list.forEachIndexed { i, t ->
-                    items.addItem(t.key.hashCode().toLong(), row(pkg, t, now, rowBackground(i, list.size)))
+                    items.addItem(t.key.hashCode().toLong(), row(pkg, t, now, rowBackground(i, list.size), narrowBars))
                 }
             }
             root.setRemoteAdapter(R.id.w_list, items.build())
@@ -254,11 +267,11 @@ class WidgetProvider : AppWidgetProvider() {
                 setOnClickFillInIntent(R.id.h_title, Intent())
             }
 
-        private fun row(pkg: String, t: Timer, now: Long, background: Int): RemoteViews {
+        private fun row(pkg: String, t: Timer, now: Long, background: Int, narrowBar: Boolean): RemoteViews {
             val left = t.remainingMs(now)
             val p = t.progress(now)
             // Rows with progress use a pre-generated layout whose wave ends at that progress.
-            val layout = if (p != null && left > 0) WaveRows.forProgress(p) else R.layout.widget_row
+            val layout = if (p != null && left > 0) WaveRows.forProgress(p, narrowBar) else R.layout.widget_row
             val v = RemoteViews(pkg, layout)
             v.setInt(R.id.r_root, "setBackgroundResource", background)
             v.setTextViewText(R.id.r_name, t.name)

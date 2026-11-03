@@ -36,6 +36,21 @@
                 android:maxHeight="400dp"
                 android:visibility="gone" />
 
+
+            <!-- Boost theme: badge in the boost colour while a potion/snack runs. -->
+
+            <ProgressBar
+                android:id="@+id/m_spin_boost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/cookie_spin_boost"
+                android:indeterminateOnly="true"
+                android:maxWidth="400dp"
+                android:maxHeight="400dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/m_count"
                 android:layout_width="match_parent"
@@ -86,14 +101,4 @@
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/m_bolt"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_gravity="top|end"
-        android:background="@drawable/bolt_dot"
-        android:padding="4dp"
-        android:src="@drawable/ic_bolt"
-        android:visibility="gone" />
 </FrameLayout>
