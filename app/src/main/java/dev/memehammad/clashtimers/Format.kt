@@ -19,6 +19,7 @@ object Format {
     fun configure(context: Context) {
         clock = Store.timeMode(context) == 1
         is24 = android.text.format.DateFormat.is24HourFormat(context)
+        ProgressStyle.configure(context)
     }
 
     fun countdown(ms: Long): String {

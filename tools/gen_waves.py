@@ -147,6 +147,26 @@ def main():
                 f.write(row_layout(template, name))
             names.append(f"R.layout.widget_row_{v}_p{i:02d}")
         arrays[v] = names
+    # Straight-bar variant (setting "Progress bars: Straight"): one determinate bar.
+    straight = (
+        "\n    <!-- Straight progress (generated): determinate bar set from code. -->\n"
+        "    <ProgressBar\n"
+        '        android:id="@+id/r_progress"\n'
+        '        style="@android:style/Widget.Material.ProgressBar.Horizontal"\n'
+        '        android:layout_width="match_parent"\n'
+        '        android:layout_height="4dp"\n'
+        '        android:layout_marginStart="2dp"\n'
+        '        android:layout_marginTop="12dp"\n'
+        '        android:layout_marginBottom="4dp"\n'
+        '        android:max="1000"\n'
+        '        android:maxHeight="4dp"\n'
+        '        android:minHeight="4dp"\n'
+        '        android:progressDrawable="@drawable/progress_bar_flat" />\n'
+    )
+    i = template.rindex(INSERT_AT) + len("    </LinearLayout>\n")
+    with open(os.path.join(RES, "layout", "widget_row_bar.xml"), "w") as f:
+        f.write((template[:i] + straight + template[i:]).replace('<?xml version="1.0" encoding="utf-8"?>\n', HEADER, 1))
+
     with open(KT, "w") as f:
         f.write(
             "package dev.memehammad.clashtimers\n\n"

@@ -47,6 +47,7 @@ data class ScreenExtras(
     val liveUpdate: Boolean = false,
     val liveChip: Int = 0,
     val timeMode: Int = 0,
+    val progressStyle: Int = 0,
 )
 
 data class ScreenActions(
@@ -57,6 +58,7 @@ data class ScreenActions(
     val onLiveUpdate: (Boolean) -> Unit = {},
     val onLiveChip: (Int) -> Unit = {},
     val onTimeMode: (Int) -> Unit = {},
+    val onProgressStyle: (Int) -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -299,6 +301,20 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                     FilterChip(
                         selected = extras.timeMode == mode,
                         onClick = { actions.onTimeMode(mode) },
+                        label = { Text(label) },
+                        shape = CircleShape,
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
+            Text("Progress bars", style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(10.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for ((style, label) in listOf(0 to "Wavy", 1 to "Straight", 2 to "Off")) {
+                    FilterChip(
+                        selected = extras.progressStyle == style,
+                        onClick = { actions.onProgressStyle(style) },
                         label = { Text(label) },
                         shape = CircleShape,
                     )

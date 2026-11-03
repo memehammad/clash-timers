@@ -140,6 +140,13 @@ object Store {
         prefs(context).edit().putBoolean("live_update", enabled).apply()
     }
 
+    /** Progress bars: 0 wavy, 1 straight, 2 off. */
+    fun progressStyle(context: Context): Int = prefs(context).getInt("progress_style", 0)
+
+    fun setProgressStyle(context: Context, style: Int) {
+        prefs(context).edit().putInt("progress_style", style).apply()
+    }
+
     /** How remaining times are shown: 0 countdown, 1 finish time. */
     fun timeMode(context: Context): Int = prefs(context).getInt("time_mode", 0)
 

@@ -318,7 +318,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             val items = RemoteViews.RemoteCollectionItems.Builder()
                 .setHasStableIds(true)
-                .setViewTypeCount(2 + WaveRows.COUNT)
+                .setViewTypeCount(3 + WaveRows.COUNT)
             val sections = opts.sections
             village?.timers.orEmpty().filter { it.section in sections }.groupBy { it.section }.forEach { (section, list) ->
                 items.addItem(Long.MIN_VALUE + section.ordinal, header(pkg, section))
@@ -348,7 +348,13 @@ class WidgetProvider : AppWidgetProvider() {
             val left = t.remainingMs(now)
             val p = t.progress(now)
             // Rows with progress use a pre-generated layout whose wave ends at that progress.
-            val layout = if (progress && p != null && left > 0) WaveRows.forProgress(p, narrowBar) else R.layout.widget_row
+            val style = ProgressStyle.current
+            val showBar = progress && style != ProgressStyle.OFF && p != null && left > 0
+            val layout = when {
+                !showBar -> R.layout.widget_row
+                style == ProgressStyle.STRAIGHT -> R.layout.widget_row_bar
+                else -> WaveRows.forProgress(p!!, narrowBar)
+            }
             val v = RemoteViews(pkg, layout)
             v.setInt(R.id.r_root, "setBackgroundResource", background)
             v.setTextViewText(R.id.r_name, t.name)
@@ -365,6 +371,9 @@ class WidgetProvider : AppWidgetProvider() {
                 }
             }
 
+            if (showBar && style == ProgressStyle.STRAIGHT) {
+                v.setProgressBar(R.id.r_progress, 1000, (p!! * 1000).toInt(), false)
+            }
             val (shape, icon) = Icons.of(t.section)
             v.setImageViewResource(R.id.r_shape, shape)
             v.setImageViewResource(R.id.r_icon, icon)

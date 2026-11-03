@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import dev.memehammad.clashtimers.AutoImport
 import dev.memehammad.clashtimers.Format
 import dev.memehammad.clashtimers.Icons
+import dev.memehammad.clashtimers.ProgressStyle
 import dev.memehammad.clashtimers.R
 import dev.memehammad.clashtimers.Section
 import dev.memehammad.clashtimers.Slot
@@ -458,9 +459,10 @@ private fun TimerRow(t: Timer, now: Long, shape: RoundedCornerShape) {
                 )
             }
             val p = t.progress(now)
-            if (p != null && !done) {
+            if (p != null && !done && ProgressStyle.current != ProgressStyle.OFF) {
                 Spacer(Modifier.height(12.dp))
                 WavyProgress(
+                    wavy = ProgressStyle.current == ProgressStyle.WAVY,
                     progress = p,
                     modifier = Modifier.fillMaxWidth(),
                     color = scheme.primary,
@@ -509,7 +511,7 @@ private fun EmptyCard(hasVillage: Boolean) {
  * a straight track after a small gap, and a stop dot at the end.
  */
 @Composable
-private fun WavyProgress(progress: Float, modifier: Modifier, color: Color, trackColor: Color) {
+private fun WavyProgress(progress: Float, modifier: Modifier, color: Color, trackColor: Color, wavy: Boolean = true) {
     val phase by rememberInfiniteTransition(label = "wave").animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -518,7 +520,7 @@ private fun WavyProgress(progress: Float, modifier: Modifier, color: Color, trac
     )
     Canvas(modifier.height(12.dp)) {
         val stroke = 3.dp.toPx()
-        val amplitude = 2.5.dp.toPx()
+        val amplitude = if (wavy) 2.5.dp.toPx() else 0f
         val wavelength = 22.dp.toPx()
         val gap = 6.dp.toPx()
         val taper = wavelength * 0.75f
