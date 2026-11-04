@@ -20,7 +20,8 @@ provides and works fully offline.
 - **Several villages.** Every export is saved by player tag; switch and name
   them in the app, and pick a village per widget (long-press → widget
   settings).
-- **Stale-data hint.** After a day the widget dims and asks for a fresh export.
+- **Re-export hint.** Once something has finished since your last export, the
+  widget dims after a while (6 h to 48 h, or never) and asks for a fresh one.
 - **Customisable widgets.** Long-press a widget → settings to pick its village
   and what it shows: status chips, heroes, boost banner, progress bars and
   which sections appear in the list.

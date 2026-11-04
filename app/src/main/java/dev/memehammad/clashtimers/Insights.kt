@@ -1,12 +1,29 @@
 package dev.memehammad.clashtimers
 
 /** Export age: after a day the timers are likely out of date (new upgrades, potions, ...). */
+/**
+ * When the export is probably out of date. Timers can only go wrong once you've played since
+ * exporting, and the sign of that is a builder/lab/pet freeing up (you'd start the next upgrade).
+ * So it turns stale a set time (setting) after the first upgrade or research finishes after the
+ * export. While everything is still running it stays valid, however old the export is.
+ */
 object Stale {
-    const val AFTER_MS = 24 * 3600_000L
+    /** Hours after the first finish; 0 = never. Set by [Format.configure]. */
+    @Volatile
+    var hours = 12
 
     fun ageMs(village: Village, nowMs: Long): Long = nowMs - village.timestamp * 1000
 
-    fun isStale(village: Village, nowMs: Long): Boolean = ageMs(village, nowMs) >= AFTER_MS
+    /** When the export turns stale (ms), or null if it won't. */
+    fun staleAtMs(village: Village): Long? {
+        if (hours <= 0) return null
+        return village.timers
+            .filter { it.slot != Slot.NONE && it.endSec > village.timestamp }
+            .minOfOrNull { it.endSec }
+            ?.let { it * 1000 + hours * 3600_000L }
+    }
+
+    fun isStale(village: Village, nowMs: Long): Boolean = staleAtMs(village)?.let { nowMs >= it } ?: false
 
     /** "Export 1 d old" */
     fun label(village: Village, nowMs: Long): String = "Export ${Format.ago(ageMs(village, nowMs)).removeSuffix(" ago")} old"

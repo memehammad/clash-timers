@@ -140,6 +140,13 @@ object Store {
         prefs(context).edit().putBoolean("live_update", enabled).apply()
     }
 
+    /** Hours after something finishes (since the export) before the re-export hint; 0 = never. */
+    fun staleHours(context: Context): Int = prefs(context).getInt("stale_hours", 12)
+
+    fun setStaleHours(context: Context, hours: Int) {
+        prefs(context).edit().putInt("stale_hours", hours).apply()
+    }
+
     /** Progress bars: 0 wavy, 1 straight, 2 off. */
     fun progressStyle(context: Context): Int = prefs(context).getInt("progress_style", 0)
 

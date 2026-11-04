@@ -48,6 +48,7 @@ data class ScreenExtras(
     val liveChip: Int = 0,
     val timeMode: Int = 0,
     val progressStyle: Int = 0,
+    val staleHours: Int = 12,
 )
 
 data class ScreenActions(
@@ -59,6 +60,7 @@ data class ScreenActions(
     val onLiveChip: (Int) -> Unit = {},
     val onTimeMode: (Int) -> Unit = {},
     val onProgressStyle: (Int) -> Unit = {},
+    val onStaleHours: (Int) -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -124,7 +126,7 @@ internal fun StaleBanner(village: Village, now: Long, onPaste: () -> Unit) {
             Column(Modifier.weight(1f)) {
                 Text(Stale.label(village, now), style = MaterialTheme.typography.titleMedium, color = scheme.onErrorContainer)
                 Text(
-                    "Timers may be out of date. Copy a new export in Clash.",
+                    "Something finished a while ago, so you've likely started new upgrades. Copy a new export in Clash.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = scheme.onErrorContainer.copy(alpha = 0.8f),
                 )
@@ -316,6 +318,25 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                         selected = extras.progressStyle == style,
                         onClick = { actions.onProgressStyle(style) },
                         label = { Text(label) },
+                        shape = CircleShape,
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
+            Text("Re-export hint", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Shown this long after something finished since your last export.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = scheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(10.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for (h in listOf(6, 12, 24, 48, 0)) {
+                    FilterChip(
+                        selected = extras.staleHours == h,
+                        onClick = { actions.onStaleHours(h) },
+                        label = { Text(if (h == 0) "Never" else "$h h") },
                         shape = CircleShape,
                     )
                 }

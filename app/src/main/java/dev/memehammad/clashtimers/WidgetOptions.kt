@@ -35,7 +35,7 @@ data class WidgetOptions(val bits: Int = ALL) {
             Triple(CHIPS, "Status chips", "Laboratory, Pet House, Builder Base, Star Lab"),
             Triple(HEROES, "Heroes", "How many heroes are ready"),
             Triple(BOOST, "Boost banner", "Running potions and snacks"),
-            Triple(STALE, "Old export hint", "After a day without a new export"),
+            Triple(STALE, "Re-export hint", "Timing is set in the app's settings"),
             Triple(PROGRESS, "Progress bars", "The squiggly lines in the list"),
             Triple(LIST_BUILDERS, "List: Builders", null),
             Triple(LIST_LAB, "List: Laboratory", null),

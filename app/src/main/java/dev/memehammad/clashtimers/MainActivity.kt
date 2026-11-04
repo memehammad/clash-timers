@@ -92,6 +92,7 @@ class MainActivity : ComponentActivity() {
             liveChip = Store.liveChip(this),
             timeMode = Store.timeMode(this),
             progressStyle = Store.progressStyle(this),
+            staleHours = Store.staleHours(this),
         )
         Format.configure(this)
     }
@@ -120,6 +121,12 @@ class MainActivity : ComponentActivity() {
         onLiveUpdate = { on ->
             Store.setLiveUpdate(this, on)
             LiveStatus.update(this)
+            reload()
+        },
+        onStaleHours = { h ->
+            Store.setStaleHours(this, h)
+            Format.configure(this)
+            Refresh.all(this)
             reload()
         },
         onProgressStyle = { style ->

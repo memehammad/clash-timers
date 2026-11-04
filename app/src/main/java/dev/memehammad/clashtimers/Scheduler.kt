@@ -70,9 +70,10 @@ object Scheduler {
                 )
             }
 
-            // Refresh widgets when the export becomes a day old (they show a re-export hint).
+            // Refresh widgets when the export turns stale (they show a re-export hint).
+            Format.configure(context)
             val staleCode = "stale|${v.tag}".hashCode()
-            schedule(staleCode, v.timestamp * 1000 + Stale.AFTER_MS, baseIntent(context, staleCode, ACTION_REFRESH))
+            Stale.staleAtMs(v)?.let { schedule(staleCode, it, baseIntent(context, staleCode, ACTION_REFRESH)) }
 
             // Idle-builder reminder.
             val minutes = Store.reminderMinutes(context)
