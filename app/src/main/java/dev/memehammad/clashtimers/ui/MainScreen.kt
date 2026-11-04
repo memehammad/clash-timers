@@ -328,14 +328,7 @@ private fun Chips(village: Village, now: Long) {
     )
     val chips = Status.chips.mapNotNull { (slot, _) -> Status.of(village, slot, now)?.let { slot to it } }
     if (chips.isEmpty()) return
-    Column(Modifier.padding(top = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        chips.chunked(2).forEach { pair ->
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                pair.forEach { (slot, s) -> Chip(labels[slot] ?: "", s, now, Modifier.weight(1f)) }
-                if (pair.size == 1) Spacer(Modifier.weight(1f))
-            }
-        }
-    }
+    BalancedGrid(chips, Modifier.padding(top = 6.dp)) { (slot, s), mod -> Chip(labels[slot] ?: "", s, now, mod) }
 }
 
 @Composable

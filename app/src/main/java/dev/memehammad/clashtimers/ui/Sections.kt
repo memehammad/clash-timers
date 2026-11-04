@@ -143,37 +143,46 @@ internal fun StaleBanner(village: Village, now: Long, onPaste: () -> Unit) {
 
 // --- Heroes --------------------------------------------------------------------------------------
 
+/**
+ * Two per row; with an odd count the last item spans the full width, so 1-6 items (labs, heroes)
+ * always fill the grid without gaps.
+ */
+@Composable
+internal fun <T> BalancedGrid(items: List<T>, modifier: Modifier = Modifier, cell: @Composable (T, Modifier) -> Unit) {
+    if (items.isEmpty()) return
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        for (row in items.chunked(2)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for (item in row) cell(item, Modifier.weight(1f))
+            }
+        }
+    }
+}
+
 @Composable
 internal fun HeroesCard(village: Village, now: Long) {
     val scheme = MaterialTheme.colorScheme
-    Column(Modifier.padding(top = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        for (pair in village.heroes.chunked(2)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                for (h in pair) {
-                    val ready = h.ready(now)
-                    Surface(
-                        // Same shape language as the status chips: pill when available, squarer when busy.
-                        shape = if (ready) RoundedCornerShape(percent = 50) else RoundedCornerShape(12.dp),
-                        color = if (ready) scheme.secondaryContainer else scheme.surfaceContainer,
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Column(Modifier.padding(horizontal = 18.dp, vertical = 10.dp)) {
-                            Text(
-                                h.name,
-                                style = MaterialTheme.typography.labelLarge,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                color = if (ready) scheme.onSecondaryContainer.copy(alpha = 0.75f) else scheme.onSurfaceVariant,
-                            )
-                            Text(
-                                if (ready) "Ready · ${h.level}" else Format.left(h.backSec!! * 1000 - now, now, short = true),
-                                style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
-                                color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
-                            )
-                        }
-                    }
-                }
-                if (pair.size == 1) Spacer(Modifier.weight(1f))
+    BalancedGrid(village.heroes, Modifier.padding(top = 6.dp)) { h, mod ->
+        val ready = h.ready(now)
+        Surface(
+            // Same shape language as the status chips: pill when available, squarer when busy.
+            shape = if (ready) RoundedCornerShape(percent = 50) else RoundedCornerShape(12.dp),
+            color = if (ready) scheme.secondaryContainer else scheme.surfaceContainer,
+            modifier = mod,
+        ) {
+            Column(Modifier.padding(horizontal = 18.dp, vertical = 10.dp)) {
+                Text(
+                    h.name,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (ready) scheme.onSecondaryContainer.copy(alpha = 0.75f) else scheme.onSurfaceVariant,
+                )
+                Text(
+                    if (ready) "Ready · ${h.level}" else Format.left(h.backSec!! * 1000 - now, now, short = true),
+                    style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
+                    color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
+                )
             }
         }
     }

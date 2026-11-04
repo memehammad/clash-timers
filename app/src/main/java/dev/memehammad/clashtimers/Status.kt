@@ -9,9 +9,9 @@ object Status {
     /** Short labels for the status chips. */
     val chips = listOf(
         Slot.LAB to "Lab",
+        Slot.STAR_LAB to "Star Lab",
         Slot.PET to "Pets",
         Slot.BB_BUILDER to "Builder Base",
-        Slot.STAR_LAB to "Star Lab",
     )
 
     /**
