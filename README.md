@@ -106,6 +106,10 @@ wrong, tap the builder card in the app to set it manually.
   boost aren't documented and are matched by name. If one isn't picked up,
   please open an issue with an export taken while it's active.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
 ## Building from source
 
 Releases are built automatically by GitHub Actions on every push to `main`

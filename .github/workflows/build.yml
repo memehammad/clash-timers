@@ -42,6 +42,11 @@ jobs:
           name: ClashTimers
           path: ClashTimers.apk
 
+      - name: Release notes (newest section of CHANGELOG.md)
+        run: |
+          awk '/^## /{n++} n==1 && !/^## /' CHANGELOG.md > release_notes.md
+          cat release_notes.md
+
       - name: Publish release (download the APK here from your phone)
         uses: softprops/action-gh-release@v2
         with:
@@ -49,4 +54,5 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           name: Clash Timers 1.0.${{ github.run_number }}
           make_latest: true
+          body_path: release_notes.md
           files: ClashTimers.apk
