@@ -4,7 +4,8 @@ A Material You home-screen widget for Clash of Clans that shows your running
 upgrades, research and cooldowns, and tells you the moment a builder is free.
 
 No account, no login, no server: it reads the village export the game itself
-provides and works fully offline.
+provides. Your village data never leaves the phone; the only network request
+is an optional check for new versions on GitHub.
 
 ## Features
 
@@ -89,7 +90,7 @@ reboot, start Shizuku again; the watcher resumes by itself.
 The export lists each running upgrade with its remaining time at normal speed.
 Clash Timers converts that into real finish times, applying any active boosts,
 and schedules a notification for each. Names and upgrade durations come from a
-bundled data file, so nothing is fetched from the internet.
+bundled data file, so no game data is fetched from the internet.
 
 The builder count is detected from your Builder's Huts and B.O.B. If it's ever
 wrong, tap the builder card in the app to set it manually.

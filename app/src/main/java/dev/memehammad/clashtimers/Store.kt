@@ -147,6 +147,21 @@ object Store {
         prefs(context).edit().putInt("stale_hours", hours).apply()
     }
 
+    /** Check GitHub for new versions (on app open, at most every 12 h). */
+    fun updateCheck(context: Context): Boolean = prefs(context).getBoolean("update_check", true)
+
+    fun setUpdateCheck(context: Context, on: Boolean) {
+        prefs(context).edit().putBoolean("update_check", on).apply()
+    }
+
+    fun latestVersion(context: Context): String? = prefs(context).getString("latest_version", null)
+
+    fun lastUpdateCheck(context: Context): Long = prefs(context).getLong("last_update_check", 0L)
+
+    fun setLatestVersion(context: Context, version: String, at: Long) {
+        prefs(context).edit().putString("latest_version", version).putLong("last_update_check", at).apply()
+    }
+
     /** Progress bars: 0 wavy, 1 straight, 2 off. */
     fun progressStyle(context: Context): Int = prefs(context).getInt("progress_style", 0)
 

@@ -120,6 +120,7 @@ fun MainScreen(
             if (village != null && Stale.isStale(village, now)) {
                 item(key = "stale") { StaleBanner(village, now, onPaste) }
             }
+            extras.update?.let { v -> item(key = "update") { UpdateBanner(v) } }
             if (boosts.isNotEmpty()) {
                 item(key = "boost") { BoostBanner(boosts, now) }
             }
@@ -149,6 +150,7 @@ fun MainScreen(
             }
             item(key = "settings") { SettingsCard(extras, actions) }
             item(key = "auto") { AutoImportCard(autoImport, onAutoImport) }
+            item(key = "about") { AboutFooter(extras.version) }
         }
     }
 

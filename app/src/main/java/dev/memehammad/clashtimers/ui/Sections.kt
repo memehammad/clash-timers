@@ -49,6 +49,10 @@ data class ScreenExtras(
     val timeMode: Int = 0,
     val progressStyle: Int = 0,
     val staleHours: Int = 12,
+    val updateCheck: Boolean = true,
+    /** Newer version on GitHub, if any. */
+    val update: String? = null,
+    val version: String = "",
 )
 
 data class ScreenActions(
@@ -61,6 +65,7 @@ data class ScreenActions(
     val onTimeMode: (Int) -> Unit = {},
     val onProgressStyle: (Int) -> Unit = {},
     val onStaleHours: (Int) -> Unit = {},
+    val onUpdateCheck: (Boolean) -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -279,6 +284,54 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
     }
 }
 
+// --- Updates & about -----------------------------------------------------------------------------
+
+@Composable
+internal fun UpdateBanner(version: String) {
+    val scheme = MaterialTheme.colorScheme
+    val uri = androidx.compose.ui.platform.LocalUriHandler.current
+    Surface(
+        shape = RoundedCornerShape(28.dp),
+        color = scheme.secondaryContainer,
+        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+    ) {
+        Row(Modifier.padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("Update available", style = MaterialTheme.typography.titleMedium, color = scheme.onSecondaryContainer)
+                Text(
+                    "Version $version is out. Update in Obtainium or download it from GitHub.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = scheme.onSecondaryContainer.copy(alpha = 0.8f),
+                )
+            }
+            TextButton(onClick = { uri.openUri(dev.memehammad.clashtimers.Updates.RELEASES_URL) }) {
+                Text("Get it", color = scheme.onSecondaryContainer)
+            }
+        }
+    }
+}
+
+/** Footer: version and a link to the GitHub repo. */
+@Composable
+internal fun AboutFooter(version: String) {
+    val uri = androidx.compose.ui.platform.LocalUriHandler.current
+    Column(Modifier.fillMaxWidth().padding(top = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        TextButton(onClick = { uri.openUri(dev.memehammad.clashtimers.Updates.REPO_URL) }) {
+            Text("Clash Timers on GitHub", style = MaterialTheme.typography.labelLarge)
+        }
+        Text(
+            "Version $version · open source, MIT",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            "Not affiliated with or endorsed by Supercell.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
 // --- Settings ------------------------------------------------------------------------------------
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -390,6 +443,20 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                     }
                 }
             }
+            Spacer(Modifier.height(20.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Check for updates", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        "Asks GitHub for the latest version when you open the app (at most every 12 h).",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = scheme.onSurfaceVariant,
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Switch(checked = extras.updateCheck, onCheckedChange = actions.onUpdateCheck)
+            }
+
             Spacer(Modifier.height(20.dp))
             Text("Widget", style = MaterialTheme.typography.titleMedium)
             Text(

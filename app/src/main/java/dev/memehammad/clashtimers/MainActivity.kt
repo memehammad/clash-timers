@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
     private val extras = mutableStateOf(ScreenExtras())
+    private var update: String? = null
     private val storeListener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == "villages" || key == "current") reload()
     }
@@ -78,6 +79,14 @@ class MainActivity : ComponentActivity() {
         // Auto-import may have added data while we were in the background.
         reload()
         LiveStatus.update(this)
+        checkUpdate(force = false)
+    }
+
+    private fun checkUpdate(force: Boolean) {
+        lifecycleScope.launch {
+            update = Updates.check(this@MainActivity, force)?.version
+            reload()
+        }
     }
 
     private fun reload() {
@@ -93,6 +102,9 @@ class MainActivity : ComponentActivity() {
             timeMode = Store.timeMode(this),
             progressStyle = Store.progressStyle(this),
             staleHours = Store.staleHours(this),
+            updateCheck = Store.updateCheck(this),
+            update = update,
+            version = BuildConfig.VERSION_NAME,
         )
         Format.configure(this)
     }
@@ -121,6 +133,11 @@ class MainActivity : ComponentActivity() {
         onLiveUpdate = { on ->
             Store.setLiveUpdate(this, on)
             LiveStatus.update(this)
+            reload()
+        },
+        onUpdateCheck = { on ->
+            Store.setUpdateCheck(this, on)
+            if (on) checkUpdate(force = true) else update = null
             reload()
         },
         onStaleHours = { h ->
