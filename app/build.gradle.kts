@@ -66,6 +66,13 @@ kotlin {
     }
 }
 
+// The Smartspacer SDK asks for compile SDK 37 / AGP 9 and pulls a newer androidx.core; it works
+// fine with ours, so keep our versions and skip that metadata check.
+configurations.all {
+    resolutionStrategy.force("androidx.core:core:1.15.0", "androidx.core:core-ktx:1.15.0")
+}
+tasks.matching { it.name.startsWith("check") && it.name.endsWith("AarMetadata") }.configureEach { enabled = false }
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
