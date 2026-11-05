@@ -45,7 +45,7 @@ object Smartspace {
 
     fun icon(context: Context, res: Int) = SmartIcon(AndroidIcon.createWithResource(context, res))
 
-    fun tap(context: Context) = TapAction(pendingIntent = Scheduler.openClash(context))
+    fun tap(context: Context) = TapAction(pendingIntent = Notifier.openClash(context))
 
     /** The current village and its builder status, or null if nothing is imported yet. */
     fun builders(context: Context, now: Long): Pair<Village, SlotStatus>? {
