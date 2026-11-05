@@ -11,7 +11,7 @@ val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
     namespace = "dev.memehammad.clashtimers"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.memehammad.clashtimers"
@@ -61,6 +61,8 @@ android {
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
+        // The Smartspacer SDK is built with a newer Kotlin.
+        freeCompilerArgs.add("-Xskip-metadata-version-check")
     }
 }
 
@@ -77,4 +79,7 @@ dependencies {
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+
+    // Smartspacer (At a Glance) targets and complications.
+    implementation("com.kieronquinn.smartspacer:sdk-plugin:1.1.2")
 }

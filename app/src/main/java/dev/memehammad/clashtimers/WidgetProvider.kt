@@ -36,6 +36,7 @@ class WidgetProvider : AppWidgetProvider() {
             val mgr = AppWidgetManager.getInstance(context)
             val ids = mgr.getAppWidgetIds(ComponentName(context, WidgetProvider::class.java))
             for (id in ids) mgr.updateAppWidget(id, build(context, id))
+            Smartspace.notifyAll(context)
         }
 
         fun update(context: Context, widgetId: Int) {

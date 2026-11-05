@@ -2,6 +2,18 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## Preview: Smartspacer
+
+Clash Timers in At a Glance, through [Smartspacer](https://github.com/KieronQuinn/Smartspacer).
+This is a preview build; your normal updates are not affected.
+
+- **Clash builders** card: free builders, or when the next one is done, plus any running boost.
+- Chips (complications): **builders** ("3 free" or "2h15"), **lab** ("free" or time left) and
+  **boost** (only while a potion, snack or Clock Tower is running).
+- Tapping any of them opens Clash of Clans. They update after every import and timer.
+
+Add them in Smartspacer → Targets / Complications → + → Clash Timers.
+
 ## 1.0.23
 
 **Layout**
