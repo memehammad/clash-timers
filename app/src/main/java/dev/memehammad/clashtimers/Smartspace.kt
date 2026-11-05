@@ -22,18 +22,22 @@ import com.kieronquinn.app.smartspacer.sdk.model.uitemplatedata.Icon as SmartIco
 data class SmartOptions(
     /** Village tag, or "" to follow the app's selection. */
     val village: String = "",
-    /** builder, lab, pet, bb, starlab or boost. */
-    val what: String = "builder",
-    /** always, free (only when a worker is free), busy (only while all are busy), soon (something finishes within the hour). */
-    val show: String = "always",
-    /** Card subtitle / chip text: next (what finishes next, when) or count (free/busy count). */
+    /** Any of builder, lab, pet, bb, starlab, boost. */
+    val what: Set<String> = setOf("builder"),
+    /** Any of free, busy, soon; empty = always. Something shows when any of them is true. */
+    val show: Set<String> = emptySet(),
+    /** "soon" means finishing within this many minutes. */
+    val soonMinutes: Int = 60,
+    /** Card subtitle / chip text: next (what finishes next, when) or count (working / total). */
     val text: String = "next",
     /** Card: mention a running potion or Clock Tower in the title. */
     val boostInTitle: Boolean = true,
     /** Card: also show on the lock screen. */
     val lockScreen: Boolean = true,
 ) {
-    fun toJson(): String = JSONObject().put("village", village).put("what", what).put("show", show).put("text", text)
+    fun toJson(): String = JSONObject().put("village", village)
+        .put("what", org.json.JSONArray(what.toList())).put("show", org.json.JSONArray(show.toList()))
+        .put("soonMinutes", soonMinutes).put("text", text)
         .put("boostInTitle", boostInTitle).put("lockScreen", lockScreen).toString()
 
     companion object {
@@ -42,15 +46,29 @@ data class SmartOptions(
             "bb" to "Builder Base builders", "starlab" to "Star Laboratory", "boost" to "Active boost",
         )
         val SHOW = listOf(
-            "always" to "Always", "free" to "Only when one is free", "busy" to "Only while all are busy",
-            "soon" to "Only when something finishes within the hour",
+            "free" to "When one is free",
+            "busy" to "While all are busy",
+            "soon" to "Before something finishes",
         )
+        val SOON = listOf(15, 30, 60, 120, 180, 360)
+
+        private fun set(o: JSONObject, key: String, default: Set<String>): Set<String> {
+            o.optJSONArray(key)?.let { a -> return (0 until a.length()).map { a.getString(it) }.toSet() }
+            // Older single-value settings.
+            val v = o.optString(key, "")
+            return when {
+                v.isEmpty() -> default
+                v == "always" -> emptySet()
+                else -> setOf(v)
+            }
+        }
 
         fun fromJson(s: String?, default: SmartOptions): SmartOptions {
             val o = s?.let { runCatching { JSONObject(it) }.getOrNull() } ?: return default
             return SmartOptions(
-                o.optString("village", default.village), o.optString("what", default.what),
-                o.optString("show", default.show), o.optString("text", default.text),
+                o.optString("village", default.village), set(o, "what", default.what).ifEmpty { default.what },
+                set(o, "show", default.show), o.optInt("soonMinutes", default.soonMinutes),
+                o.optString("text", default.text),
                 o.optBoolean("boostInTitle", default.boostInTitle), o.optBoolean("lockScreen", default.lockScreen),
             )
         }
@@ -104,8 +122,23 @@ object Smartspace {
     fun settingsIntent(c: Context, kind: String) =
         Intent(c, SmartspaceSettingsActivity::class.java).putExtra(SmartspaceSettingsActivity.EXTRA_KIND, kind)
 
-    /** What a card/chip says right now, or null when it should be hidden. */
-    class Content(val title: String, val subtitle: String, val chip: String, val icon: Int)
+    /** One item (builders, lab, ...) as it looks right now. */
+    class Item(
+        val title: String,
+        val subtitle: String,
+        val chip: String,
+        val icon: Int,
+        /** When the next thing finishes (ms from now), for picking the most urgent item. */
+        val nextMs: Long?,
+        val count: String,
+    )
+
+    /** What a card or chip says right now; empty when nothing should show. */
+    class Content(val items: List<Item>) {
+        val title: String get() = items.joinToString(" · ") { it.title }
+        val subtitle: String get() = (items.filter { it.nextMs != null }.minByOrNull { it.nextMs!! } ?: items.first()).subtitle
+        val icon: Int get() = (items.filter { it.nextMs != null }.minByOrNull { it.nextMs!! } ?: items.first()).icon
+    }
 
     private fun slotOf(what: String) = when (what) {
         "lab" -> Slot.LAB
@@ -126,53 +159,66 @@ object Smartspace {
     fun content(c: Context, o: SmartOptions, now: Long): Content? {
         Format.configure(c)
         val v = (if (o.village.isNotEmpty()) Store.load(c, o.village) else null) ?: Store.load(c) ?: return null
+        val soonMs = o.soonMinutes * 60_000L
+        val items = SmartOptions.WHAT.map { it.first }.filter { it in o.what }.mapNotNull { item(c, v, it, o, now, soonMs) }
+        if (items.isEmpty()) return null
+        // With several items, titles get short so they fit side by side.
+        return Content(items)
+    }
 
-        if (o.what == "boost") {
+    private fun item(c: Context, v: Village, what: String, o: SmartOptions, now: Long, soonMs: Long): Item? {
+        if (what == "boost") {
             val active = Status.activeBoosts(v, now)
             val b = active.firstOrNull() ?: return null
             val left = b.remainingMs(now)
-            if (o.show == "soon" && left > 3_600_000L) return null
-            return Content(Status.boostLabel(active), "Ends ${Format.phrase(left, now)}", compact(left), iconOf("boost"))
+            if (o.show.isNotEmpty() && !("soon" in o.show && left <= soonMs)) {
+                // A running boost counts as "busy"; "free" never applies to it.
+                if ("busy" !in o.show) return null
+            }
+            return Item(Status.boostLabel(active), "${b.name} ends ${Format.phrase(left, now)}", compact(left), iconOf(what), left, "")
         }
 
-        val slot = slotOf(o.what)
+        val slot = slotOf(what)
         val s = Status.of(v, slot, now, if (slot == Slot.BUILDER) Store.builderOverride(c, v.tag) else 0) ?: return null
         val running = v.timers.filter { (it.slot == slot && !it.extra || it.blocks == slot) && it.remainingMs(now) > 0 }
             .sortedBy { it.endSec }
         val first = running.firstOrNull()
-        when (o.show) {
-            "free" -> if (s.free == 0) return null
-            "busy" -> if (s.free > 0) return null
-            "soon" -> if (first == null || first.remainingMs(now) > 3_600_000L) return null
+        val freeAt = if (s.free == 0) s.nextFreeSec?.let { it * 1000 - now } else null
+        if (o.show.isNotEmpty()) {
+            val ok = ("free" in o.show && s.free > 0) ||
+                ("busy" in o.show && s.free == 0) ||
+                ("soon" in o.show && first != null && first.remainingMs(now) <= soonMs)
+            if (!ok) return null
         }
-
-        val name = when (slot) {
-            Slot.BUILDER -> "builder"
-            Slot.BB_BUILDER -> "Builder Base builder"
-            Slot.LAB -> "Laboratory"
-            Slot.STAR_LAB -> "Star Laboratory"
-            Slot.PET -> "Pet House"
-            else -> ""
-        }
+        val many = o.what.size > 1
         val title = when (slot) {
-            Slot.BUILDER -> Status.builderTitle(s)
-            Slot.BB_BUILDER -> if (s.free == 0) "Builder Base busy" else if (s.free == 1) "1 $name free" else "${s.free} ${name}s free"
-            else -> if (s.free > 0) "$name free" else "$name busy"
-        } + if (o.boostInTitle) Status.activeBoosts(v, now).takeIf { it.isNotEmpty() }?.let { " · ${Status.boostLabel(it)}" } ?: "" else ""
-
+            Slot.BUILDER -> if (many) (if (s.free > 0) "${s.free} builder${if (s.free > 1) "s" else ""} free" else "Builders busy") else Status.builderTitle(s)
+            Slot.BB_BUILDER -> if (s.free > 0) "${s.free} BB builder${if (s.free > 1) "s" else ""} free" else "Builder Base busy"
+            Slot.LAB -> if (s.free > 0) "Lab free" else if (many) "Lab busy" else "Researching"
+            Slot.STAR_LAB -> if (s.free > 0) "Star Lab free" else "Star Lab busy"
+            Slot.PET -> if (s.free > 0) "Pets free" else "Pet House busy"
+            else -> ""
+        } + if (!many && o.boostInTitle) Status.activeBoosts(v, now).takeIf { it.isNotEmpty() }?.let { " · ${Status.boostLabel(it)}" } ?: "" else ""
+        val label = when (slot) {
+            Slot.BUILDER -> "Builders"
+            Slot.BB_BUILDER -> "BB"
+            Slot.LAB -> "Lab"
+            Slot.STAR_LAB -> "Star Lab"
+            else -> "Pets"
+        }
         val subtitle = when {
             o.text == "count" -> "${s.busy} of ${s.total} working"
-            s.free == 0 && s.nextFreeSec != null -> "Next free ${Format.phrase(s.nextFreeSec * 1000 - now, now)}"
+            freeAt != null -> "$label: next free ${Format.phrase(freeAt, now)}"
             first != null -> "${first.name} ${Format.phrase(first.remainingMs(now), now)}"
             else -> if (slot == Slot.LAB || slot == Slot.STAR_LAB) "Time to research something" else "Time to build something"
         }
         val chip = when {
             o.text == "count" -> "${s.busy}/${s.total}"
             s.free > 0 -> if (s.total > 1) "${s.free} free" else "free"
-            s.nextFreeSec != null -> compact(s.nextFreeSec * 1000 - now)
+            freeAt != null -> compact(freeAt)
             else -> "busy"
         }
-        return Content(title, subtitle, chip, iconOf(o.what))
+        return Item(title, subtitle, chip, iconOf(what), first?.remainingMs(now), "$label ${s.busy}/${s.total}")
     }
 }
 
@@ -187,7 +233,7 @@ class BuildersTarget : SmartspacerTargetProvider() {
                 id = "clash_$smartspacerId",
                 componentName = ComponentName(c, BuildersTarget::class.java),
                 title = Text(x.title),
-                subtitle = Text(x.subtitle),
+                subtitle = Text(if (o.text == "count" && x.items.size > 1) x.items.joinToString(" · ") { it.count } else x.subtitle),
                 icon = Smartspace.icon(c, x.icon),
                 onClick = Smartspace.tap(c),
             ).create().apply {
@@ -221,26 +267,27 @@ abstract class ClashComplication(
         val c = provideContext()
         val o = Smartspace.options(c, smartspacerId, default)
         val x = Smartspace.content(c, o, System.currentTimeMillis()) ?: return emptyList()
-        return listOf(
+        // One chip per item (builders, lab, ...).
+        return x.items.mapIndexed { i, it ->
             ComplicationTemplate.Basic(
-                id = "clash_$smartspacerId",
-                icon = Smartspace.icon(c, x.icon),
-                content = Text(x.chip),
+                id = "clash_${smartspacerId}_$i",
+                icon = Smartspace.icon(c, it.icon),
+                content = Text(it.chip),
                 onClick = Smartspace.tap(c),
-            ).create(),
-        )
+            ).create()
+        }
     }
 
     override fun getConfig(smartspacerId: String?) = Config(
         label = label,
         description = description,
-        icon = AndroidIcon.createWithResource(provideContext(), when (default.what) {
+        icon = AndroidIcon.createWithResource(provideContext(), when (default.what.first()) {
             "lab" -> R.drawable.ic_flask
             "boost" -> R.drawable.ic_bolt
             else -> R.drawable.ic_hammer
         }),
         allowAddingMoreThanOnce = true,
-        configActivity = Smartspace.settingsIntent(provideContext(), "chip:${default.what}"),
+        configActivity = Smartspace.settingsIntent(provideContext(), "chip:${default.what.first()}"),
         refreshPeriodMinutes = 1,
     )
 
@@ -248,15 +295,15 @@ abstract class ClashComplication(
 }
 
 class BuildersComplication : ClashComplication(
-    SmartOptions(what = "builder"), "Clash builders", "Free builders, or time until the next one (configurable)",
+    SmartOptions(what = setOf("builder")), "Clash builders", "Free builders, or time until the next one (configurable)",
 )
 
 class LabComplication : ClashComplication(
-    SmartOptions(what = "lab"), "Clash laboratory", "Lab free, or time left on the research (configurable)",
+    SmartOptions(what = setOf("lab")), "Clash laboratory", "Lab free, or time left on the research (configurable)",
 )
 
 class BoostComplication : ClashComplication(
-    SmartOptions(what = "boost"), "Clash boost", "Time left on a running potion, snack or Clock Tower",
+    SmartOptions(what = setOf("boost")), "Clash boost", "Time left on a running potion, snack or Clock Tower",
 )
 
 /** Smartspacer's periodic refresh: just ask it to re-read our providers (data is local). */

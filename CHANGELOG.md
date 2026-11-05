@@ -15,10 +15,11 @@ This is a preview build; your normal updates are not affected.
 Add them in Smartspacer → Targets / Complications → + → Clash Timers.
 
 **Personalise each one** (Smartspacer → tap it → settings):
-- **Show:** builders, laboratory, pet house, Builder Base builders, Star Laboratory or the
-  active boost. Add the card or a chip several times to show several.
-- **When:** always, only when one is free, only while all are busy, or only when something
-  finishes within the hour.
+- **Show (any mix):** builders, laboratory, pet house, Builder Base builders, Star Laboratory and
+  the active boost. A card combines them ("2 builders free · Lab busy"); a chip becomes one chip
+  per item. Add them several times for different setups.
+- **When:** always, or any mix of: when one is free, while all are busy, and before something
+  finishes (15 min to 6 hours ahead).
 - **Text:** what finishes next and when, or how many are working.
 - Card extras: mention boosts in the title, show on the lock screen or not. Pick the village
   if you track more than one. A preview shows what it says right now.

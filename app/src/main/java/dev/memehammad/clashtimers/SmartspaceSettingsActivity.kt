@@ -43,7 +43,7 @@ class SmartspaceSettingsActivity : ComponentActivity() {
         setResult(RESULT_OK)
         val kind = intent.getStringExtra(EXTRA_KIND) ?: "target"
         val isCard = kind == "target"
-        val default = SmartOptions(what = kind.substringAfter("chip:", "builder").ifEmpty { "builder" })
+        val default = SmartOptions(what = setOf(kind.substringAfter("chip:", "builder").ifEmpty { "builder" }))
         val tags = Store.tags(this)
 
         setContent {
@@ -79,48 +79,87 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                                     if (preview == null) {
                                         Text("Hidden right now", style = MaterialTheme.typography.titleMedium)
                                         Text(
-                                            "Nothing matches these settings at the moment.",
+                                            "Nothing matches these settings at the moment; it appears when something does.",
                                             style = MaterialTheme.typography.bodySmall,
                                         )
                                     } else if (isCard) {
                                         Text(preview.title, style = MaterialTheme.typography.titleMedium)
-                                        Text(preview.subtitle, style = MaterialTheme.typography.bodyMedium)
+                                        Text(
+                                            if (o.text == "count" && preview.items.size > 1) preview.items.joinToString(" · ") { it.count } else preview.subtitle,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                        )
                                     } else {
-                                        Text(preview.chip, style = MaterialTheme.typography.titleLarge)
+                                        Text(preview.items.joinToString("    ") { it.chip }, style = MaterialTheme.typography.titleLarge)
                                     }
                                 }
                             }
                         }
 
-                        item { Label("Show") }
+                        item { Label("Show (pick any)") }
                         for ((k, label) in SmartOptions.WHAT) {
-                            item { Option(label, o.what == k) { save(o.copy(what = k)) } }
+                            item {
+                                Toggle(label, null, k in o.what) { on ->
+                                    val n = if (on) o.what + k else o.what - k
+                                    if (n.isNotEmpty()) save(o.copy(what = n))
+                                }
+                            }
                         }
 
                         item { Label("When") }
-                        for ((k, label) in SmartOptions.SHOW) {
-                            if (o.what == "boost" && (k == "free" || k == "busy")) continue
-                            item { Option(label, o.show == k) { save(o.copy(show = k)) } }
+                        item {
+                            Toggle("Always", "Ignore the conditions below", o.show.isEmpty()) { on ->
+                                save(o.copy(show = if (on) emptySet() else setOf("free")))
+                            }
+                        }
+                        if (o.show.isNotEmpty()) {
+                            item {
+                                Text(
+                                    "Shows when any of these is true:",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(start = 8.dp, bottom = 6.dp),
+                                )
+                            }
+                            for ((k, label) in SmartOptions.SHOW) {
+                                item {
+                                    Toggle(
+                                        label,
+                                        if (k == "soon") "Within the time below" else null,
+                                        k in o.show,
+                                    ) { on ->
+                                        val n = if (on) o.show + k else o.show - k
+                                        save(o.copy(show = n))
+                                    }
+                                }
+                            }
+                            if ("soon" in o.show) {
+                                item { Label("How long before") }
+                                for (m in SmartOptions.SOON) {
+                                    item {
+                                        Option(if (m < 60) "$m minutes" else if (m == 60) "1 hour" else "${m / 60} hours", o.soonMinutes == m) {
+                                            save(o.copy(soonMinutes = m))
+                                        }
+                                    }
+                                }
+                            }
                         }
 
-                        if (o.what != "boost") {
-                            item { Label(if (isCard) "Second line" else "Chip text") }
-                            item {
-                                Option(
-                                    if (isCard) "What finishes next, and when" else "Free count, or time until the next one",
-                                    o.text == "next",
-                                ) { save(o.copy(text = "next")) }
-                            }
-                            item {
-                                Option(if (isCard) "How many are working" else "Working / total (e.g. 4/6)", o.text == "count") {
-                                    save(o.copy(text = "count"))
-                                }
+                        item { Label(if (isCard) "Second line" else "Chip text") }
+                        item {
+                            Option(
+                                if (isCard) "What finishes next, and when" else "Free count, or time until the next one",
+                                o.text == "next",
+                            ) { save(o.copy(text = "next")) }
+                        }
+                        item {
+                            Option(if (isCard) "How many are working" else "Working / total (e.g. 4/6)", o.text == "count") {
+                                save(o.copy(text = "count"))
                             }
                         }
 
                         if (isCard) {
                             item { Label("Extras") }
-                            if (o.what != "boost") {
+                            if ("boost" !in o.what) {
                                 item {
                                     Toggle("Mention boosts", "Add a running potion or Clock Tower to the title", o.boostInTitle) {
                                         save(o.copy(boostInTitle = it))
