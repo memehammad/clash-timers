@@ -20,4 +20,5 @@
     <string name="channel_reminder">Idle builder reminders</string>
     <string name="channel_live">Builder status (ongoing)</string>
     <string name="open_timers">Open timers</string>
+    <string name="smartspace_settings_desc">Choose what this shows, when, and for which village</string>
 </resources>

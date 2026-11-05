@@ -123,7 +123,7 @@ class WidgetConfigActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Label(text: String) {
+internal fun Label(text: String) {
     Text(
         text,
         style = MaterialTheme.typography.titleSmall,
@@ -133,7 +133,7 @@ private fun Label(text: String) {
 }
 
 @Composable
-private fun Option(label: String, selected: Boolean, onClick: () -> Unit) {
+internal fun Option(label: String, selected: Boolean, onClick: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(20.dp),
         color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
@@ -148,7 +148,7 @@ private fun Option(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun Toggle(label: String, desc: String?, checked: Boolean, onChange: (Boolean) -> Unit) {
+internal fun Toggle(label: String, desc: String?, checked: Boolean, onChange: (Boolean) -> Unit) {
     Surface(
         shape = RoundedCornerShape(20.dp),
         color = MaterialTheme.colorScheme.surfaceContainer,
