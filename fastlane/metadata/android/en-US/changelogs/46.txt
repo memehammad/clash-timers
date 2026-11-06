@@ -1,0 +1,4 @@
+Import straight from the widget. The widget now has a small paste button. Copy your
+village in Clash, go to your home screen and tap it: the widget updates without opening the
+app. Don't need it? Turn off "Import button" in the widget's settings.
+
