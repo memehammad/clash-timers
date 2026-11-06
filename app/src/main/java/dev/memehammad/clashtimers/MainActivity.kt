@@ -21,11 +21,6 @@ import dev.memehammad.clashtimers.ui.ScreenExtras
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    companion object {
-        const val EXTRA_TUTORIAL = "tutorial"
-        const val EXTRA_SETUP = "setup"
-    }
-
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
     private val extras = mutableStateOf(ScreenExtras())
@@ -283,5 +278,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val REQUEST_SHIZUKU = 42
+        const val EXTRA_TUTORIAL = "tutorial"
+        const val EXTRA_SETUP = "setup"
     }
 }
