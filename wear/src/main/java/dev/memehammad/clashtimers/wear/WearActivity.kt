@@ -113,14 +113,12 @@ private fun Screen(s: Summary?) {
                     val o = others[i]
                     val next = o.nextFree(now)
                     Card(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(o.label, style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
-                            Text(
-                                if (next == null) "${o.free(now)} free" else shortTime(next - now),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = if (next == null) scheme.primary else scheme.onSurface,
-                            )
-                        }
+                        Text(o.label, style = MaterialTheme.typography.labelMedium, color = scheme.onSurfaceVariant)
+                        Text(
+                            if (next == null) "${o.free(now)} free" else shortTime(next - now),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = if (next == null) scheme.primary else scheme.onSurface,
+                        )
                     }
                 }
                 val jobs = s.jobs.filter { it.endMs > now }.sortedBy { it.endMs }.take(25)
