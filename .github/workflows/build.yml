@@ -7,6 +7,8 @@ on:
       - '**.md'
       - 'tools/**'
       - 'docs/**'
+      - 'fastlane/**'
+      - '.github/workflows/renders.yml'
       - '.gitignore'
   workflow_dispatch:
 
@@ -59,3 +61,14 @@ jobs:
           make_latest: ${{ github.ref_name == 'main' }}
           body_path: release_notes.md
           files: ClashTimers.apk
+
+      - name: Store changelog for F-Droid / IzzyOnDroid (fastlane)
+        if: github.ref_name == 'main'
+        run: |
+          f=fastlane/metadata/android/en-US/changelogs/${{ github.run_number }}.txt
+          sed -e 's/\*\*//g' -e 's/\[\([^]]*\)\]([^)]*)/\1/g' release_notes.md | sed '/./,$!d' | head -c 500 > "$f"
+          git config user.name "release bot"
+          git config user.email "release-bot@users.noreply.github.com"
+          git add "$f"
+          git commit -qm "Fastlane changelog for ${{ github.run_number }} [skip ci]" || exit 0
+          git push origin HEAD:main || true

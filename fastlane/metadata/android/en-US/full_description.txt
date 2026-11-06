@@ -1,0 +1,25 @@
+<p>Clash Timers is a free, open-source companion for <b>Clash of Clans</b>. Copy your village export in the game and the app shows when your builders, laboratory and pets are free, right on your home screen.</p>
+
+<p><b>Features</b></p>
+<ul>
+<li><b>Free builders at a glance:</b> how many builders are idle, or a live countdown to the next one.</li>
+<li><b>Every timer in one place:</b> buildings, heroes, Gear Ups, Crafting Station, research, pets, Builder Base, Builder's Apprentice and Clock Tower.</li>
+<li><b>Notifications</b> the moment something finishes, including when the Goblin Builder is free again, plus an optional nudge if a builder sits idle.</li>
+<li><b>Hero status:</b> which heroes can attack, and when an upgrading one is back.</li>
+<li><b>Boost planner:</b> see what a Builder or Research Potion, Builder Bite, Study Soup or Pet Potion would finish before you use it.</li>
+<li><b>At a Glance</b> card and chips through Smartspacer.</li>
+<li><b>Widgets in any size</b>, from a 1x1 badge to a full list, in Material You colours that follow your wallpaper.</li>
+<li><b>Several villages</b>, each with its own widget if you like.</li>
+<li>Optional <b>auto-import</b> with Shizuku: tap Copy in Clash and the widget updates by itself.</li>
+</ul>
+
+<p><b>How to use it</b></p>
+<ol>
+<li>In Clash of Clans, open Settings, More Settings, Data Export and tap Copy.</li>
+<li>Open Clash Timers (or tap the widget). The export is imported automatically.</li>
+<li>Add the widget from your home screen's widget list.</li>
+</ol>
+
+<p><b>Privacy:</b> no account, no ads, no tracking. Your export stays on your phone. The internet permission is only used to check GitHub for app updates.</p>
+
+<p>This app is not affiliated with, endorsed, sponsored, or specifically approved by Supercell, and Supercell is not responsible for it. For more information see Supercell's Fan Content Policy.</p>

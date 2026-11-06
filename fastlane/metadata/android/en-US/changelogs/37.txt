@@ -1,0 +1,1 @@
+Goblin Builder alerts: when the Goblin Builder (or Goblin Researcher) finishes a job, you get a "Goblin Builder is free" notification. Export once after giving him a job.
