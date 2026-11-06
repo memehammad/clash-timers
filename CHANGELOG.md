@@ -2,6 +2,13 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## 1.3
+
+**Clash Timers speaks your language.** The app is now in German, Spanish, French and
+Portuguese, and follows your phone's language. Buildings, troops and heroes use the same
+names as in the game. A few of the newest ones stay in English for now. On Android 13 and
+newer you can also pick the app's language in Android settings.
+
 ## 1.2
 
 **A friendlier first start.** New installs open with a quick setup: turn on notifications,

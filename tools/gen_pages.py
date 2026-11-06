@@ -177,19 +177,19 @@ pages.append(page(
     "Clash of Clans Widget für Android – Clash Timers",
     "Freie Bauarbeiter, Upgrade-Timer, Forschung und Helden von Clash of Clans auf deinem Android-Startbildschirm. Kostenlos und Open Source.",
     "Das Clash of Clans Widget für Android",
-    "Sieh auf einen Blick, wann deine Bauarbeiter, das Labor und die Haustiere frei sind, direkt auf dem Startbildschirm.",
+    "Sieh auf einen Blick, wann deine Bauarbeiter, das Labor und die Begleiter frei sind, direkt auf dem Startbildschirm.",
     """  <img class="shot" src="../img/teal/light/widget_compact.png" width="360" height="190" alt="Clash of Clans Widget auf Android">
   <h2>Was Clash Timers kann</h2>
   <ul>
     <li><b>Freie Bauarbeiter auf einen Blick:</b> wie viele frei sind, oder ein Countdown bis zum nächsten.</li>
-    <li><b>Alle Timer an einem Ort:</b> Gebäude, Helden, Gear Ups, Labor, Tiere, Bauarbeiterbasis und Uhrturm.</li>
-    <li><b>Benachrichtigungen,</b> sobald etwas fertig ist, auch wenn der Goblin-Bauarbeiter wieder frei ist.</li>
+    <li><b>Alle Timer an einem Ort:</b> Gebäude, Helden, Weiterentwicklungen, Labor, Begleiter, Bauarbeiterbasis und Uhrenturm.</li>
+    <li><b>Benachrichtigungen,</b> sobald etwas fertig ist, auch wenn der Kobauldarbeiter wieder frei ist.</li>
     <li><b>Boost-Planer:</b> sieh vorher, was ein Bauarbeitertrank fertig machen würde.</li>
     <li><b>Widgets in jeder Größe</b> in Material-You-Farben, passend zu deinem Hintergrund.</li>
   </ul>
   <h2>So geht's</h2>
   <ol class="steps">
-    <li>In Clash of Clans: Einstellungen, Weitere Einstellungen, Datenexport (Data Export), <b>Kopieren</b>.</li>
+    <li>In Clash of Clans: Einstellungen, Mehr Einst., Datenexport (Data Export), <b>Kopieren</b>.</li>
     <li>Clash Timers öffnen. Der Export wird automatisch übernommen.</li>
     <li>Widget hinzufügen: lange auf den Startbildschirm tippen, Widgets, Clash Timers.</li>
   </ol>
