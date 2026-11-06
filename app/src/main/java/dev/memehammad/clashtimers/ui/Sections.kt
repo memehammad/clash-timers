@@ -66,6 +66,7 @@ data class ScreenActions(
     val onProgressStyle: (Int) -> Unit = {},
     val onStaleHours: (Int) -> Unit = {},
     val onUpdateCheck: (Boolean) -> Unit = {},
+    val onTutorial: () -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
@@ -322,9 +323,12 @@ internal fun UpdateBanner(version: String) {
 
 /** Footer: version and a link to the GitHub repo. */
 @Composable
-internal fun AboutFooter(version: String) {
+internal fun AboutFooter(version: String, onTutorial: () -> Unit = {}) {
     val uri = androidx.compose.ui.platform.LocalUriHandler.current
     Column(Modifier.fillMaxWidth().padding(top = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        TextButton(onClick = onTutorial) {
+            Text("How it works", style = MaterialTheme.typography.labelLarge)
+        }
         TextButton(onClick = { uri.openUri(dev.memehammad.clashtimers.Updates.REPO_URL) }) {
             Text("Clash Timers on GitHub", style = MaterialTheme.typography.labelLarge)
         }

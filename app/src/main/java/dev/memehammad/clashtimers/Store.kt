@@ -16,6 +16,12 @@ object Store {
     fun unregister(context: Context, l: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs(context).unregisterOnSharedPreferenceChangeListener(l)
 
+    /** Whether the first-run tutorial was seen (or skipped). */
+    fun tutorialSeen(context: Context): Boolean = prefs(context).getBoolean("tutorial_seen", false)
+
+    fun setTutorialSeen(context: Context, seen: Boolean = true) =
+        prefs(context).edit().putBoolean("tutorial_seen", seen).apply()
+
     // --- Villages ------------------------------------------------------------------------------
 
     /** tag -> raw export JSON. Migrates the single export saved by older versions. */

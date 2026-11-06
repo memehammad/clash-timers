@@ -21,6 +21,9 @@ import dev.memehammad.clashtimers.ui.ScreenExtras
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        const val EXTRA_TUTORIAL = "tutorial"
+    }
 
     private val village = mutableStateOf<Village?>(null)
     private val builderOverride = mutableIntStateOf(0)
@@ -35,6 +38,7 @@ class MainActivity : ComponentActivity() {
         autoImport.value = AutoImport.state(this)
     }
     private val snackbar = SnackbarHostState()
+    private val tutorial = mutableStateOf(false)
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
@@ -43,11 +47,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         reload()
         Store.register(this, storeListener)
+        // First run (no village yet), or asked for explicitly.
+        tutorial.value = intent?.getBooleanExtra(EXTRA_TUTORIAL, false) == true ||
+            (!Store.tutorialSeen(this) && Store.tags(this).isEmpty())
         handleShare(intent)
 
         setContent {
             AppTheme {
-                MainScreen(
+                if (tutorial.value) {
+                    androidx.activity.compose.BackHandler { closeTutorial() }
+                    dev.memehammad.clashtimers.ui.Tutorial { closeTutorial() }
+                } else MainScreen(
                     village = village.value,
                     builderOverride = builderOverride.intValue,
                     snackbar = snackbar,
@@ -109,7 +119,13 @@ class MainActivity : ComponentActivity() {
         Format.configure(this)
     }
 
+    private fun closeTutorial() {
+        Store.setTutorialSeen(this)
+        tutorial.value = false
+    }
+
     private val actions = ScreenActions(
+        onTutorial = { tutorial.value = true },
         onSelectVillage = { tag ->
             Store.setCurrentTag(this, tag)
             Refresh.all(this)

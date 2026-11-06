@@ -33,6 +33,7 @@ class RenderTest {
             "buildings2":[{"data":1000034,"lvl":10,"cnt":1},{"data":1000046,"lvl":10,"cnt":1}]}"""
         Store.save(ctx, "#DEMO", json)
         Store.setCurrentTag(ctx, "#DEMO")
+        Store.setTutorialSeen(ctx)
         val shots = listOf(Triple(2, 170, 170), Triple(1, 360, 80), Triple(3, 360, 190), Triple(5, 360, 420))
         val views = mutableListOf<Pair<View, Triple<Int, Int, Int>>>()
         val d = ctx.resources.displayMetrics.density

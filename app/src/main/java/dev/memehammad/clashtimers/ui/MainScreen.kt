@@ -150,7 +150,7 @@ fun MainScreen(
             }
             item(key = "settings") { SettingsCard(extras, actions) }
             item(key = "auto") { AutoImportCard(autoImport, onAutoImport) }
-            item(key = "about") { AboutFooter(extras.version) }
+            item(key = "about") { AboutFooter(extras.version, actions.onTutorial) }
         }
     }
 
