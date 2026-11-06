@@ -1,15 +1,17 @@
 name: Build APK
 
+# A release is only made when CHANGELOG.md changes (a new version section), or when started by
+# hand. Other pushes to app code just build, so mistakes show up without a new release.
 on:
   push:
-    branches: [main, smartspacer]
-    paths-ignore:
-      - '**.md'
-      - 'tools/**'
-      - 'docs/**'
-      - 'fastlane/**'
-      - '.github/workflows/renders.yml'
-      - '.gitignore'
+    branches: [main, smartspacer, wear-preview]
+    paths:
+      - 'app/**'
+      - 'wear/**'
+      - 'gradle/**'
+      - '*.gradle.kts'
+      - 'gradle.properties'
+      - 'CHANGELOG.md'
   workflow_dispatch:
 
 permissions:
@@ -20,6 +22,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Release only for a changelog update
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = workflow_dispatch ]; then echo "release=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          before="${{ github.event.before }}"
+          if git cat-file -e "$before" 2>/dev/null && git diff --name-only "$before" "${{ github.sha }}" | grep -qx CHANGELOG.md; then
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: actions/setup-java@v4
         with:
@@ -51,6 +66,7 @@ jobs:
           cat release_notes.md
 
       - name: Publish release (download the APK here from your phone)
+        if: steps.gate.outputs.release == 'true'
         uses: softprops/action-gh-release@v2
         with:
           # Tag matches the app's versionName (1.0.<run>) so Obtainium can detect updates.
@@ -63,7 +79,7 @@ jobs:
           files: ClashTimers.apk
 
       - name: Store changelog for F-Droid / IzzyOnDroid (fastlane)
-        if: github.ref_name == 'main'
+        if: github.ref_name == 'main' && steps.gate.outputs.release == 'true'
         run: |
           f=fastlane/metadata/android/en-US/changelogs/${{ github.run_number }}.txt
           sed -e 's/\*\*//g' -e 's/\[\([^]]*\)\]([^)]*)/\1/g' release_notes.md | sed '/./,$!d' | head -c 500 > "$f"
