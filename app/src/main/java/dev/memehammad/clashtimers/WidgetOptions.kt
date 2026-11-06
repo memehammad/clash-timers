@@ -19,7 +19,11 @@ data class WidgetOptions(val bits: Int = ALL) {
         const val LIST_PETS = 128
         const val LIST_BUILDER_BASE = 256
         const val LIST_HELPERS = 512
-        const val ALL = 0x3FF
+        const val IMPORT = 1024
+        const val ALL = 0x7FF
+
+        /** Marks options saved by a version that knows about [IMPORT]. */
+        const val SAVED_V2 = 1 shl 30
 
         val SECTION_FLAGS = listOf(
             Section.BUILDERS to LIST_BUILDERS,
@@ -31,7 +35,8 @@ data class WidgetOptions(val bits: Int = ALL) {
         )
 
         /** (flag, label, description) shown in the widget settings. */
-        val ITEMS = listOf(
+        val ITEMS get() = listOf(
+            Triple(IMPORT, tr(R.string.wo_import), tr(R.string.wo_import_d)),
             Triple(CHIPS, tr(R.string.wo_chips), tr(R.string.wo_chips_d)),
             Triple(HEROES, tr(R.string.t_heroes), tr(R.string.wo_heroes_d)),
             Triple(BOOST, tr(R.string.wo_boost), tr(R.string.wo_boost_d)),

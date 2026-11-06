@@ -287,4 +287,8 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <string name="wo_import">Botão de importar</string>
+    <string name="wo_import_d">Copie no Clash e toque no botão para atualizar sem abrir o app</string>
+    <string name="import_now">Importar da área de transferência</string>
+    <string name="import_hint">Nenhuma exportação de vila na área de transferência. Copie primeiro no Clash.</string>
 </resources>

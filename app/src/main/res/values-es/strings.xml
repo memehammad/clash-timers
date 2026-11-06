@@ -287,4 +287,8 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <string name="wo_import">Botón de importar</string>
+    <string name="wo_import_d">Copia en Clash y toca el botón para actualizar sin abrir la app</string>
+    <string name="import_now">Importar del portapapeles</string>
+    <string name="import_hint">No hay exportación de aldea en el portapapeles. Cópiala primero en Clash.</string>
 </resources>

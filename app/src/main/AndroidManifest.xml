@@ -162,5 +162,14 @@
                 <action android:name="com.kieronquinn.app.smartspacer.REQUEST_COMPLICATION_UPDATE" />
             </intent-filter>
         </receiver>
+        <!-- Widget import button: reads the clipboard for a moment, then closes. -->
+        <activity
+            android:name=".ImportActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 </manifest>

@@ -106,11 +106,14 @@ object Store {
         prefs(context).edit().putString("widget_$widgetId", tag).apply()
     }
 
-    fun widgetOptions(context: Context, widgetId: Int): WidgetOptions =
-        WidgetOptions(prefs(context).getInt("widget_opts_$widgetId", WidgetOptions.ALL))
+    fun widgetOptions(context: Context, widgetId: Int): WidgetOptions {
+        val bits = prefs(context).getInt("widget_opts_$widgetId", WidgetOptions.ALL)
+        // Options saved before the import button existed: turn it on, like for new widgets.
+        return WidgetOptions(if (bits and WidgetOptions.SAVED_V2 == 0) bits or WidgetOptions.IMPORT else bits)
+    }
 
     fun setWidgetOptions(context: Context, widgetId: Int, options: WidgetOptions) {
-        prefs(context).edit().putInt("widget_opts_$widgetId", options.bits).apply()
+        prefs(context).edit().putInt("widget_opts_$widgetId", options.bits or WidgetOptions.SAVED_V2).apply()
     }
 
     fun loadForWidget(context: Context, widgetId: Int): Village? =

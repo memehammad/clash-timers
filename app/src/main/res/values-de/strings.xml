@@ -280,4 +280,8 @@
         <item quantity="one">%d Stunde</item>
         <item quantity="other">%d Stunden</item>
     </plurals>
+    <string name="wo_import">Import-Knopf</string>
+    <string name="wo_import_d">In Clash kopieren, dann auf den Knopf tippen: aktualisiert, ohne die App zu öffnen</string>
+    <string name="import_now">Aus der Zwischenablage importieren</string>
+    <string name="import_hint">Kein Dorf-Export in der Zwischenablage. Kopiere ihn zuerst in Clash.</string>
 </resources>

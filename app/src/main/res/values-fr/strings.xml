@@ -287,4 +287,8 @@
         <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
+    <string name="wo_import">Bouton d\'import</string>
+    <string name="wo_import_d">Copie dans Clash, puis touche le bouton pour mettre à jour sans ouvrir l\'appli</string>
+    <string name="import_now">Importer depuis le presse-papiers</string>
+    <string name="import_hint">Pas d\'export de village dans le presse-papiers. Copie-le d\'abord dans Clash.</string>
 </resources>

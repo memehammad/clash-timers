@@ -191,8 +191,17 @@ class WidgetProvider : AppWidgetProvider() {
             v.setViewVisibility(id, View.VISIBLE)
         }
 
+        /** The corner button: imports the export on the clipboard without opening the app. */
+        private fun importNow(context: Context): PendingIntent =
+            PendingIntent.getActivity(
+                context, 2, Intent(context, ImportActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+
         private fun fillStatus(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, opts: WidgetOptions) {
             val open = openApp(context)
+            v.setViewVisibility(R.id.s_import, if (opts.has(WidgetOptions.IMPORT)) View.VISIBLE else View.GONE)
+            v.setOnClickPendingIntent(R.id.s_import, importNow(context))
             v.setOnClickPendingIntent(R.id.s_block, open)
             v.setOnClickPendingIntent(R.id.s_chips, open)
             v.setOnClickPendingIntent(R.id.s_boost, open)

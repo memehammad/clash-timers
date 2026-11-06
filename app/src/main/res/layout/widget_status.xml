@@ -140,6 +140,19 @@
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Optional import button: copy in Clash, then tap. -->
+        <ImageView
+            android:id="@+id/s_import"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/import_btn_bg"
+            android:contentDescription="@string/import_now"
+            android:padding="10dp"
+            android:src="@drawable/ic_paste"
+            android:tint="@color/w_on_badge_busy"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
