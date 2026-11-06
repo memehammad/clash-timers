@@ -272,13 +272,26 @@ object VillageParser {
             else data[id]?.times?.get(target)?.takeIf { it >= timer }
 
             val isResearch = slot == Slot.LAB || slot == Slot.STAR_LAB
+            // Event helpers (Goblin Builder / Goblin Researcher) work on "extra" jobs; when one ends,
+            // that helper is free again, which is the useful thing to say.
+            val goblin = when {
+                !extra -> null
+                isResearch -> "Goblin Researcher"
+                slot == Slot.BUILDER -> "Goblin Builder"
+                else -> null
+            }
             val title = when {
+                goblin != null -> "$goblin is free"
                 gearUp -> "$name geared up"
                 isResearch -> "$name research complete"
                 else -> "$name upgrade complete"
             }
             val suffix = if (extra || slot == Slot.NONE) section.title else slot.freeText
-            val text = if (gearUp || level < 0) suffix else "Level $target · $suffix"
+            val text = when {
+                goblin != null -> if (level < 0) "$name built" else "$name reached level $target"
+                gearUp || level < 0 -> suffix
+                else -> "Level $target · $suffix"
+            }
 
             out += Timer(
                 uniqueKey("$key:$id:$level:$end"), section, slot, extra,

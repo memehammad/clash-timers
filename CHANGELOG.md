@@ -2,6 +2,12 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## 1.1.2
+
+**Goblin Builder alerts.** When the Goblin Builder (or Goblin Researcher) finishes a job, you now
+get a "Goblin Builder is free" notification, so you can give him the next one. The game only
+shares his work while he's busy, so export once after you give him a job.
+
 ## 1.1.1
 
 **A brand new icon.** A golden timer ring with a hammer in the middle, made in the new Material
