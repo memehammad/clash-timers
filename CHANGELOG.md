@@ -3,6 +3,12 @@
 The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
 version number: a new heading makes a new release.
 
+## 1.2
+
+**Import straight from the widget.** The widget now has a small paste button. Copy your
+village in Clash, go to your home screen and tap it: the widget updates without opening the
+app. Don't need it? Turn off "Import button" in the widget's settings.
+
 ## 1.1
 
 **Clash Timers speaks your language.** The app is now in German, Spanish, French and

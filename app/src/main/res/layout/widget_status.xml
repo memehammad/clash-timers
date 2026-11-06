@@ -151,7 +151,7 @@
             android:contentDescription="@string/import_now"
             android:padding="10dp"
             android:src="@drawable/ic_paste"
-            android:tint="@color/w_on_badge_busy"
+            android:tint="@color/w_accent"
             android:visibility="gone" />
     </LinearLayout>
 
