@@ -1,0 +1,5 @@
+A friendlier first start. New installs open with a quick setup: turn on notifications,
+pick an idle-builder reminder and set up auto-import if you like. After that, a short
+four-step tour shows how the app works. You can watch the tour again any time under
+"How it works" at the bottom of the app.
+
