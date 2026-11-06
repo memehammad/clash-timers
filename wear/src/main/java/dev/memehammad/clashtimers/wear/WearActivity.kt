@@ -163,7 +163,7 @@ private fun Hero(free: Int?, total: Int, next: Long?, now: Long) {
         ),
         label = "angle",
     )
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().padding(top = 22.dp)) {
         Box(Modifier.size(96.dp), contentAlignment = Alignment.Center) {
             Icon(
                 painterResource(R.drawable.shape_cookie), null,
