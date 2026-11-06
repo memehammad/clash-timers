@@ -33,29 +33,41 @@ class RenderTest {
             "buildings2":[{"data":1000034,"lvl":10,"cnt":1},{"data":1000046,"lvl":10,"cnt":1}]}"""
         Store.save(ctx, "#DEMO", json)
         Store.setCurrentTag(ctx, "#DEMO")
+        val shots = listOf(Triple(2, 170, 170), Triple(1, 360, 80), Triple(3, 360, 190), Triple(5, 360, 420))
+        val views = mutableListOf<Pair<View, Triple<Int, Int, Int>>>()
+        val d = ctx.resources.displayMetrics.density
+        fun lay(v: View, w: Int, h: Int) {
+            v.measure(View.MeasureSpec.makeMeasureSpec((w * d).toInt(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec((h * d).toInt(), View.MeasureSpec.EXACTLY))
+            v.layout(0, 0, (w * d).toInt(), (h * d).toInt())
+        }
         inst.runOnMainSync {
             val layouts = WidgetProvider.layouts(ctx, 0).values.toList()
-            // tiny, small, square, compact, narrow, full
-            val shots = listOf(Triple(2, 170, 170), Triple(1, 360, 80), Triple(3, 360, 190), Triple(5, 360, 420))
-            for ((idx, w, h) in shots) {
+            for (shot in shots) {
+                val (idx, w, h) = shot
                 try {
-                    val parent = FrameLayout(ctx)
-                    val v = layouts[idx].apply(ctx, parent)
-                    val d = ctx.resources.displayMetrics.density
-                    val pw = (w * d).toInt()
-                    val ph = (h * d).toInt()
-                    v.measure(View.MeasureSpec.makeMeasureSpec(pw, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(ph, View.MeasureSpec.EXACTLY))
-                    v.layout(0, 0, pw, ph)
-                    val pad = (20 * d).toInt()
-                    val bmp = Bitmap.createBitmap(pw + 2 * pad, ph + 2 * pad, Bitmap.Config.ARGB_8888)
-                    val canvas = Canvas(bmp)
-                    canvas.drawColor(Color.TRANSPARENT)
-                    canvas.translate(pad.toFloat(), pad.toFloat())
-                    v.draw(canvas)
-                    File(out, "widget_$idx.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                    val v = layouts[idx].apply(ctx, FrameLayout(ctx))
+                    lay(v, w, h)
+                    views += v to shot
                 } catch (e: Throwable) {
                     File(out, "widget_$idx.txt").writeText(e.stackTraceToString())
                 }
+            }
+        }
+        // Lists fill in after the first layout pass.
+        inst.waitForIdleSync()
+        Thread.sleep(1500)
+        inst.runOnMainSync {
+            for ((v, shot) in views) {
+                val (idx, w, h) = shot
+                v.forceLayout()
+                lay(v, w, h)
+                lay(v, w, h)
+                val pad = (20 * d).toInt()
+                val bmp = Bitmap.createBitmap((w * d).toInt() + 2 * pad, (h * d).toInt() + 2 * pad, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(bmp)
+                canvas.translate(pad.toFloat(), pad.toFloat())
+                v.draw(canvas)
+                File(out, "widget_$idx.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
             }
         }
     }
