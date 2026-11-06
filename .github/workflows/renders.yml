@@ -30,11 +30,12 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
+          profile: pixel_6
           disable-animations: false
           script: |
             chmod +x gradlew
             ./gradlew --no-daemon installDebug installDebugAndroidTest
-            for seed in 4E8FA8 B5655A; do for mode in no yes; do adb shell settings put secure theme_customization_overlay_packages "'{\"android.theme.customization.system_palette\":\"$seed\",\"android.theme.customization.theme_style\":\"TONAL_SPOT\"}'"; adb shell cmd uimode night $mode; sleep 6; adb shell am instrument -w -e class dev.memehammad.clashtimers.RenderTest dev.memehammad.clashtimers.test/androidx.test.runner.AndroidJUnitRunner || true; mkdir -p "renders_${seed}_${mode}"; adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders "renders_${seed}_${mode}" || true; done; done
+            for seed in 4E8FA8 B5655A; do for mode in no yes; do adb shell settings put secure theme_customization_overlay_packages "'{\"android.theme.customization.system_palette\":\"$seed\",\"android.theme.customization.theme_style\":\"TONAL_SPOT\"}'"; adb shell cmd uimode night $mode; sleep 6; adb shell am instrument -w -e class dev.memehammad.clashtimers.RenderTest dev.memehammad.clashtimers.test/androidx.test.runner.AndroidJUnitRunner || true; mkdir -p "renders_${seed}_${mode}"; adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders "renders_${seed}_${mode}" || true; if [ "$seed" = 4E8FA8 ]; then adb shell pm grant dev.memehammad.clashtimers android.permission.POST_NOTIFICATIONS || true; adb shell settings put global sysui_demo_allowed 1; adb shell am broadcast -a com.android.systemui.demo -e command enter; adb shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200; adb shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false; adb shell am broadcast -a com.android.systemui.demo -e command battery -e level 100 -e plugged false; adb shell am start -W -n dev.memehammad.clashtimers/.MainActivity; sleep 5; adb exec-out screencap -p > "renders_${seed}_${mode}/app_1.png"; adb shell input swipe 540 1800 540 700 600; sleep 2; adb exec-out screencap -p > "renders_${seed}_${mode}/app_2.png"; adb shell input swipe 540 1800 540 700 600; sleep 2; adb exec-out screencap -p > "renders_${seed}_${mode}/app_3.png"; adb shell am force-stop dev.memehammad.clashtimers; fi; done; done
       - name: Push renders to the "renders" branch
         run: |
           mkdir -p out && cp -r renders_* out/ 2>/dev/null || true
