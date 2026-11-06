@@ -33,13 +33,11 @@ jobs:
           disable-animations: false
           script: |
             chmod +x gradlew
-            ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
-            adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders renders || true
-            adb shell cmd uimode night yes; sleep 2; ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
-            mkdir -p renders_night; adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders renders_night || true
+            ./gradlew --no-daemon installDebug installDebugAndroidTest
+            for seed in 4E8FA8 B5655A; do for mode in no yes; do adb shell settings put secure theme_customization_overlay_packages "'{\"android.theme.customization.system_palette\":\"$seed\",\"android.theme.customization.theme_style\":\"TONAL_SPOT\"}'"; adb shell cmd uimode night $mode; sleep 6; adb shell am instrument -w -e class dev.memehammad.clashtimers.RenderTest dev.memehammad.clashtimers.test/androidx.test.runner.AndroidJUnitRunner || true; mkdir -p "renders_${seed}_${mode}"; adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders "renders_${seed}_${mode}" || true; done; done
       - name: Push renders to the "renders" branch
         run: |
-          mkdir -p out && cp -r renders renders_night out/ 2>/dev/null || true
+          mkdir -p out && cp -r renders_* out/ 2>/dev/null || true
           cd out
           git init -q -b renders
           git config user.name "render bot"

@@ -7,8 +7,8 @@
 <meta name="description" content="Clash Timers is a free Clash of Clans widget for Android: free builders, upgrade timers, lab research, pets and heroes on your home screen, with notifications. No login, no ads.">
 <link rel="canonical" href="https://memehammad.github.io/clash-timers/">
 <link rel="icon" href="img/icon.png">
-<meta name="theme-color" content="#FDF8FF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#141218" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#C2E8FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B2D35" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Clash of Clans Widget for Android – Clash Timers">
 <meta property="og:description" content="Free builders, upgrade timers, research and heroes for Clash of Clans on your Android home screen. Free and open source.">
@@ -21,23 +21,39 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Clash Timers", "alternateName": "Clash of Clans Widget", "description": "A Clash of Clans widget for Android that shows free builders, upgrade timers, laboratory research, pets and hero status on the home screen, with notifications.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Android 12+", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "image": "https://memehammad.github.io/clash-timers/img/hero.png", "downloadUrl": "https://github.com/memehammad/clash-timers/releases/latest", "url": "https://memehammad.github.io/clash-timers/", "license": "https://opensource.org/licenses/MIT"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is there a Clash of Clans widget for Android?", "acceptedAnswer": {"@type": "Answer", "text": "Clash of Clans has no widget of its own. Clash Timers adds one: free builders, upgrade timers, research and heroes on your home screen."}}, {"@type": "Question", "name": "Do I need to log in?", "acceptedAnswer": {"@type": "Answer", "text": "No. It uses the game’s own Data Export. No account or Supercell ID is needed."}}, {"@type": "Question", "name": "Can I get banned?", "acceptedAnswer": {"@type": "Answer", "text": "Clash Timers never touches the game. It only reads the export the game gives you, and nothing is sent anywhere."}}, {"@type": "Question", "name": "Does it update by itself?", "acceptedAnswer": {"@type": "Answer", "text": "Timers count down live. After starting new upgrades, copy a fresh export, or turn on auto-import with Shizuku and it happens on its own."}}, {"@type": "Question", "name": "Is there an iPhone version?", "acceptedAnswer": {"@type": "Answer", "text": "No, Clash Timers is for Android 12 and newer."}}]}</script>
 <style>
-  /* Material 3 tonal scheme generated around the icon: indigo primary, gold tertiary. */
-  :root {
-    --surface: #FDF8FF; --surface-low: #F7F1FF; --surface-high: #ECE6F7; --on-surface: #1C1A24; --on-surface-variant: #4A4559;
-    --outline-variant: #CBC3DC;
-    --primary: #5240B8; --on-primary: #FFFFFF; --primary-container: #E5DEFF; --on-primary-container: #170A60;
-    --secondary-container: #E4DFF9; --on-secondary-container: #1E1A33;
-    --tertiary: #7A5900; --tertiary-container: #FFDF9E; --on-tertiary-container: #261A00;
-    --hero: #2E2178; --on-hero: #F3EFFF; --gold: #FFC23D;
+  /* Material You tonal schemes from two real wallpapers (teal and rose), light and dark. */
+  :root, [data-palette="teal"] {
+    --surface: #F6FAFE; --surface-low: #EEF3F7; --surface-high: #E2E8EC; --on-surface: #171C20; --on-surface-variant: #40484D;
+    --outline-variant: #C0C7CD;
+    --primary: #1F6681; --on-primary: #FFFFFF; --primary-container: #C2E8FB; --on-primary-container: #001F2A;
+    --secondary-container: #D0E6F2; --on-secondary-container: #0A1E27;
+    --tertiary-container: #DFE0FF; --on-tertiary-container: #161A37;
+    --hero: #C2E8FB; --on-hero: #001F2A; --on-hero-variant: #24485A;
+  }
+  [data-palette="rose"] {
+    --surface: #FFF8F6; --surface-low: #FDF0ED; --surface-high: #F5E3DF; --on-surface: #231918; --on-surface-variant: #534341;
+    --outline-variant: #D8C2BE;
+    --primary: #904A40; --on-primary: #FFFFFF; --primary-container: #FFDAD4; --on-primary-container: #3A0905;
+    --secondary-container: #FFDAD5; --on-secondary-container: #2C1512;
+    --tertiary-container: #FBDFA6; --on-tertiary-container: #251A00;
+    --hero: #FFDAD4; --on-hero: #3A0905; --on-hero-variant: #73342A;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --surface: #141218; --surface-low: #1C1A22; --surface-high: #2A2733; --on-surface: #E7E1EE; --on-surface-variant: #CAC3D9;
-      --outline-variant: #49445A;
-      --primary: #C9BEFF; --on-primary: #2A1690; --primary-container: #3E2DA0; --on-primary-container: #E5DEFF;
-      --secondary-container: #484360; --on-secondary-container: #E4DFF9;
-      --tertiary: #F4C04B; --tertiary-container: #5C4300; --on-tertiary-container: #FFDF9E;
-      --hero: #241A60;
+    :root, [data-palette="teal"] {
+      --surface: #0F1417; --surface-low: #171C20; --surface-high: #252B2F; --on-surface: #DEE3E8; --on-surface-variant: #C0C7CD;
+      --outline-variant: #40484D;
+      --primary: #8FCFEB; --on-primary: #003547; --primary-container: #1F4A5A; --on-primary-container: #C2E8FB;
+      --secondary-container: #34444D; --on-secondary-container: #D0E6F2;
+      --tertiary-container: #424565; --on-tertiary-container: #DFE0FF;
+      --hero: #1B2D35; --on-hero: #DEF2FC; --on-hero-variant: #A9C7D4;
+    }
+    [data-palette="rose"] {
+      --surface: #1A1110; --surface-low: #231918; --surface-high: #322826; --on-surface: #F1DFDC; --on-surface-variant: #D8C2BE;
+      --outline-variant: #534341;
+      --primary: #FFB4A8; --on-primary: #561E16; --primary-container: #5C2F28; --on-primary-container: #FFDAD4;
+      --secondary-container: #5D3F3B; --on-secondary-container: #FFDAD5;
+      --tertiary-container: #5B4316; --on-tertiary-container: #FBDFA6;
+      --hero: #33211E; --on-hero: #FFE6E1; --on-hero-variant: #E2BEB8;
     }
   }
   * { box-sizing: border-box; }
@@ -55,12 +71,17 @@
   .hero { background: var(--hero); color: var(--on-hero); border-radius: 0 0 48px 48px; overflow: hidden; }
   .hero-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 32px; align-items: center; padding-top: 40px; padding-bottom: 64px; }
   .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 18px; margin-bottom: 40px; }
-  .brand img { width: 40px; height: 40px; }
+  .brand svg { width: 44px; height: 44px; }
+  .brand .ring-track { stroke: var(--primary-container); } .brand .ring { stroke: var(--primary); } .brand .glyph { fill: var(--primary); }
+  .palettes { display: flex; align-items: center; gap: 10px; margin-top: 28px; color: var(--on-hero-variant); font-size: 15px; }
+  .swatch { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; padding: 3px; cursor: pointer; background-clip: content-box; transition: border-radius .25s; }
+  .swatch[aria-pressed="true"] { border-color: var(--on-hero); border-radius: 12px; }
+  .swatch.teal { background-color: #4E8FA8; } .swatch.rose { background-color: #B5655A; }
   h1 {
     margin: 0; font-size: clamp(40px, 6.4vw, 76px); line-height: 1.02; letter-spacing: -0.02em;
     font-weight: 820; font-variation-settings: "wdth" 118, "opsz" 144;
   }
-  .hero p.lead { font-size: clamp(18px, 2vw, 21px); max-width: 34ch; margin: 24px 0 32px; color: #D8D1FA; }
+  .hero p.lead { font-size: clamp(18px, 2vw, 21px); max-width: 34ch; margin: 24px 0 28px; color: var(--on-hero-variant); }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; }
   .btn {
     display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px;
@@ -68,11 +89,11 @@
   }
   .btn:hover { border-radius: 18px; }
   .btn svg { width: 22px; height: 22px; fill: currentColor; }
-  .btn-filled { background: var(--gold); color: #2A1D00; }
-  .btn-tonal { background: rgba(255,255,255,.14); color: var(--on-hero); }
+  .btn-filled { background: var(--primary); color: var(--on-primary); }
+  .btn-tonal { background: var(--surface); color: var(--primary); }
   .stage { position: relative; aspect-ratio: 1; max-width: 520px; width: 100%; justify-self: center; }
   .stage .shape { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .stage .shape path { fill: var(--gold); }
+  .stage .shape path { fill: var(--primary); }
   .stage .spin { animation: spin 60s linear infinite; transform-origin: 50% 50%; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .stage .spin { animation: none; } }
@@ -138,12 +159,17 @@
 <header class="hero">
   <div class="wrap hero-inner">
     <div>
-      <div class="brand"><img src="img/icon.png" alt="" width="40" height="40">Clash Timers</div>
+      <div class="brand"><svg viewBox="22 22 64 64" aria-hidden="true"><circle cx="54" cy="54" r="22" fill="none" class="ring-track" stroke-width="7"/><path class="ring" d="M54.00,32.00 A22,22 0 1 1 33.33,46.48" fill="none" stroke-width="7" stroke-linecap="round"/><g transform="translate(54 54) rotate(-30) scale(1.25) translate(-12 -12)"><path class="glyph" d="M18,3l-3,3V3H9C6.24,3 4,5.24 4,8h5v3h6V8l3,3h2V3H18zM9,13v7c0,0.55 0.45,1 1,1h4c0.55,0 1,-0.45 1,-1v-7H9z"/></g></svg>Clash Timers</div>
       <h1>The Clash of Clans widget for Android</h1>
       <p class="lead">See your free builders, upgrade timers, research and heroes on your home screen, and get a ping the moment a builder is free.</p>
       <div class="actions">
         <a class="btn btn-filled" href="https://github.com/memehammad/clash-timers/releases/latest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5,20h14v-2H5V20zM19,9h-4V3H9v6H5l7,7L19,9z"/></svg>Download the app</a>
         <a class="btn btn-tonal" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Get it with Obtainium</a>
+      </div>
+      <div class="palettes" role="group" aria-label="Page colours">
+        <span>Colours</span>
+        <button class="swatch teal" data-p="teal" aria-pressed="true" aria-label="Teal"></button>
+        <button class="swatch rose" data-p="rose" aria-pressed="false" aria-label="Rose"></button>
       </div>
     </div>
     <div class="stage" aria-hidden="true">
@@ -239,5 +265,22 @@
     <p>This material is unofficial and is not endorsed by Supercell. For more information see Supercell’s <a href="https://supercell.com/en/fan-content-policy/">Fan Content Policy</a>.</p>
   </footer>
 </main>
+<script>
+  // Swap between the two Material You schemes; remembered on this device only.
+  (function () {
+    var root = document.documentElement, buttons = document.querySelectorAll('.swatch');
+    function use(p) {
+      root.setAttribute('data-palette', p);
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.p === p)); });
+    }
+    try { var saved = localStorage.getItem('palette'); if (saved) use(saved); } catch (e) {}
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        use(b.dataset.p);
+        try { localStorage.setItem('palette', b.dataset.p); } catch (e) {}
+      });
+    });
+  })();
+</script>
 </body>
 </html>
