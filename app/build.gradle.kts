@@ -11,9 +11,10 @@ val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
 android {
     namespace = "dev.memehammad.clashtimers"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applicationId = "dev.memehammad.clashtimers"
         minSdk = 31
         targetSdk = 35
@@ -61,8 +62,17 @@ android {
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
+        // The Smartspacer SDK is built with a newer Kotlin.
+        freeCompilerArgs.add("-Xskip-metadata-version-check")
     }
 }
+
+// The Smartspacer SDK asks for compile SDK 37 / AGP 9 and pulls a newer androidx.core; it works
+// fine with ours, so keep our versions and skip that metadata check.
+configurations.all {
+    resolutionStrategy.force("androidx.core:core:1.15.0", "androidx.core:core-ktx:1.15.0")
+}
+tasks.matching { it.name.startsWith("check") && it.name.endsWith("AarMetadata") }.configureEach { enabled = false }
 
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
@@ -77,4 +87,9 @@ dependencies {
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+
+    // Smartspacer (At a Glance) targets and complications.
+    implementation("com.kieronquinn.smartspacer:sdk-plugin:1.1.2")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

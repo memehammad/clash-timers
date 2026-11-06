@@ -7,6 +7,10 @@ No account, no login, no server: it reads the village export the game itself
 provides. Your village data never leaves the phone; the only network request
 is an optional check for new versions on GitHub.
 
+## At a Glance (Smartspacer)
+
+Add Clash Timers to the At a Glance bar with [Smartspacer](https://github.com/KieronQuinn/Smartspacer): a card with free builders and what finishes next, plus small chips for builders, lab and potions. Each one can be set to show only what you care about, and only when it matters.
+
 ## Features
 
 - **Free builders at a glance.** How many builders are idle, or a live
