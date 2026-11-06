@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clash of Clans Widget für Android – Clash Timers</title>
+<meta name="description" content="Freie Bauarbeiter, Upgrade-Timer, Forschung und Helden von Clash of Clans auf deinem Android-Startbildschirm. Kostenlos und Open Source.">
+<link rel="canonical" href="https://memehammad.github.io/clash-timers/de/">
+<link rel="alternate" hreflang="en" href="https://memehammad.github.io/clash-timers/">
+<link rel="alternate" hreflang="de" href="https://memehammad.github.io/clash-timers/de/">
+<link rel="alternate" hreflang="x-default" href="https://memehammad.github.io/clash-timers/">
+<link rel="icon" href="https://memehammad.github.io/clash-timers/img/icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clash of Clans Widget für Android – Clash Timers">
+<meta property="og:description" content="Freie Bauarbeiter, Upgrade-Timer, Forschung und Helden von Clash of Clans auf deinem Android-Startbildschirm. Kostenlos und Open Source.">
+<meta property="og:url" content="https://memehammad.github.io/clash-timers/de/">
+<meta property="og:image" content="https://memehammad.github.io/clash-timers/img/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Article", "headline": "Das Clash of Clans Widget für Android", "description": "Freie Bauarbeiter, Upgrade-Timer, Forschung und Helden von Clash of Clans auf deinem Android-Startbildschirm. Kostenlos und Open Source.", "inLanguage": "de", "url": "https://memehammad.github.io/clash-timers/de/", "image": "https://memehammad.github.io/clash-timers/img/hero.png", "author": {"@type": "Person", "name": "memehammad", "url": "https://github.com/memehammad"}, "publisher": {"@type": "Organization", "name": "Clash Timers", "logo": {"@type": "ImageObject", "url": "https://memehammad.github.io/clash-timers/img/icon.png"}}, "dateModified": "2026-11-06"}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Clash Timers", "item": "https://memehammad.github.io/clash-timers/de/"}]}]</script>
+<style>
+  :root { --surface:#F5FAFD; --surface-high:#E4E9EC; --on-surface:#171C1F; --on-surface-variant:#40484C;
+          --primary:#0C6780; --on-primary:#FFFFFF; --primary-container:#BAEAFF; --on-primary-container:#004D62; --outline-variant:#C0C8CC; }
+  @media (prefers-color-scheme: dark) {
+    :root { --surface:#0F1417; --surface-high:#252B2D; --on-surface:#DEE3E6; --on-surface-variant:#C0C8CC;
+            --primary:#89D0ED; --on-primary:#003545; --primary-container:#004D62; --on-primary-container:#BAEAFF; --outline-variant:#40484C; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--surface); color:var(--on-surface); font:17px/1.65 "Roboto Flex", system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  a { color: var(--primary); }
+  nav.crumbs { font-size: 15px; margin-bottom: 20px; }
+  nav.crumbs a { text-decoration: none; font-weight: 600; }
+  h1 { font-size: clamp(32px, 7vw, 48px); line-height:1.1; font-variation-settings:"wdth" 110; font-weight:750; margin:0 0 12px; }
+  .lead { font-size: 19px; color: var(--on-surface-variant); margin: 0 0 24px; }
+  h2 { font-size: 24px; line-height: 1.25; margin: 36px 0 10px; }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; display: grid; gap: 10px; }
+  ol.steps li { counter-increment: s; background: var(--surface-high); border-radius: 24px; padding: 16px 18px 16px 64px; position: relative; }
+  ol.steps li::before { content: counter(s); position: absolute; left: 16px; top: 14px; width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; background: var(--primary-container); color: var(--on-primary-container); font-weight: 700; }
+  .card { background: var(--primary-container); color: var(--on-primary-container); border-radius: 28px; padding: 22px 24px; margin: 32px 0; }
+  .card h2 { margin-top: 0; }
+  .btn { display:inline-flex; align-items:center; min-height:52px; padding:0 26px; border-radius:999px; font-weight:650; text-decoration:none;
+    background: var(--primary); color: var(--on-primary); margin: 6px 8px 0 0; }
+  .btn.tonal { background: var(--surface); color: var(--primary); }
+  img.shot { width: 100%; max-width: 360px; height: auto; display: block; margin: 16px 0; }
+  code { background: var(--surface-high); padding: 1px 6px; border-radius: 6px; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--outline-variant); color: var(--on-surface-variant); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="crumbs" aria-label="Breadcrumb"></nav>
+  <h1>Das Clash of Clans Widget für Android</h1>
+  <p class="lead">Sieh auf einen Blick, wann deine Bauarbeiter, das Labor und die Haustiere frei sind, direkt auf dem Startbildschirm.</p>
+  <img class="shot" src="../img/teal/light/widget_compact.png" width="360" height="190" alt="Clash of Clans Widget auf Android">
+  <h2>Was Clash Timers kann</h2>
+  <ul>
+    <li><b>Freie Bauarbeiter auf einen Blick:</b> wie viele frei sind, oder ein Countdown bis zum nächsten.</li>
+    <li><b>Alle Timer an einem Ort:</b> Gebäude, Helden, Gear Ups, Labor, Tiere, Bauarbeiterbasis und Uhrturm.</li>
+    <li><b>Benachrichtigungen,</b> sobald etwas fertig ist, auch wenn der Goblin-Bauarbeiter wieder frei ist.</li>
+    <li><b>Boost-Planer:</b> sieh vorher, was ein Bauarbeitertrank fertig machen würde.</li>
+    <li><b>Widgets in jeder Größe</b> in Material-You-Farben, passend zu deinem Hintergrund.</li>
+  </ul>
+  <h2>So geht's</h2>
+  <ol class="steps">
+    <li>In Clash of Clans: Einstellungen, Weitere Einstellungen, Datenexport (Data Export), <b>Kopieren</b>.</li>
+    <li>Clash Timers öffnen. Der Export wird automatisch übernommen.</li>
+    <li>Widget hinzufügen: lange auf den Startbildschirm tippen, Widgets, Clash Timers.</li>
+  </ol>
+  <h2>Häufige Fragen</h2>
+  <p><b>Muss ich mich anmelden?</b> Nein. Die App nutzt nur den Datenexport des Spiels, ohne Supercell-ID.</p>
+  <p><b>Kann ich gebannt werden?</b> Clash Timers greift nie ins Spiel ein und sendet nichts ins Internet.</p>
+  <p><b>Gibt es eine iPhone-Version?</b> Nein, Clash Timers ist für Android 12 und neuer.</p>
+  <div class="card">
+    <h2>Clash Timers holen</h2>
+    <p>Kostenlos und Open Source, für Android 12 und neuer. Ohne Login, ohne Werbung.</p>
+    <a class="btn" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk">App herunterladen</a><a class="btn tonal" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Mit Obtainium holen</a>
+  </div>
+  <footer>This material is unofficial and is not endorsed by Supercell. For more information see Supercell’s <a href="https://supercell.com/en/fan-content-policy/">Fan Content Policy</a>.</footer>
+</main>
+</body>
+</html>

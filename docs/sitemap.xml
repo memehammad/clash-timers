@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://memehammad.github.io/clash-timers/</loc><lastmod>2026-11-06</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://memehammad.github.io/clash-timers/</loc><lastmod>2026-11-06</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://memehammad.github.io/clash-timers/"/><xhtml:link rel="alternate" hreflang="de" href="https://memehammad.github.io/clash-timers/de/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://memehammad.github.io/clash-timers/"/></url>
+  <url><loc>https://memehammad.github.io/clash-timers/de/</loc><lastmod>2026-11-06</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://memehammad.github.io/clash-timers/"/><xhtml:link rel="alternate" hreflang="de" href="https://memehammad.github.io/clash-timers/de/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://memehammad.github.io/clash-timers/"/></url>
+  <url><loc>https://memehammad.github.io/clash-timers/guides/</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://memehammad.github.io/clash-timers/guides/data-export/</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://memehammad.github.io/clash-timers/guides/builder-notifications/</loc><lastmod>2026-11-06</lastmod></url>
   <url><loc>https://memehammad.github.io/clash-timers/privacy.html</loc></url>
 </urlset>
