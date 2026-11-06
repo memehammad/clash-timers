@@ -409,42 +409,63 @@
     var boost = 0, phase = 0, lastFree = 0;
 
     function fmt(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
-    function wave(p) {
-      // Wavy line for the done part, flat track for the rest (like the widget).
+    function wavePath(p) {
+      // Wavy line for the done part (like the widget); the flat track follows it.
       var w = 300, end = Math.max(0, Math.min(1, p)) * w, d = 'M2,6', amp = 3.2, len = 18;
       for (var x = 2; x <= end; x += 2) d += ' L' + x.toFixed(1) + ',' + (6 + Math.sin((x + phase) / len * Math.PI * 2) * amp).toFixed(2);
-      var track = end < w - 8 ? '<line class="track" x1="' + Math.min(w - 4, end + 10) + '" y1="6" x2="' + (w - 2) + '" y2="6"/>' : '';
-      return '<svg viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">' + (end > 4 ? '<path class="wave" d="' + d + '"/>' : '') + track + '</svg>';
+      return { d: end > 4 ? d : '', x1: Math.min(w - 4, end + 10), show: end < w - 8 };
     }
-    function render() {
-      var free = 0, next = Infinity, html = '';
-      builders.forEach(function (b) {
-        if (!b) { free++; html += '<li class="row idle"><span class="name">Free builder</span><span class="time"></span></li>'; return; }
+    var shape = '';
+    function build() {
+      // Rebuild the rows only when a row changes state; per-frame updates touch just text and paths.
+      var html = '';
+      builders.forEach(function (b, i) {
+        if (!b) { html += '<li class="row idle"><span class="name">Free builder</span><span class="time"></span></li>'; return; }
         if (b.left <= 0) {
-          free++;
           html += '<li class="row done"><span class="name">' + b.name + '</span><span class="time">Done</span><span class="lvl">Level ' + (b.lvl + 1) + ' reached</span></li>';
           return;
         }
-        next = Math.min(next, b.left);
-        html += '<li class="row"><span class="name">' + b.name + '</span><span class="time">' + fmt(b.left) + '</span>' +
-          '<span class="lvl">Level ' + b.lvl + ' → ' + (b.lvl + 1) + (boost > 0 ? ' · boosted' : '') + '</span>' + wave(1 - b.left / b.total) + '</li>';
+        html += '<li class="row" data-i="' + i + '"><span class="name">' + b.name + '</span><span class="time"></span>' +
+          '<span class="lvl"></span><svg viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path class="wave"/><line class="track" y1="6" x2="298" y2="6"/></svg></li>';
       });
       rows.innerHTML = html;
+    }
+    function render() {
+      var free = 0, next = Infinity, sig = '';
+      builders.forEach(function (b) {
+        var st = !b ? 'i' : b.left <= 0 ? 'd' : 'r';
+        sig += st + (b ? b.name : '');
+        if (st !== 'r') free++; else next = Math.min(next, b.left);
+      });
+      if (sig !== shape) { shape = sig; build(); }
+      rows.querySelectorAll('.row[data-i]').forEach(function (li) {
+        var b = builders[+li.dataset.i], w = wavePath(1 - b.left / b.total);
+        li.querySelector('.time').textContent = fmt(b.left);
+        li.querySelector('.lvl').textContent = 'Level ' + b.lvl + ' \u2192 ' + (b.lvl + 1) + (boost > 0 ? ' \u00b7 boosted' : '');
+        li.querySelector('.wave').setAttribute('d', w.d);
+        var t = li.querySelector('.track');
+        t.setAttribute('x1', w.x1);
+        t.style.display = w.show ? '' : 'none';
+      });
       count.textContent = free;
       badge.classList.toggle('is-free', free > 0);
       if (free > lastFree) { badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
       lastFree = free;
       title.textContent = free === 0 ? 'All builders busy' : free === 1 ? '1 builder free' : free + ' builders free';
-      sub.textContent = next < Infinity ? (free === 0 ? 'Next free in ' : 'Next done in ') + fmt(next) + (boost > 0 ? ' · potion ' + fmt(boost) : '') : 'Time to build something';
+      sub.textContent = next < Infinity ? (free === 0 ? 'Next free in ' : 'Next done in ') + fmt(next) + (boost > 0 ? ' \u00b7 potion ' + fmt(boost) : '') : 'Time to build something';
       potionBtn.disabled = next === Infinity || boost > 0;
       upgradeBtn.disabled = free === 0;
     }
-    function tick() {
-      var dt = 0.25, speed = boost > 0 ? 10 : 1;
+    var last = 0;
+    function frame(t) {
+      // Smooth at the display's refresh rate; the wave drifts at a steady speed.
+      var dt = last ? Math.min(0.1, (t - last) / 1000) : 0, speed = boost > 0 ? 10 : 1;
+      last = t;
       if (boost > 0) boost = Math.max(0, boost - dt);
       builders.forEach(function (b) { if (b && b.left > 0) b.left -= dt * speed; });
-      if (!reduce) phase -= 1.5;
+      if (!reduce) phase -= dt * (boost > 0 ? 36 : 12);
       render();
+      requestAnimationFrame(frame);
     }
     potionBtn.addEventListener('click', function () { boost = 6; render(); });
     upgradeBtn.addEventListener('click', function () {
@@ -455,7 +476,7 @@
       render();
     });
     render();
-    setInterval(tick, 250);
+    requestAnimationFrame(frame);
   })();
 </script>
 <script>
