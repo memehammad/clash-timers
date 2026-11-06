@@ -2,6 +2,13 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## 1.2
+
+**A friendlier first start.** New installs open with a quick setup: turn on notifications,
+pick an idle-builder reminder and set up auto-import if you like. After that, a short
+four-step tour shows how the app works. You can watch the tour again any time under
+"How it works" at the bottom of the app.
+
 ## 1.1.2
 
 **Goblin Builder alerts.** When the Goblin Builder (or Goblin Researcher) finishes a job, you now
