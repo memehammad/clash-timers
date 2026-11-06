@@ -43,7 +43,10 @@ class WidgetProvider : AppWidgetProvider() {
             AppWidgetManager.getInstance(context).updateAppWidget(widgetId, build(context, widgetId))
         }
 
-        private fun build(context: Context, widgetId: Int): RemoteViews {
+        private fun build(context: Context, widgetId: Int): RemoteViews = RemoteViews(layouts(context, widgetId))
+
+        /** Every size's layout, smallest first (the launcher shows the largest that fits). */
+        internal fun layouts(context: Context, widgetId: Int): Map<SizeF, RemoteViews> {
             val village = Store.loadForWidget(context, widgetId)
             val override = village?.let { Store.builderOverride(context, it.tag) } ?: 0
             val opts = Store.widgetOptions(context, widgetId)
@@ -68,15 +71,13 @@ class WidgetProvider : AppWidgetProvider() {
 
             // The launcher shows the largest layout that fits the widget's current size (in dp).
             // Thresholds assume typical phone cells of ~90-100 dp wide and ~100-120 dp tall.
-            return RemoteViews(
-                mapOf(
-                    SizeF(40f, 40f) to tiny,       // 1x1, 1x2 and other single columns
-                    SizeF(150f, 40f) to small,     // 2x1 – 4x1
-                    SizeF(150f, 150f) to square,   // 2x2
-                    SizeF(260f, 150f) to compact,  // 3x2, 4x2
-                    SizeF(150f, 300f) to narrow,   // 2x3, 2x4
-                    SizeF(260f, 300f) to full,     // 3x3 and up
-                ),
+            return mapOf(
+                SizeF(40f, 40f) to tiny,       // 1x1, 1x2 and other single columns
+                SizeF(150f, 40f) to small,     // 2x1 – 4x1
+                SizeF(150f, 150f) to square,   // 2x2
+                SizeF(260f, 150f) to compact,  // 3x2, 4x2
+                SizeF(150f, 300f) to narrow,   // 2x3, 2x4
+                SizeF(260f, 300f) to full,     // 3x3 and up
             )
         }
 

@@ -35,7 +35,7 @@ jobs:
             chmod +x gradlew
             ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
             adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders renders || true
-            adb shell cmd uimode night yes; ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
+            adb shell cmd uimode night yes; sleep 2; ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true || true
             mkdir -p renders_night; adb pull /sdcard/Android/data/dev.memehammad.clashtimers/files/renders renders_night || true
       - name: Push renders to the "renders" branch
         run: |

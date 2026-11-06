@@ -14,6 +14,52 @@ import java.io.File
 /** Draws the Smartspacer card for a sample village (pulled by the "renders" workflow). */
 @RunWith(AndroidJUnit4::class)
 class RenderTest {
+    /** Home-screen widget screenshots for the README and website. */
+    @Test
+    fun renderWidgets() {
+        val inst = InstrumentationRegistry.getInstrumentation()
+        val ctx = inst.targetContext
+        val out = File(ctx.getExternalFilesDir(null), "renders").apply { mkdirs() }
+        val now = System.currentTimeMillis() / 1000
+        val json = """{"tag":"#DEMO","timestamp":$now,
+            "helpers":[{"data":93000000,"lvl":8,"helper_cooldown":40000}],
+            "buildings":[{"data":1000015,"lvl":8,"cnt":5},{"data":1000064,"lvl":1,"cnt":1},{"data":1000007,"lvl":14,"cnt":1},
+              {"data":1000068,"lvl":10,"cnt":1},{"data":1000001,"lvl":16,"cnt":1},
+              {"data":1000027,"lvl":10,"timer":9300},{"data":1000011,"lvl":15,"timer":52000},{"data":1000009,"lvl":20,"timer":170000},
+              {"data":1000019,"lvl":14,"timer":260000}],
+            "heroes":[{"data":28000000,"lvl":94},{"data":28000001,"lvl":94,"timer":120000},{"data":28000006,"lvl":70}],
+            "units":[{"data":4000013,"lvl":12,"timer":21000}],
+            "pets":[{"data":73000002,"lvl":9,"timer":64000}],
+            "buildings2":[{"data":1000034,"lvl":10,"cnt":1},{"data":1000046,"lvl":10,"cnt":1}]}"""
+        Store.save(ctx, "#DEMO", json)
+        Store.setCurrentTag(ctx, "#DEMO")
+        inst.runOnMainSync {
+            val layouts = WidgetProvider.layouts(ctx, 0).values.toList()
+            // tiny, small, square, compact, narrow, full
+            val shots = listOf(Triple(2, 170, 170), Triple(1, 360, 80), Triple(3, 360, 190), Triple(5, 360, 420))
+            for ((idx, w, h) in shots) {
+                try {
+                    val parent = FrameLayout(ctx)
+                    val v = layouts[idx].apply(ctx, parent)
+                    val d = ctx.resources.displayMetrics.density
+                    val pw = (w * d).toInt()
+                    val ph = (h * d).toInt()
+                    v.measure(View.MeasureSpec.makeMeasureSpec(pw, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(ph, View.MeasureSpec.EXACTLY))
+                    v.layout(0, 0, pw, ph)
+                    val pad = (20 * d).toInt()
+                    val bmp = Bitmap.createBitmap(pw + 2 * pad, ph + 2 * pad, Bitmap.Config.ARGB_8888)
+                    val canvas = Canvas(bmp)
+                    canvas.drawColor(Color.TRANSPARENT)
+                    canvas.translate(pad.toFloat(), pad.toFloat())
+                    v.draw(canvas)
+                    File(out, "widget_$idx.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                } catch (e: Throwable) {
+                    File(out, "widget_$idx.txt").writeText(e.stackTraceToString())
+                }
+            }
+        }
+    }
+
     @Test
     fun renderSmartspace() {
         val inst = InstrumentationRegistry.getInstrumentation()
