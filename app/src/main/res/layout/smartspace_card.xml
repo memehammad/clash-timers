@@ -41,7 +41,7 @@
                         android:id="@+id/ss_c0_badge"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ss_dot" />
+                        android:src="@drawable/ss_badge" />
 
                     <ImageView
                         android:id="@+id/ss_c0_icon"
@@ -148,7 +148,7 @@
                         android:id="@+id/ss_c1_badge"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ss_dot" />
+                        android:src="@drawable/ss_badge" />
 
                     <ImageView
                         android:id="@+id/ss_c1_icon"
@@ -255,7 +255,7 @@
                         android:id="@+id/ss_c2_badge"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ss_dot" />
+                        android:src="@drawable/ss_badge" />
 
                     <ImageView
                         android:id="@+id/ss_c2_icon"

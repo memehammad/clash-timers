@@ -2,27 +2,31 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
-## Preview: Smartspacer
+## 1.1
 
-Clash Timers in At a Glance, through [Smartspacer](https://github.com/KieronQuinn/Smartspacer).
-This is a preview build; your normal updates are not affected.
+**Your builders, right on your home screen's At a Glance**
 
-- **Clash builders** card: free builders, or when the next one is done, plus any running boost.
-- Chips (complications): **builders** ("3 free" or "2h15"), **lab** ("free" or time left) and
-  **boost** (only while a potion, snack or Clock Tower is running).
-- Tapping any of them opens Clash of Clans. They update after every import and timer.
+Clash Timers now works with [Smartspacer](https://github.com/KieronQuinn/Smartspacer), the app
+that adds things to the At a Glance bar above your clock. Install Smartspacer, then add
+Clash Timers under Targets (the bigger card) or Complications (the small chips next to the date).
 
-Add them in Smartspacer → Targets / Complications → + → Clash Timers.
+- See at a glance how many builders are free, or when the next one finishes.
+- The card comes in a colourful look: a little chip for builders, lab and so on, with a dot for
+  each builder (filled means busy). On older Android versions you get a clean classic card.
+- Small chips for builders, the lab and running potions fit right next to the date.
+- Tap any of them to jump straight into Clash of Clans.
 
-**Personalise each one** (Smartspacer → tap it → settings):
-- **Show (any mix):** builders, laboratory, pet house, Builder Base builders, Star Laboratory and
-  the active boost. A card combines them ("2 builders free · Lab busy"); a chip becomes one chip
-  per item. Add them several times for different setups.
-- **When:** always, or any mix of: when one is free, while all are busy, and before something
-  finishes (15 min to 6 hours ahead).
-- **Text:** what finishes next and when, or how many are working.
-- Card extras: mention boosts in the title, show on the lock screen or not. Pick the village
-  if you track more than one. A preview shows what it says right now.
+**Make it yours.** Tap the card or chip in Smartspacer to choose:
+- what to track: builders, lab, pet house, Builder Base, Star Lab, active potions, or any mix;
+- when it shows up: always, only when a builder is free, while everyone's busy, or shortly
+  before something finishes (you pick how long before, from 15 minutes to 6 hours);
+- whether it says what finishes next or how many builders are working;
+- which village it follows, and whether it shows on your lock screen.
+
+You can add the card or chips several times with different settings.
+
+**A fresh icon.** A golden stopwatch with a hammer for a hand, in the new Material style, and a
+matching themed icon for Android's monochrome icon option.
 
 ## 1.0.23
 
