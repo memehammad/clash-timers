@@ -26,7 +26,7 @@ object Stale {
     fun isStale(village: Village, nowMs: Long): Boolean = staleAtMs(village)?.let { nowMs >= it } ?: false
 
     /** "Export 1 d old" */
-    fun label(village: Village, nowMs: Long): String = "Export ${Format.ago(ageMs(village, nowMs)).removeSuffix(" ago")} old"
+    fun label(village: Village, nowMs: Long): String = tr(R.string.export_age, Format.age(ageMs(village, nowMs)))
 }
 
 object HeroStatus {
@@ -36,8 +36,8 @@ object HeroStatus {
         if (heroes.isEmpty()) return null
         val ready = heroes.count { it.ready(nowMs) }
         val next = heroes.filter { !it.ready(nowMs) }.minByOrNull { it.backSec ?: Long.MAX_VALUE }
-        return if (next == null) "All ${heroes.size} heroes ready"
-        else "Heroes $ready/${heroes.size} ready · ${next.short} back ${Format.phrase(next.backSec!! * 1000 - nowMs, nowMs)}"
+        return if (next == null) tr(R.string.all_heroes_ready, heroes.size)
+        else tr(R.string.heroes_ready, ready, heroes.size, next.short, Format.phrase(next.backSec!! * 1000 - nowMs, nowMs))
     }
 }
 
@@ -62,12 +62,15 @@ object Reminder {
 
 /** "What if I use this boost now?" */
 object Planner {
-    enum class Item(val label: String, val slots: List<Slot>, val extra: Int) {
-        BUILDER_POTION("Builder Potion", listOf(Slot.BUILDER), 9),
-        BUILDER_BITE("Builder Bite", listOf(Slot.BUILDER), 1),
-        RESEARCH_POTION("Research Potion", listOf(Slot.LAB), 23),
-        STUDY_SOUP("Study Soup", listOf(Slot.LAB), 3),
-        PET_POTION("Pet Potion", listOf(Slot.PET), 23),
+    enum class Item(private val res: Int, val slots: List<Slot>, val extra: Int) {
+        BUILDER_POTION(R.string.t_builder_potion, listOf(Slot.BUILDER), 9),
+        BUILDER_BITE(R.string.t_builder_bite, listOf(Slot.BUILDER), 1),
+        RESEARCH_POTION(R.string.t_research_potion, listOf(Slot.LAB), 23),
+        STUDY_SOUP(R.string.t_study_soup, listOf(Slot.LAB), 3),
+        PET_POTION(R.string.t_pet_potion, listOf(Slot.PET), 23),
+        ;
+
+        val label: String get() = tr(res)
     }
 
     data class Row(val timer: Timer, val oldEndSec: Long, val newEndSec: Long, val duringBoost: Boolean)
@@ -115,7 +118,7 @@ object Planner {
 
         return Plan(
             item, rows, before, after,
-            if (potionRunning) "A Builder Bite has no effect while a Builder Potion is running." else null,
+            if (potionRunning) tr(R.string.bite_no_effect) else null,
         )
     }
 }

@@ -63,7 +63,7 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                     ) {
                         item {
                             Text(
-                                if (isCard) "At a Glance card" else "At a Glance chip",
+                                tr(if (isCard) R.string.ss_card else R.string.ss_chip),
                                 style = MaterialTheme.typography.headlineMedium,
                                 modifier = Modifier.padding(start = 8.dp, bottom = 12.dp),
                             )
@@ -77,9 +77,9 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                             ) {
                                 androidx.compose.foundation.layout.Column(Modifier.padding(20.dp)) {
                                     if (preview == null) {
-                                        Text("Hidden right now", style = MaterialTheme.typography.titleMedium)
+                                        Text(tr(R.string.ss_hidden), style = MaterialTheme.typography.titleMedium)
                                         Text(
-                                            "Nothing matches these settings at the moment; it appears when something does.",
+                                            tr(R.string.ss_hidden_d),
                                             style = MaterialTheme.typography.bodySmall,
                                         )
                                     } else if (isCard) {
@@ -95,7 +95,7 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                             }
                         }
 
-                        item { Label("Show (pick any)") }
+                        item { Label(tr(R.string.ss_show_any)) }
                         for ((k, label) in SmartOptions.WHAT) {
                             item {
                                 Toggle(label, null, k in o.what) { on ->
@@ -105,16 +105,16 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                             }
                         }
 
-                        item { Label("When") }
+                        item { Label(tr(R.string.ss_when)) }
                         item {
-                            Toggle("Always", "Ignore the conditions below", o.show.isEmpty()) { on ->
+                            Toggle(tr(R.string.ss_always), tr(R.string.ss_always_d), o.show.isEmpty()) { on ->
                                 save(o.copy(show = if (on) emptySet() else setOf("free")))
                             }
                         }
                         if (o.show.isNotEmpty()) {
                             item {
                                 Text(
-                                    "Shows when any of these is true:",
+                                    tr(R.string.ss_any_true),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(start = 8.dp, bottom = 6.dp),
@@ -124,7 +124,7 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                                 item {
                                     Toggle(
                                         label,
-                                        if (k == "soon") "Within the time below" else null,
+                                        if (k == "soon") tr(R.string.ss_within) else null,
                                         k in o.show,
                                     ) { on ->
                                         val n = if (on) o.show + k else o.show - k
@@ -133,10 +133,10 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                                 }
                             }
                             if ("soon" in o.show) {
-                                item { Label("How long before") }
+                                item { Label(tr(R.string.ss_how_long)) }
                                 for (m in SmartOptions.SOON) {
                                     item {
-                                        Option(if (m < 60) "$m minutes" else if (m == 60) "1 hour" else "${m / 60} hours", o.soonMinutes == m) {
+                                        Option(if (m < 60) trq(R.plurals.p_minutes, m) else trq(R.plurals.p_hours, m / 60), o.soonMinutes == m) {
                                             save(o.copy(soonMinutes = m))
                                         }
                                     }
@@ -144,51 +144,51 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                             }
                         }
 
-                        item { Label(if (isCard) "Second line" else "Chip text") }
+                        item { Label(tr(if (isCard) R.string.ss_second_line else R.string.ss_chip_text)) }
                         item {
                             Option(
-                                if (isCard) "What finishes next, and when" else "Free count, or time until the next one",
+                                tr(if (isCard) R.string.ss_next_when else R.string.ss_free_or_next),
                                 o.text == "next",
                             ) { save(o.copy(text = "next")) }
                         }
                         item {
-                            Option(if (isCard) "How many are working" else "Working / total (e.g. 4/6)", o.text == "count") {
+                            Option(tr(if (isCard) R.string.ss_how_many else R.string.ss_working_total), o.text == "count") {
                                 save(o.copy(text = "count"))
                             }
                         }
 
                         if (isCard) {
-                            item { Label("Look") }
+                            item { Label(tr(R.string.ss_look)) }
                             item {
-                                Option("Plain: like other At a Glance cards", o.style == "plain") { save(o.copy(style = "plain")) }
+                                Option(tr(R.string.ss_plain), o.style == "plain") { save(o.copy(style = "plain")) }
                             }
-                            item { Option("Chips: coloured chips with a dot per builder (Android 16)", o.style == "playful") { save(o.copy(style = "playful")) } }
+                            item { Option(tr(R.string.ss_chips_look), o.style == "playful") { save(o.copy(style = "playful")) } }
                             item {
                                 Text(
-                                    "The playful look needs Android 16 (or the Smartspacer widget); elsewhere you get the plain card.",
+                                    tr(R.string.ss_playful_note),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(start = 8.dp, top = 4.dp, end = 8.dp),
                                 )
                             }
-                            item { Label("Extras") }
+                            item { Label(tr(R.string.ss_extras)) }
                             if ("boost" !in o.what) {
                                 item {
-                                    Toggle("Mention boosts", "Add a running potion or Clock Tower to the title", o.boostInTitle) {
+                                    Toggle(tr(R.string.ss_mention_boosts), tr(R.string.ss_mention_boosts_d), o.boostInTitle) {
                                         save(o.copy(boostInTitle = it))
                                     }
                                 }
                             }
                             item {
-                                Toggle("Lock screen", "Also show on the lock screen", o.lockScreen) {
+                                Toggle(tr(R.string.ss_lock), tr(R.string.ss_lock_d), o.lockScreen) {
                                     save(o.copy(lockScreen = it))
                                 }
                             }
                         }
 
                         if (tags.size > 1) {
-                            item { Label("Village") }
-                            item { Option("Follow the app's selection", o.village.isEmpty()) { save(o.copy(village = "")) } }
+                            item { Label(tr(R.string.t_village)) }
+                            item { Option(tr(R.string.t_follow_app), o.village.isEmpty()) { save(o.copy(village = "")) } }
                             for (t in tags) {
                                 item {
                                     val name = Store.name(this@SmartspaceSettingsActivity, t)
@@ -202,7 +202,7 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                                 onClick = { finish() },
                                 shape = CircleShape,
                                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp).height(52.dp),
-                            ) { Text("Done") }
+                            ) { Text(tr(R.string.t_done)) }
                         }
                     }
                 }

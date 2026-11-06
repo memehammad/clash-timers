@@ -200,8 +200,8 @@ class CompletionReceiver : BroadcastReceiver() {
         Notifier.notify(
             context,
             intent.getIntExtra(Scheduler.EXTRA_CODE, 0),
-            if (s.free == 1) "A builder is idle" else "${s.free} builders are idle",
-            "Free for $minutes+ min$who. Re-export after starting upgrades to keep this accurate.",
+            trq(R.plurals.p_idle, s.free),
+            tr(R.string.idle_text, minutes, who),
             reminder = true,
         )
     }

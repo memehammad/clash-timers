@@ -77,15 +77,15 @@ class WidgetConfigActivity : ComponentActivity() {
                     ) {
                         item {
                             Text(
-                                "Widget settings",
+                                tr(R.string.widget_settings),
                                 style = MaterialTheme.typography.headlineMedium,
                                 modifier = Modifier.padding(start = 8.dp, bottom = 16.dp),
                             )
                         }
 
                         if (tags.size > 1) {
-                            item { Label("Village") }
-                            item { Option("Follow the app's selection", tag == null) { saveTag(null) } }
+                            item { Label(tr(R.string.t_village)) }
+                            item { Option(tr(R.string.t_follow_app), tag == null) { saveTag(null) } }
                             for (t in tags) {
                                 item {
                                     val name = Store.name(this@WidgetConfigActivity, t)
@@ -94,7 +94,7 @@ class WidgetConfigActivity : ComponentActivity() {
                             }
                         }
 
-                        item { Label("Show on the widget") }
+                        item { Label(tr(R.string.show_on_widget)) }
                         for ((flag, label, desc) in WidgetOptions.ITEMS) {
                             item {
                                 Toggle(label, desc, opts.has(flag)) { saveOpts(opts.with(flag, it)) }
@@ -102,7 +102,7 @@ class WidgetConfigActivity : ComponentActivity() {
                         }
                         item {
                             Text(
-                                "Small sizes only show the builder badge, so most of these apply from 3x2 up.",
+                                tr(R.string.small_sizes_note),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 8.dp),
@@ -113,7 +113,7 @@ class WidgetConfigActivity : ComponentActivity() {
                                 onClick = { finish() },
                                 shape = CircleShape,
                                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp).height(52.dp),
-                            ) { Text("Done") }
+                            ) { Text(tr(R.string.t_done)) }
                         }
                     }
                 }

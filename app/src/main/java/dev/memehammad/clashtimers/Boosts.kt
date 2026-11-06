@@ -63,12 +63,12 @@ object BoostReader {
         val k = key.lowercase()
         if (k.endsWith("cooldown")) return null
         return when {
-            k == "builder_boost" -> Info("Builder Potion", listOf(Slot.BUILDER), 10, 3600)
-            k == "lab_boost" || k == "research_boost" -> Info("Research Potion", listOf(Slot.LAB), 24, 3600)
-            k == "pet_boost" -> Info("Pet Potion", listOf(Slot.PET), 24, 3600)
-            "clocktower" in k || "clock_tower" in k -> Info("Clock Tower", listOf(Slot.BB_BUILDER, Slot.STAR_LAB), 10, null)
-            "bite" in k || ("builder" in k && ("snack" in k || "food" in k)) -> Info("Builder Bite", listOf(Slot.BUILDER), 2, 3600)
-            "soup" in k || "study" in k || ("lab" in k && ("snack" in k || "food" in k)) -> Info("Study Soup", listOf(Slot.LAB), 4, 3600)
+            k == "builder_boost" -> Info(tr(R.string.t_builder_potion), listOf(Slot.BUILDER), 10, 3600)
+            k == "lab_boost" || k == "research_boost" -> Info(tr(R.string.t_research_potion), listOf(Slot.LAB), 24, 3600)
+            k == "pet_boost" -> Info(tr(R.string.t_pet_potion), listOf(Slot.PET), 24, 3600)
+            "clocktower" in k || "clock_tower" in k -> Info(tr(R.string.t_clock_tower), listOf(Slot.BB_BUILDER, Slot.STAR_LAB), 10, null)
+            "bite" in k || ("builder" in k && ("snack" in k || "food" in k)) -> Info(tr(R.string.t_builder_bite), listOf(Slot.BUILDER), 2, 3600)
+            "soup" in k || "study" in k || ("lab" in k && ("snack" in k || "food" in k)) -> Info(tr(R.string.t_study_soup), listOf(Slot.LAB), 4, 3600)
             else -> null
         }
     }

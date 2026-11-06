@@ -4,23 +4,29 @@ import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
 
-enum class Section(val title: String) {
-    BUILDERS("Builders"),
-    LAB("Laboratory"),
-    PETS("Pet House"),
-    BUILDER_BASE("Builder Base"),
-    HELPERS("Helpers & Boosts"),
-    OTHER("Other"),
+enum class Section(private val res: Int) {
+    BUILDERS(R.string.t_builders),
+    LAB(R.string.t_lab),
+    PETS(R.string.t_pet_house),
+    BUILDER_BASE(R.string.t_bb),
+    HELPERS(R.string.t_helpers),
+    OTHER(R.string.t_other),
+    ;
+
+    val title: String get() = tr(res)
 }
 
 /** Which worker a timer occupies; used to work out free builders, idle lab, etc. */
-enum class Slot(val freeText: String) {
-    BUILDER("Builder free"),
-    LAB("Laboratory free"),
-    PET("Pet House free"),
-    BB_BUILDER("Builder Base builder free"),
-    STAR_LAB("Star Laboratory free"),
-    NONE(""),
+enum class Slot(private val res: Int) {
+    BUILDER(R.string.free_builder),
+    LAB(R.string.free_lab),
+    PET(R.string.free_pet),
+    BB_BUILDER(R.string.free_bb),
+    STAR_LAB(R.string.free_star_lab),
+    NONE(0),
+    ;
+
+    val freeText: String get() = if (res == 0) "" else tr(res)
 }
 
 data class Timer(
@@ -67,7 +73,11 @@ data class Hero(val id: Long, val name: String, val level: Int, val backSec: Lon
 
     /** "Barbarian King" -> "BK", "Minion Prince" -> "MP". */
     val short: String
-        get() = name.split(' ').filter { it.isNotEmpty() }.joinToString("") { it.first().uppercase() }.take(3)
+        get() {
+            val words = name.split(' ').filter { it.isNotEmpty() }
+            // Single-word names (German "Barbarenkönig") get their first letters instead of initials.
+            return if (words.size == 1) words[0].take(3) else words.joinToString("") { it.first().uppercase() }.take(3)
+        }
 }
 
 /** Parses the in-game "Data Export" JSON into running timers and worker counts. */
@@ -229,7 +239,7 @@ object VillageParser {
 
         private fun scanObject(obj: JSONObject, key: String, section: Section, slot: Slot, parentName: String?) {
             val id = obj.optLong("data", -1L)
-            val baseName = data[id]?.name ?: "Unknown #$id"
+            val baseName = data[id]?.name ?: tr(R.string.unknown_n, id)
             val name = if (parentName != null) "$parentName · $baseName" else baseName
             if (obj.has("timer")) addUpgrade(obj, key, section, slot, id, name)
 
@@ -263,9 +273,9 @@ object VillageParser {
             val speedNow = 1 + boosts.sumOf { it.extra }
 
             val detail = when {
-                gearUp -> "Gear Up · home village"
-                level <= 0 -> "Construction"
-                else -> "Level $level → $target"
+                gearUp -> tr(R.string.gear_up_home)
+                level <= 0 -> tr(R.string.construction)
+                else -> tr(R.string.level_to, level, target)
             }
             // Only trust the table duration if it fits the remaining time (boosts can shorten it).
             val total = if (gearUp || level < 0) null
@@ -276,21 +286,21 @@ object VillageParser {
             // that helper is free again, which is the useful thing to say.
             val goblin = when {
                 !extra -> null
-                isResearch -> "Goblin Researcher"
-                slot == Slot.BUILDER -> "Goblin Builder"
+                isResearch -> tr(R.string.t_goblin_researcher)
+                slot == Slot.BUILDER -> tr(R.string.t_goblin_builder)
                 else -> null
             }
             val title = when {
-                goblin != null -> "$goblin is free"
-                gearUp -> "$name geared up"
-                isResearch -> "$name research complete"
-                else -> "$name upgrade complete"
+                goblin != null -> tr(R.string.x_is_free, goblin)
+                gearUp -> tr(R.string.x_geared_up, name)
+                isResearch -> tr(R.string.x_research_done, name)
+                else -> tr(R.string.x_upgrade_done, name)
             }
             val suffix = if (extra || slot == Slot.NONE) section.title else slot.freeText
             val text = when {
-                goblin != null -> if (level < 0) "$name built" else "$name reached level $target"
+                goblin != null -> if (level < 0) tr(R.string.x_built, name) else tr(R.string.x_reached_level, name, target)
                 gearUp || level < 0 -> suffix
-                else -> "Level $target · $suffix"
+                else -> tr(R.string.level_x_dot, target, suffix)
             }
 
             out += Timer(
@@ -314,11 +324,11 @@ object VillageParser {
                 val cooldown = obj.optLong("helper_cooldown", 0L)
                 if (cooldown <= 0L) continue
                 val id = obj.optLong("data", -1L)
-                val name = data[id]?.name ?: "Helper"
+                val name = data[id]?.name ?: tr(R.string.t_helper)
                 val end = timestamp + cooldown
                 out += Timer(
-                    uniqueKey("helper:$id:$end"), Section.HELPERS, Slot.NONE, false, name, "Cooldown",
-                    end, null, "$name is ready", "Helper cooldown finished",
+                    uniqueKey("helper:$id:$end"), Section.HELPERS, Slot.NONE, false, name, tr(R.string.cooldown),
+                    end, null, tr(R.string.x_is_ready, name), tr(R.string.helper_ready),
                 )
             }
         }
@@ -335,17 +345,17 @@ object VillageParser {
                 val active = !key.endsWith("_cooldown")
                 out += Timer(
                     uniqueKey("boost:$key:$end"), Section.HELPERS, Slot.NONE, false, name,
-                    if (active) (if (info != null) "Active · ${info.mult}x" else "Active") else "Cooldown",
+                    if (active) (if (info != null) tr(R.string.active_x, info.mult) else tr(R.string.active)) else tr(R.string.cooldown),
                     end, info?.durationSec?.takeIf { it >= seconds },
-                    if (active) "$name ended" else "$name is ready",
-                    if (active) "Boost finished" else "Cooldown finished",
+                    if (active) tr(R.string.x_ended, name) else tr(R.string.x_is_ready, name),
+                    if (active) tr(R.string.boost_done) else tr(R.string.cooldown_done),
                     isBoost = active,
                 )
             }
         }
 
         private fun boostName(key: String): String = when (key) {
-            "clocktower_cooldown" -> "Clock Tower boost"
+            "clocktower_cooldown" -> tr(R.string.clock_tower_boost)
             else -> key.removeSuffix("_cooldown").removeSuffix("_boost").split('_')
                 .joinToString(" ") { word -> word.replaceFirstChar { c -> c.uppercase() } } +
                 if (key.endsWith("_boost")) " boost" else ""

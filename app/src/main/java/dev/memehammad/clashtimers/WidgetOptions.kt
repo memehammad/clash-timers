@@ -32,16 +32,16 @@ data class WidgetOptions(val bits: Int = ALL) {
 
         /** (flag, label, description) shown in the widget settings. */
         val ITEMS = listOf(
-            Triple(CHIPS, "Status chips", "Laboratory, Pet House, Builder Base, Star Lab"),
-            Triple(HEROES, "Heroes", "How many heroes are ready"),
-            Triple(BOOST, "Boost banner", "Running potions and snacks"),
-            Triple(STALE, "Re-export hint", "Timing is set in the app's settings"),
-            Triple(PROGRESS, "Progress bars", "The squiggly lines in the list"),
-            Triple(LIST_BUILDERS, "List: Builders", null),
-            Triple(LIST_LAB, "List: Laboratory", null),
-            Triple(LIST_PETS, "List: Pet House", null),
-            Triple(LIST_BUILDER_BASE, "List: Builder Base", null),
-            Triple(LIST_HELPERS, "List: Helpers & Boosts", null),
+            Triple(CHIPS, tr(R.string.wo_chips), tr(R.string.wo_chips_d)),
+            Triple(HEROES, tr(R.string.t_heroes), tr(R.string.wo_heroes_d)),
+            Triple(BOOST, tr(R.string.wo_boost), tr(R.string.wo_boost_d)),
+            Triple(STALE, tr(R.string.wo_stale), tr(R.string.wo_stale_d)),
+            Triple(PROGRESS, tr(R.string.wo_progress), tr(R.string.wo_progress_d)),
+            Triple(LIST_BUILDERS, tr(R.string.wo_list, tr(R.string.t_builders)), null),
+            Triple(LIST_LAB, tr(R.string.wo_list, tr(R.string.t_lab)), null),
+            Triple(LIST_PETS, tr(R.string.wo_list, tr(R.string.t_pet_house)), null),
+            Triple(LIST_BUILDER_BASE, tr(R.string.wo_list, tr(R.string.t_bb)), null),
+            Triple(LIST_HELPERS, tr(R.string.wo_list, tr(R.string.t_helpers)), null),
         )
     }
 }

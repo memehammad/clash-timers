@@ -23,6 +23,13 @@ object GameData {
     private fun load(context: Context): Map<Long, GameInfo> {
         val text = context.assets.open("coc_data.json").bufferedReader().use { it.readText() }
         val root = JSONObject(text)
+        // In-game names in the phone's language (from the game's own translations), where known.
+        val names = try {
+            val lang = java.util.Locale.getDefault().language
+            JSONObject(context.assets.open("coc_names.json").bufferedReader().use { it.readText() }).optJSONObject(lang)
+        } catch (e: Exception) {
+            null
+        }
         val map = HashMap<Long, GameInfo>(root.length() * 2)
         val keys = root.keys()
         while (keys.hasNext()) {
@@ -36,7 +43,7 @@ object GameData {
                     times[level.toInt()] = t.getLong(level)
                 }
             }
-            map[key.toLong()] = GameInfo(entry.getString("n"), times)
+            map[key.toLong()] = GameInfo(names?.optString(key)?.takeIf { it.isNotEmpty() } ?: entry.getString("n"), times)
         }
         return map
     }

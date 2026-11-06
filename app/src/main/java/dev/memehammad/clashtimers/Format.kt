@@ -30,7 +30,7 @@ object Format {
         val m = (s % 3600) / 60
         val sec = s % 60
         return when {
-            d > 0 -> "${d}d ${h}h"
+            d > 0 -> tr(R.string.f_dh, d, h)
             h > 0 -> "${h}h ${m}m"
             m > 0 -> "${m}m ${sec.toString().padStart(2, '0')}s"
             else -> "${sec}s"
@@ -45,7 +45,7 @@ object Format {
         val days = dayIndex(end) - dayIndex(today)
         return when {
             days <= 0 -> time
-            days == 1L -> "${if (short) "Tmrw" else "Tomorrow"} $time"
+            days == 1L -> "${tr(if (short) R.string.tmrw else R.string.tomorrow)} $time"
             days < 7 -> "${SimpleDateFormat("EEE", Locale.getDefault()).format(Date(endMs))} $time"
             else -> "${SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(endMs))} $time"
         }
@@ -60,18 +60,20 @@ object Format {
 
     /** For sentences: "in 2h 22m" or "at 18:45" / "Tomorrow 12:30". */
     fun phrase(leftMs: Long, nowMs: Long): String {
-        if (!clock) return "in ${countdown(leftMs)}"
+        if (!clock) return tr(R.string.in_x, countdown(leftMs))
         val t = at(nowMs + leftMs, nowMs)
-        return if (t.first().isDigit()) "at $t" else t
+        return if (t.first().isDigit()) tr(R.string.at_x, t) else t
     }
 
-    fun ago(ms: Long): String {
-        val min = ms / 60_000
+    fun ago(ms: Long): String = if (ms < 60_000) tr(R.string.just_now) else tr(R.string.ago_x, age(ms))
+
+    /** "5 min", "3 h", "2 d". */
+    fun age(ms: Long): String {
+        val min = (ms / 60_000).toInt()
         return when {
-            min < 1 -> "just now"
-            min < 60 -> "$min min ago"
-            min < 1440 -> "${min / 60} h ago"
-            else -> "${min / 1440} d ago"
+            min < 60 -> tr(R.string.age_min, min.coerceAtLeast(1))
+            min < 1440 -> tr(R.string.age_h, min / 60)
+            else -> tr(R.string.age_d, min / 1440)
         }
     }
 }

@@ -1,6 +1,9 @@
 package dev.memehammad.clashtimers.ui
 
 import androidx.compose.foundation.clickable
+import dev.memehammad.clashtimers.R
+import dev.memehammad.clashtimers.tr
+import dev.memehammad.clashtimers.trq
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -100,20 +103,20 @@ internal fun VillageBar(extras: ScreenExtras, actions: ScreenActions) {
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("Name") },
-                        placeholder = { Text("e.g. Main, Alt") },
+                        label = { Text(tr(R.string.name)) },
+                        placeholder = { Text(tr(R.string.name_hint)) },
                         singleLine = true,
                     )
                     Spacer(Modifier.height(12.dp))
                     TextButton(onClick = { actions.onRemoveVillage(tag); manage = null }) {
-                        Text("Remove this village", color = MaterialTheme.colorScheme.error)
+                        Text(tr(R.string.remove_village), color = MaterialTheme.colorScheme.error)
                     }
                 }
             },
             confirmButton = {
-                TextButton(onClick = { actions.onRenameVillage(tag, text); manage = null }) { Text("Save") }
+                TextButton(onClick = { actions.onRenameVillage(tag, text); manage = null }) { Text(tr(R.string.t_save)) }
             },
-            dismissButton = { TextButton(onClick = { manage = null }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { manage = null }) { Text(tr(R.string.t_cancel)) } },
         )
     }
 }
@@ -132,12 +135,12 @@ internal fun StaleBanner(village: Village, now: Long, onPaste: () -> Unit) {
             Column(Modifier.weight(1f)) {
                 Text(Stale.label(village, now), style = MaterialTheme.typography.titleMedium, color = scheme.onErrorContainer)
                 Text(
-                    "Something finished a while ago, so you've likely started new upgrades. Copy a new export in Clash.",
+                    tr(R.string.stale_help),
                     style = MaterialTheme.typography.bodyMedium,
                     color = scheme.onErrorContainer.copy(alpha = 0.8f),
                 )
             }
-            TextButton(onClick = onPaste) { Text("Paste", color = scheme.onErrorContainer) }
+            TextButton(onClick = onPaste) { Text(tr(R.string.t_paste), color = scheme.onErrorContainer) }
         }
     }
 }
@@ -180,7 +183,7 @@ internal fun HeroesCard(village: Village, now: Long) {
                     color = if (ready) scheme.onSecondaryContainer.copy(alpha = 0.75f) else scheme.onSurfaceVariant,
                 )
                 Text(
-                    if (ready) "Ready · ${h.level}" else Format.left(h.backSec!! * 1000 - now, now, short = true),
+                    if (ready) tr(R.string.ready_lvl, h.level) else Format.left(h.backSec!! * 1000 - now, now, short = true),
                     style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
                     color = if (ready) scheme.onSecondaryContainer else scheme.onSurface,
                 )
@@ -209,14 +212,14 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Boost planner", style = MaterialTheme.typography.titleMedium)
+                    Text(tr(R.string.boost_planner), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "What a potion or snack would do right now",
+                        tr(R.string.boost_planner_d),
                         style = MaterialTheme.typography.bodyMedium,
                         color = scheme.onSurfaceVariant,
                     )
                 }
-                Text(if (open) "Hide" else "Show", style = MaterialTheme.typography.labelLarge, color = scheme.primary)
+                Text(tr(if (open) R.string.hide else R.string.show), style = MaterialTheme.typography.labelLarge, color = scheme.primary)
             }
             if (open) {
 
@@ -237,28 +240,27 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
                 when {
                     plan.note != null -> Text(plan.note, style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
                     plan.rows.isEmpty() -> Text(
-                        "Nothing running that it would speed up.",
+                        tr(R.string.nothing_to_speed),
                         style = MaterialTheme.typography.bodyMedium,
                         color = scheme.onSurfaceVariant,
                     )
                     else -> {
                         val finishing = plan.rows.count { it.duringBoost }
-                        val worker = when (item) {
-                            Planner.Item.BUILDER_POTION, Planner.Item.BUILDER_BITE -> "builder"
-                            Planner.Item.PET_POTION -> "Pet House"
-                            else -> "Laboratory"
+                        val nextRes = when (item) {
+                            Planner.Item.BUILDER_POTION, Planner.Item.BUILDER_BITE -> R.string.next_builder_free
+                            Planner.Item.PET_POTION -> R.string.next_pet_free
+                            else -> R.string.next_lab_free
                         }
                         val before = plan.nextFreeBefore
                         val after = plan.nextFreeAfter
                         Text(
-                            if (finishing == 0) "Nothing finishes during the boost."
-                            else "$finishing finish${if (finishing == 1) "es" else ""} during the boost.",
+                            if (finishing == 0) tr(R.string.nothing_finishes)
+                            else trq(R.plurals.p_finishes, finishing),
                             style = MaterialTheme.typography.titleSmall,
                         )
                         if (before != null && after != null) {
                             Text(
-                                "Next $worker free ${Format.phrase(after * 1000 - now, now)} " +
-                                    "instead of ${Format.phrase(before * 1000 - now, now)}",
+                                tr(nextRes, Format.phrase(after * 1000 - now, now), Format.phrase(before * 1000 - now, now)),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = scheme.onSurfaceVariant,
                             )
@@ -281,7 +283,7 @@ internal fun PlannerCard(village: Village, now: Long, builderOverride: Int) {
                                 )
                                 Text("  →  ", style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
                                 Text(
-                                    if (r.duringBoost) "done" else Format.left(r.newEndSec * 1000 - now, now, short = true),
+                                    if (r.duringBoost) tr(R.string.done_lower) else Format.left(r.newEndSec * 1000 - now, now, short = true),
                                     style = MaterialTheme.typography.titleSmall.copy(fontFeatureSettings = "tnum"),
                                     color = if (r.duringBoost) scheme.primary else scheme.onSurface,
                                 )
@@ -307,15 +309,15 @@ internal fun UpdateBanner(version: String) {
     ) {
         Row(Modifier.padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Update available", style = MaterialTheme.typography.titleMedium, color = scheme.onSecondaryContainer)
+                Text(tr(R.string.update_available), style = MaterialTheme.typography.titleMedium, color = scheme.onSecondaryContainer)
                 Text(
-                    "Version $version is out. Update in Obtainium or download it from GitHub.",
+                    tr(R.string.update_text, version),
                     style = MaterialTheme.typography.bodyMedium,
                     color = scheme.onSecondaryContainer.copy(alpha = 0.8f),
                 )
             }
             TextButton(onClick = { uri.openUri(dev.memehammad.clashtimers.Updates.RELEASES_URL) }) {
-                Text("Get it", color = scheme.onSecondaryContainer)
+                Text(tr(R.string.get_it), color = scheme.onSecondaryContainer)
             }
         }
     }
@@ -327,18 +329,18 @@ internal fun AboutFooter(version: String, onTutorial: () -> Unit = {}) {
     val uri = androidx.compose.ui.platform.LocalUriHandler.current
     Column(Modifier.fillMaxWidth().padding(top = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         TextButton(onClick = onTutorial) {
-            Text("How it works", style = MaterialTheme.typography.labelLarge)
+            Text(tr(R.string.how_it_works), style = MaterialTheme.typography.labelLarge)
         }
         TextButton(onClick = { uri.openUri(dev.memehammad.clashtimers.Updates.REPO_URL) }) {
-            Text("Clash Timers on GitHub", style = MaterialTheme.typography.labelLarge)
+            Text(tr(R.string.on_github), style = MaterialTheme.typography.labelLarge)
         }
         Text(
-            "Version $version · open source, MIT",
+            tr(R.string.version_line, version),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
-            "Not affiliated with or endorsed by Supercell.",
+            tr(R.string.not_affiliated),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -357,15 +359,15 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
         modifier = Modifier.fillMaxWidth().padding(top = 28.dp),
     ) {
         Column(Modifier.padding(20.dp)) {
-            Text("Show times as", style = MaterialTheme.typography.titleMedium)
+            Text(tr(R.string.show_times_as), style = MaterialTheme.typography.titleMedium)
             Text(
-                "A countdown, or when it finishes (e.g. Tomorrow 12:30).",
+                tr(R.string.show_times_d),
                 style = MaterialTheme.typography.bodyMedium,
                 color = scheme.onSurfaceVariant,
             )
             Spacer(Modifier.height(10.dp))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                for ((mode, label) in listOf(0 to "Countdown", 1 to "Finish time")) {
+                for ((mode, label) in listOf(0 to tr(R.string.t_countdown), 1 to tr(R.string.t_finish_time))) {
                     FilterChip(
                         selected = extras.timeMode == mode,
                         onClick = { actions.onTimeMode(mode) },
@@ -376,10 +378,10 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Progress bars", style = MaterialTheme.typography.titleMedium)
+            Text(tr(R.string.wo_progress), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(10.dp))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                for ((style, label) in listOf(0 to "Wavy", 1 to "Straight", 2 to "Off")) {
+                for ((style, label) in listOf(0 to tr(R.string.wavy), 1 to tr(R.string.straight), 2 to tr(R.string.t_off))) {
                     FilterChip(
                         selected = extras.progressStyle == style,
                         onClick = { actions.onProgressStyle(style) },
@@ -390,9 +392,9 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Re-export hint", style = MaterialTheme.typography.titleMedium)
+            Text(tr(R.string.wo_stale), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Shown this long after something finished since your last export.",
+                tr(R.string.stale_hint_d),
                 style = MaterialTheme.typography.bodyMedium,
                 color = scheme.onSurfaceVariant,
             )
@@ -402,16 +404,16 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                     FilterChip(
                         selected = extras.staleHours == h,
                         onClick = { actions.onStaleHours(h) },
-                        label = { Text(if (h == 0) "Never" else "$h h") },
+                        label = { Text(if (h == 0) tr(R.string.never) else tr(R.string.t_hours, h)) },
                         shape = CircleShape,
                     )
                 }
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Idle builder reminder", style = MaterialTheme.typography.titleMedium)
+            Text(tr(R.string.idle_reminder), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Notify again if a builder stays free for a while.",
+                tr(R.string.idle_reminder_d),
                 style = MaterialTheme.typography.bodyMedium,
                 color = scheme.onSurfaceVariant,
             )
@@ -421,7 +423,7 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                     FilterChip(
                         selected = extras.reminderMinutes == m,
                         onClick = { actions.onReminder(m) },
-                        label = { Text(if (m == 0) "Off" else if (m < 60) "$m min" else "${m / 60} h") },
+                        label = { Text(if (m == 0) tr(R.string.t_off) else if (m < 60) tr(R.string.t_minutes, m) else tr(R.string.t_hours, m / 60)) },
                         shape = CircleShape,
                     )
                 }
@@ -430,10 +432,9 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Live builder status", style = MaterialTheme.typography.titleMedium)
+                    Text(tr(R.string.live_status), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Ongoing notification counting down to the next free builder. " +
-                            "On Android 16 it shows as a Live Update chip in the status bar.",
+                        tr(R.string.live_status_d),
                         style = MaterialTheme.typography.bodyMedium,
                         color = scheme.onSurfaceVariant,
                     )
@@ -443,10 +444,10 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             }
             if (extras.liveUpdate) {
                 Spacer(Modifier.height(10.dp))
-                Text("Status bar chip shows", style = MaterialTheme.typography.labelLarge, color = scheme.onSurfaceVariant)
+                Text(tr(R.string.chip_shows), style = MaterialTheme.typography.labelLarge, color = scheme.onSurfaceVariant)
                 Spacer(Modifier.height(6.dp))
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    for ((mode, label) in listOf(0 to "Countdown", 1 to "Finish time", 2 to "Free builders")) {
+                    for ((mode, label) in listOf(0 to tr(R.string.t_countdown), 1 to tr(R.string.t_finish_time), 2 to tr(R.string.free_builders))) {
                         FilterChip(
                             selected = extras.liveChip == mode,
                             onClick = { actions.onLiveChip(mode) },
@@ -459,9 +460,9 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Check for updates", style = MaterialTheme.typography.titleMedium)
+                    Text(tr(R.string.check_updates), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Asks GitHub for the latest version when you open the app (at most every 12 h).",
+                        tr(R.string.check_updates_d),
                         style = MaterialTheme.typography.bodyMedium,
                         color = scheme.onSurfaceVariant,
                     )
@@ -471,9 +472,9 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Widget", style = MaterialTheme.typography.titleMedium)
+            Text(tr(R.string.widget), style = MaterialTheme.typography.titleMedium)
             Text(
-                "To choose what a widget shows (and which village), long-press it and pick its settings.",
+                tr(R.string.widget_help),
                 style = MaterialTheme.typography.bodyMedium,
                 color = scheme.onSurfaceVariant,
             )

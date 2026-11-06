@@ -7,11 +7,11 @@ data class SlotStatus(val slot: Slot, val total: Int, val busy: Int, val nextFre
 
 object Status {
     /** Short labels for the status chips. */
-    val chips = listOf(
-        Slot.LAB to "Lab",
-        Slot.STAR_LAB to "Star Lab",
-        Slot.PET to "Pets",
-        Slot.BB_BUILDER to "Builder Base",
+    val chips get() = listOf(
+        Slot.LAB to tr(R.string.t_lab_short),
+        Slot.STAR_LAB to tr(R.string.t_star_lab_short),
+        Slot.PET to tr(R.string.t_pets),
+        Slot.BB_BUILDER to tr(R.string.t_bb),
     )
 
     /**
@@ -33,20 +33,19 @@ object Status {
     }
 
     fun shortLabel(slot: Slot): String = when (slot) {
-        Slot.BB_BUILDER -> "BB"
-        Slot.STAR_LAB -> "Star Lab"
-        Slot.PET -> "Pets"
-        else -> "Lab"
+        Slot.BB_BUILDER -> tr(R.string.t_bb_short)
+        Slot.STAR_LAB -> tr(R.string.t_star_lab_short)
+        Slot.PET -> tr(R.string.t_pets)
+        else -> tr(R.string.t_lab_short)
     }
 
     fun builderTitle(s: SlotStatus): String = when {
-        s.free == 0 -> "All builders busy"
-        s.free == 1 -> "1 builder free"
-        else -> "${s.free} builders free"
+        s.free == 0 -> tr(R.string.all_busy)
+        else -> trq(R.plurals.p_builders_free, s.free)
     }
 
     fun builderSubtitle(s: SlotStatus): String =
-        if (s.free == 0) "Next free in" else "${s.busy} of ${s.total} working"
+        if (s.free == 0) tr(R.string.next_free_in) else tr(R.string.n_of_m_working, s.busy, s.total)
 
     /** Running potions/snacks/Clock Tower, soonest ending first. */
     fun activeBoosts(village: Village, nowMs: Long): List<Timer> =
@@ -57,6 +56,6 @@ object Status {
         val first = active.first()
         val mult = first.detail.substringAfter("· ", "").trim()
         val base = if (mult.isNotEmpty()) "${first.name} $mult" else first.name
-        return if (active.size > 1) "$base + ${active.size - 1} more" else base
+        return if (active.size > 1) tr(R.string.plus_more, base, active.size - 1) else base
     }
 }

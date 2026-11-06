@@ -1,6 +1,9 @@
 package dev.memehammad.clashtimers.ui
 
 import androidx.compose.animation.core.LinearEasing
+import dev.memehammad.clashtimers.R
+import dev.memehammad.clashtimers.tr
+import dev.memehammad.clashtimers.trq
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -205,7 +208,7 @@ private fun BoostBanner(boosts: List<Timer>, now: Long) {
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    "Timers are running faster",
+                    tr(R.string.timers_faster),
                     style = MaterialTheme.typography.bodySmall,
                     color = scheme.onTertiary.copy(alpha = 0.8f),
                 )
@@ -235,7 +238,7 @@ private fun Header(village: Village?, now: Long, onPaste: () -> Unit, name: Stri
                 )
             }
         }
-        FilledTonalButton(onClick = onPaste, shape = CircleShape) { Text("Paste") }
+        FilledTonalButton(onClick = onPaste, shape = CircleShape) { Text(tr(R.string.t_paste)) }
     }
 }
 
@@ -298,7 +301,7 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
                 Text(Status.builderTitle(s), style = MaterialTheme.typography.headlineSmall, color = onColor)
                 val next = s.nextFreeSec
                 Text(
-                    if (!free && next != null) "Next free ${Format.phrase(next * 1000 - now, now)}"
+                    if (!free && next != null) tr(R.string.next_free_x, Format.phrase(next * 1000 - now, now))
                     else Status.builderSubtitle(s),
                     style = MaterialTheme.typography.bodyLarge.copy(fontFeatureSettings = "tnum"),
                     color = onColor.copy(alpha = 0.8f),
@@ -308,7 +311,7 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
                     contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
                 ) {
                     Text(
-                        "${s.total} builders" + if (manual) " (set)" else " · edit",
+                        tr(R.string.n_builders, s.total) + tr(if (manual) R.string.set_suffix else R.string.edit_suffix),
                         style = MaterialTheme.typography.labelLarge,
                         color = if (free) scheme.onPrimaryContainer.copy(alpha = 0.85f) else scheme.secondary,
                     )
@@ -321,10 +324,10 @@ private fun BuilderCard(s: SlotStatus, now: Long, manual: Boolean, onEdit: () ->
 @Composable
 private fun Chips(village: Village, now: Long) {
     val labels = mapOf(
-        Slot.LAB to "Laboratory",
-        Slot.PET to "Pet House",
-        Slot.BB_BUILDER to "Builder Base",
-        Slot.STAR_LAB to "Star Lab",
+        Slot.LAB to tr(R.string.t_lab),
+        Slot.PET to tr(R.string.t_pet_house),
+        Slot.BB_BUILDER to tr(R.string.t_bb),
+        Slot.STAR_LAB to tr(R.string.t_star_lab_short),
     )
     val chips = Status.chips.mapNotNull { (slot, _) -> Status.of(village, slot, now)?.let { slot to it } }
     if (chips.isEmpty()) return
@@ -347,10 +350,10 @@ private fun Chip(label: String, s: SlotStatus, now: Long, modifier: Modifier) {
             val next = s.nextFreeSec
             Text(
                 when {
-                    free && s.total > 1 -> "${s.free} free"
-                    free -> "Idle"
+                    free && s.total > 1 -> trq(R.plurals.p_free, s.free)
+                    free -> tr(R.string.t_idle)
                     next != null -> Format.left(next * 1000 - now, now, short = true)
-                    else -> "Busy"
+                    else -> tr(R.string.t_busy)
                 },
                 style = MaterialTheme.typography.titleLarge.copy(fontFeatureSettings = "tnum"),
                 color = onColor,
@@ -364,11 +367,11 @@ private fun BuildersDialog(detected: Int, current: Int, onSet: (Int) -> Unit, on
     var value by remember { mutableStateOf(if (current > 0) current else detected.coerceAtLeast(1)) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Home builders") },
+        title = { Text(tr(R.string.home_builders)) },
         text = {
             Column {
                 Text(
-                    "Detected from your export: $detected. Set it manually if that's wrong.",
+                    tr(R.string.detected_builders, detected),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(Modifier.height(20.dp))
@@ -388,10 +391,10 @@ private fun BuildersDialog(detected: Int, current: Int, onSet: (Int) -> Unit, on
             }
         },
         confirmButton = {
-            TextButton(onClick = { onSet(value); onDismiss() }) { Text("Save") }
+            TextButton(onClick = { onSet(value); onDismiss() }) { Text(tr(R.string.t_save)) }
         },
         dismissButton = {
-            TextButton(onClick = { onSet(0); onDismiss() }) { Text("Auto") }
+            TextButton(onClick = { onSet(0); onDismiss() }) { Text(tr(R.string.auto)) }
         },
     )
 }
@@ -448,7 +451,7 @@ private fun TimerRow(t: Timer, now: Long, shape: RoundedCornerShape) {
                 }
                 Spacer(Modifier.width(12.dp))
                 Text(
-                    if (done) "Done" else Format.left(left, now),
+                    if (done) tr(R.string.t_done) else Format.left(left, now),
                     style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
                     color = if (done) scheme.onSecondaryContainer else scheme.onSurface,
                 )
@@ -487,13 +490,12 @@ private fun EmptyCard(hasVillage: Boolean) {
     ) {
         Column(Modifier.padding(24.dp)) {
             Text(
-                if (hasVillage) "Nothing running" else "No village yet",
+                tr(if (hasVillage) R.string.nothing_running_t else R.string.no_village_t),
                 style = MaterialTheme.typography.titleLarge,
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                "In Clash of Clans open Settings → More Settings → Data Export and tap Copy. " +
-                    "Come back here and it imports automatically.",
+                tr(R.string.empty_help),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -553,22 +555,10 @@ private fun WavyProgress(progress: Float, modifier: Modifier, color: Color, trac
 private fun AutoImportCard(state: AutoImport.State, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val (title, body, action) = when (state) {
-        AutoImport.State.SHIZUKU_MISSING -> Triple(
-            "Auto-import",
-            "Import automatically whenever you tap Copy in Clash. Needs Shizuku running.",
-            "Get Shizuku",
-        )
-        AutoImport.State.NEEDS_PERMISSION -> Triple(
-            "Auto-import",
-            "Shizuku is running. Allow Clash Timers to use it to watch for exports.",
-            "Allow",
-        )
-        AutoImport.State.OFF -> Triple("Auto-import is off", "Turn on to import whenever you tap Copy in Clash.", "Turn on")
-        AutoImport.State.ON -> Triple(
-            "Auto-import is on",
-            "Tap Copy in Clash and the widget updates by itself. Restart Shizuku after a reboot.",
-            "Turn off",
-        )
+        AutoImport.State.SHIZUKU_MISSING -> Triple(tr(R.string.ai_title), tr(R.string.ai_missing), tr(R.string.get_shizuku))
+        AutoImport.State.NEEDS_PERMISSION -> Triple(tr(R.string.ai_title), tr(R.string.ai_perm), tr(R.string.t_allow))
+        AutoImport.State.OFF -> Triple(tr(R.string.ai_off_title), tr(R.string.ai_off), tr(R.string.turn_on))
+        AutoImport.State.ON -> Triple(tr(R.string.ai_on_title), tr(R.string.ai_on), tr(R.string.turn_off))
     }
     Surface(
         shape = RoundedCornerShape(28.dp),

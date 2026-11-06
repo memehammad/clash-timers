@@ -53,21 +53,21 @@ object LiveStatus {
         val chip: String?
         if (s.free > 0) {
             b.setContentTitle(Status.builderTitle(s))
-            b.setContentText("${s.busy} of ${s.total} working")
-            chip = if (s.free == 1) "1 free" else "${s.free} free"
+            b.setContentText(tr(R.string.n_of_m_working, s.busy, s.total))
+            chip = trq(R.plurals.p_free, s.free)
         } else if (next != null) {
             // Clock time in the text never goes out of date; the header shows the live countdown.
             val at = android.text.format.DateFormat.getTimeFormat(context).format(java.util.Date(next * 1000))
             val nextJob = village.timers.firstOrNull { it.slot == Slot.BUILDER && !it.extra && it.endSec == next }
-            b.setContentTitle("All builders busy")
-            b.setContentText("Next builder free at $at" + (nextJob?.let { " · ${it.name}" } ?: ""))
+            b.setContentTitle(tr(R.string.all_busy))
+            b.setContentText(tr(R.string.next_builder_at, at) + (nextJob?.let { " · ${it.name}" } ?: ""))
             b.setWhen(next * 1000)
             b.setShowWhen(true)
             b.setUsesChronometer(true)
             b.setChronometerCountDown(true)
             chip = when (mode) {
                 MODE_TIME -> at
-                MODE_COUNT -> "0/${s.total} free"
+                MODE_COUNT -> tr(R.string.zero_of_n_free, s.total)
                 else -> null // Android shows the countdown itself
             }
         } else {

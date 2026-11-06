@@ -44,13 +44,13 @@ data class SmartOptions(
 
     companion object {
         val WHAT = listOf(
-            "builder" to "Builders", "lab" to "Laboratory", "pet" to "Pet House",
-            "bb" to "Builder Base builders", "starlab" to "Star Laboratory", "boost" to "Active boost",
+            "builder" to tr(R.string.t_builders), "lab" to tr(R.string.t_lab), "pet" to tr(R.string.t_pet_house),
+            "bb" to tr(R.string.ss_bb_builders), "starlab" to tr(R.string.t_star_lab), "boost" to tr(R.string.ss_active_boost),
         )
         val SHOW = listOf(
-            "free" to "When one is free",
-            "busy" to "While all are busy",
-            "soon" to "Before something finishes",
+            "free" to tr(R.string.ss_when_free),
+            "busy" to tr(R.string.ss_when_busy),
+            "soon" to tr(R.string.ss_when_soon),
         )
         val SOON = listOf(15, 30, 60, 120, 180, 360)
 
@@ -230,7 +230,7 @@ object Smartspace {
                 // A running boost counts as "busy"; "free" never applies to it.
                 if ("busy" !in o.show) return null
             }
-            return Item(Status.boostLabel(active), "${b.name} ends ${Format.phrase(left, now)}", compact(left), iconOf(what), left, "", what)
+            return Item(Status.boostLabel(active), tr(R.string.x_ends_y, b.name, Format.phrase(left, now)), compact(left), iconOf(what), left, "", what)
         }
 
         val slot = slotOf(what)
@@ -247,25 +247,25 @@ object Smartspace {
         }
         val many = o.what.size > 1
         val title = when (slot) {
-            Slot.BUILDER -> if (many) (if (s.free > 0) "${s.free} builder${if (s.free > 1) "s" else ""} free" else "Builders busy") else Status.builderTitle(s)
-            Slot.BB_BUILDER -> if (s.free > 0) "${s.free} BB builder${if (s.free > 1) "s" else ""} free" else "Builder Base busy"
-            Slot.LAB -> if (s.free > 0) "Lab free" else if (many) "Lab busy" else "Researching"
-            Slot.STAR_LAB -> if (s.free > 0) "Star Lab free" else "Star Lab busy"
-            Slot.PET -> if (s.free > 0) "Pets free" else "Pet House busy"
+            Slot.BUILDER -> if (many) (if (s.free > 0) trq(R.plurals.p_builders_free, s.free) else tr(R.string.builders_busy)) else Status.builderTitle(s)
+            Slot.BB_BUILDER -> if (s.free > 0) trq(R.plurals.p_bb_free, s.free) else tr(R.string.bb_busy)
+            Slot.LAB -> if (s.free > 0) tr(R.string.lab_free) else if (many) tr(R.string.lab_busy) else tr(R.string.researching)
+            Slot.STAR_LAB -> if (s.free > 0) tr(R.string.star_lab_free) else tr(R.string.star_lab_busy)
+            Slot.PET -> if (s.free > 0) tr(R.string.pets_free) else tr(R.string.pet_house_busy)
             else -> ""
         } + if (!many && o.boostInTitle) Status.activeBoosts(v, now).takeIf { it.isNotEmpty() }?.let { " · ${Status.boostLabel(it)}" } ?: "" else ""
         val label = when (slot) {
-            Slot.BUILDER -> "Builders"
-            Slot.BB_BUILDER -> "BB"
-            Slot.LAB -> "Lab"
-            Slot.STAR_LAB -> "Star Lab"
-            else -> "Pets"
+            Slot.BUILDER -> tr(R.string.t_builders)
+            Slot.BB_BUILDER -> tr(R.string.t_bb_short)
+            Slot.LAB -> tr(R.string.t_lab_short)
+            Slot.STAR_LAB -> tr(R.string.t_star_lab_short)
+            else -> tr(R.string.t_pets)
         }
         val subtitle = when {
-            o.text == "count" -> "${s.busy} of ${s.total} working"
-            freeAt != null -> "$label: next free ${Format.phrase(freeAt, now)}"
+            o.text == "count" -> tr(R.string.n_of_m_working, s.busy, s.total)
+            freeAt != null -> tr(R.string.label_next_free, label, Format.phrase(freeAt, now))
             first != null -> "${first.name} ${Format.phrase(first.remainingMs(now), now)}"
-            else -> if (slot == Slot.LAB || slot == Slot.STAR_LAB) "Time to research something" else "Time to build something"
+            else -> tr(if (slot == Slot.LAB || slot == Slot.STAR_LAB) R.string.time_to_research else R.string.time_to_build)
         }
         val chip = when {
             o.text == "count" -> "${s.busy}/${s.total}"
@@ -312,7 +312,7 @@ class BuildersTarget : SmartspacerTargetProvider() {
 
     override fun getConfig(smartspacerId: String?) = Config(
         label = "Clash Timers",
-        description = "Builders, lab, pets or boosts: what's free and what finishes next",
+        description = tr(R.string.ss_target_d),
         icon = AndroidIcon.createWithResource(provideContext(), R.drawable.ic_ss_hammer),
         allowAddingMoreThanOnce = true,
         configActivity = Smartspace.settingsIntent(provideContext(), "target"),
@@ -362,15 +362,15 @@ abstract class ClashComplication(
 }
 
 class BuildersComplication : ClashComplication(
-    SmartOptions(what = setOf("builder")), "Clash builders", "Free builders, or time until the next one (configurable)",
+    SmartOptions(what = setOf("builder")), tr(R.string.ss_c_builders), tr(R.string.ss_c_builders_d),
 )
 
 class LabComplication : ClashComplication(
-    SmartOptions(what = setOf("lab")), "Clash laboratory", "Lab free, or time left on the research (configurable)",
+    SmartOptions(what = setOf("lab")), tr(R.string.ss_c_lab), tr(R.string.ss_c_lab_d),
 )
 
 class BoostComplication : ClashComplication(
-    SmartOptions(what = setOf("boost")), "Clash boost", "Time left on a running potion, snack or Clock Tower",
+    SmartOptions(what = setOf("boost")), tr(R.string.ss_c_boost), tr(R.string.ss_c_boost_d),
 )
 
 /** Smartspacer's periodic refresh: just ask it to re-read our providers (data is local). */

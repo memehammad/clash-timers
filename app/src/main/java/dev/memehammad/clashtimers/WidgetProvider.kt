@@ -149,20 +149,20 @@ class WidgetProvider : AppWidgetProvider() {
             v.setColor(R.id.m_sub, "setTextColor", if (free && !framed) R.color.w_on_free else if (framed) R.color.w_text2 else R.color.w_text)
 
             if (free) {
-                val label = if (builders.free == 1) "1 builder free" else "${builders.free} builders free"
+                val label = trq(R.plurals.p_builders_free, builders.free)
                 v.setTextViewText(R.id.m_title, label)
-                v.setTextViewText(R.id.m_sub, if (framed) "${builders.busy} of ${builders.total} working" else label)
+                v.setTextViewText(R.id.m_sub, if (framed) tr(R.string.n_of_m_working, builders.busy, builders.total) else label)
             } else {
-                v.setTextViewText(R.id.m_title, "All busy")
+                v.setTextViewText(R.id.m_title, tr(R.string.all_busy_short))
                 val next = builders.nextFreeSec
                 val left = (next ?: 0L) * 1000 - now
                 when {
                     next == null -> v.setTextViewText(R.id.m_sub, "")
                     left < DAY_MS && !Format.clock -> {
-                        v.setTextViewText(R.id.m_sub, "Free in ")
+                        v.setTextViewText(R.id.m_sub, tr(R.string.free_in_prefix))
                         showChrono(v, R.id.m_chrono, left)
                     }
-                    framed -> v.setTextViewText(R.id.m_sub, "Free ${Format.phrase(left, now)}")
+                    framed -> v.setTextViewText(R.id.m_sub, tr(R.string.free_x, Format.phrase(left, now)))
                     else -> v.setTextViewText(R.id.m_sub, Format.left(left, now, short = true))
                 }
             }
@@ -173,7 +173,7 @@ class WidgetProvider : AppWidgetProvider() {
                     v.setFloat(id, "setAlpha", 0.45f)
                 }
                 v.setViewVisibility(R.id.m_chrono, View.GONE)
-                v.setTextViewText(R.id.m_sub, if (framed) Stale.label(village, now) else "Re-export")
+                v.setTextViewText(R.id.m_sub, if (framed) Stale.label(village, now) else tr(R.string.re_export))
                 v.setInt(R.id.m_pill, "setBackgroundResource", R.drawable.pill_stale_bg)
                 v.setColor(R.id.m_sub, "setTextColor", if (framed) R.color.w_text2 else R.color.w_on_stale)
             }
@@ -259,7 +259,7 @@ class WidgetProvider : AppWidgetProvider() {
             if (!free && next != null) {
                 val left = next * 1000 - now
                 if (left < DAY_MS && !Format.clock) showChrono(v, R.id.s_chrono, left)
-                else v.setTextViewText(R.id.s_sub, "Next free ${Format.phrase(left, now)}")
+                else v.setTextViewText(R.id.s_sub, tr(R.string.next_free_x, Format.phrase(left, now)))
             }
 
             // Chips: Lab, Pets, Builder Base, Star Lab (only those unlocked).
@@ -272,7 +272,7 @@ class WidgetProvider : AppWidgetProvider() {
                 v.setViewVisibility(root, View.VISIBLE)
                 v.setTextViewText(labelId, label)
                 if (s.free > 0) {
-                    v.setTextViewText(valueId, if (s.total > 1) "${s.free} free" else "Idle")
+                    v.setTextViewText(valueId, if (s.total > 1) trq(R.plurals.p_free, s.free) else tr(R.string.t_idle))
                     v.setInt(root, "setBackgroundResource", R.drawable.chip_free_bg)
                     v.setColor(labelId, "setTextColor", R.color.w_on_chip_free)
                     v.setColor(valueId, "setTextColor", R.color.w_on_chip_free)
@@ -296,7 +296,7 @@ class WidgetProvider : AppWidgetProvider() {
             val stale = Stale.isStale(village, now) && opts.has(WidgetOptions.STALE)
             v.setViewVisibility(R.id.s_stale, if (stale) View.VISIBLE else View.GONE)
             if (stale) {
-                v.setTextViewText(R.id.s_stale, "${Stale.label(village, now)} · copy a new one in Clash")
+                v.setTextViewText(R.id.s_stale, tr(R.string.stale_copy, Stale.label(village, now)))
                 v.setFloat(R.id.s_block, "setAlpha", 0.5f)
             }
         }

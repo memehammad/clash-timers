@@ -1,6 +1,9 @@
 package dev.memehammad.clashtimers.ui
 
 import androidx.compose.animation.animateColorAsState
+import dev.memehammad.clashtimers.R
+import dev.memehammad.clashtimers.tr
+import dev.memehammad.clashtimers.trq
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
@@ -59,27 +62,27 @@ private class Page(
     val openClash: Boolean = false,
 )
 
-private val pages = listOf(
+private val pages get() = listOf(
     Page(
         R.drawable.shape_cookie, icon = R.drawable.ic_hammer,
-        title = "Never miss a free builder",
-        body = "Clash Timers shows when your builders, lab and pets are free, right on your home screen.",
+        title = tr(R.string.tut1_t),
+        body = tr(R.string.tut1_b),
     ),
     Page(
         R.drawable.shape_clover, vector = MaterialIcons.Filled.Settings,
-        title = "Copy your export",
-        body = "In Clash of Clans, open Settings, then More Settings, then Data Export, and tap Copy.",
+        title = tr(R.string.tut2_t),
+        body = tr(R.string.tut2_b),
         openClash = true,
     ),
     Page(
         R.drawable.shape_flower, vector = MaterialIcons.Filled.Check,
-        title = "Come back here",
-        body = "Clash Timers picks up the export by itself. Copy a new one after you start upgrades or use a potion.",
+        title = tr(R.string.tut3_t),
+        body = tr(R.string.tut3_b),
     ),
     Page(
         R.drawable.shape_sunny, vector = MaterialIcons.Filled.Home,
-        title = "Add the widget",
-        body = "Long-press your home screen, tap Widgets and find Clash Timers. You'll get a notification when something finishes.",
+        title = tr(R.string.tut4_t),
+        body = tr(R.string.tut4_b),
     ),
 )
 
@@ -97,7 +100,7 @@ fun Tutorial(onDone: () -> Unit) {
     Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
         Column(Modifier.systemBarsPadding().padding(horizontal = 24.dp, vertical = 16.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                TextButton(onClick = onDone, enabled = !last) { Text(if (last) "" else "Skip") }
+                TextButton(onClick = onDone, enabled = !last) { Text(if (last) "" else tr(R.string.skip)) }
             }
             HorizontalPager(state, Modifier.weight(1f)) { i ->
                 val p = pages[i]
@@ -130,7 +133,7 @@ fun Tutorial(onDone: () -> Unit) {
                         val launch = context.packageManager.getLaunchIntentForPackage("com.supercell.clashofclans")
                         if (launch != null) {
                             Spacer(Modifier.height(16.dp))
-                            TextButton(onClick = { context.startActivity(launch) }) { Text("Open Clash of Clans") }
+                            TextButton(onClick = { context.startActivity(launch) }) { Text(tr(R.string.open_clash)) }
                         }
                     }
                 }
@@ -152,7 +155,7 @@ fun Tutorial(onDone: () -> Unit) {
                 onClick = { if (last) onDone() else scope.launch { state.animateScrollToPage(state.currentPage + 1) } },
                 shape = CircleShape,
                 modifier = Modifier.fillMaxWidth().height(56.dp),
-            ) { Text(if (last) "Get started" else "Next", style = MaterialTheme.typography.titleMedium) }
+            ) { Text(tr(if (last) R.string.get_started else R.string.next), style = MaterialTheme.typography.titleMedium) }
         }
     }
 }
@@ -175,32 +178,32 @@ fun Setup(
             androidx.compose.foundation.lazy.LazyColumn(Modifier.weight(1f)) {
                 item {
                     Column(Modifier.padding(start = 8.dp, top = 24.dp, bottom = 20.dp)) {
-                        Text("Quick setup", style = MaterialTheme.typography.displaySmall)
+                        Text(tr(R.string.quick_setup), style = MaterialTheme.typography.displaySmall)
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "A few choices, then a short tour. You can change all of this later.",
+                            tr(R.string.quick_setup_d),
                             style = MaterialTheme.typography.bodyLarge,
                             color = scheme.onSurfaceVariant,
                         )
                     }
                 }
                 item {
-                    SetupCard(R.drawable.shape_cookie, R.drawable.ic_hammer, "Notifications", "Get told the moment a builder, the lab or a pet is free.") {
+                    SetupCard(R.drawable.shape_cookie, R.drawable.ic_hammer, tr(R.string.notifications), tr(R.string.notifications_d)) {
                         if (notificationsOn) {
-                            Text("On", style = MaterialTheme.typography.titleMedium, color = scheme.primary)
+                            Text(tr(R.string.t_on), style = MaterialTheme.typography.titleMedium, color = scheme.primary)
                         } else {
-                            Button(onClick = onNotifications, shape = CircleShape) { Text("Allow") }
+                            Button(onClick = onNotifications, shape = CircleShape) { Text(tr(R.string.t_allow)) }
                         }
                     }
                 }
                 item {
-                    SetupCard(R.drawable.shape_clover, R.drawable.ic_hourglass, "Idle builder reminder", "Nudge me again if a builder sits free for a while.") {
+                    SetupCard(R.drawable.shape_clover, R.drawable.ic_hourglass, tr(R.string.idle_reminder), tr(R.string.idle_setup_d)) {
                         androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             for (m in listOf(0, 30, 60, 120)) {
                                 androidx.compose.material3.FilterChip(
                                     selected = reminderMinutes == m,
                                     onClick = { onReminder(m) },
-                                    label = { Text(if (m == 0) "Off" else if (m < 60) "$m min" else "${m / 60} h") },
+                                    label = { Text(if (m == 0) tr(R.string.t_off) else if (m < 60) tr(R.string.t_minutes, m) else tr(R.string.t_hours, m / 60)) },
                                     shape = CircleShape,
                                 )
                             }
@@ -209,14 +212,14 @@ fun Setup(
                 }
                 item {
                     val (label, text) = when (autoImport) {
-                        dev.memehammad.clashtimers.AutoImport.State.SHIZUKU_MISSING -> "Get Shizuku" to "Optional. With the free Shizuku app, exports import by themselves when you tap Copy in Clash."
-                        dev.memehammad.clashtimers.AutoImport.State.NEEDS_PERMISSION -> "Allow" to "Shizuku is installed. Allow it so exports import by themselves when you tap Copy in Clash."
-                        dev.memehammad.clashtimers.AutoImport.State.OFF -> "Turn on" to "Exports import by themselves when you tap Copy in Clash."
-                        dev.memehammad.clashtimers.AutoImport.State.ON -> "" to "On. Exports import by themselves when you tap Copy in Clash."
+                        dev.memehammad.clashtimers.AutoImport.State.SHIZUKU_MISSING -> tr(R.string.get_shizuku) to tr(R.string.ai_s_missing)
+                        dev.memehammad.clashtimers.AutoImport.State.NEEDS_PERMISSION -> tr(R.string.t_allow) to tr(R.string.ai_s_perm)
+                        dev.memehammad.clashtimers.AutoImport.State.OFF -> tr(R.string.turn_on) to tr(R.string.ai_s_off)
+                        dev.memehammad.clashtimers.AutoImport.State.ON -> "" to tr(R.string.ai_s_on)
                     }
-                    SetupCard(R.drawable.shape_flower, R.drawable.ic_bolt, "Auto-import", text) {
+                    SetupCard(R.drawable.shape_flower, R.drawable.ic_bolt, tr(R.string.ai_title), text) {
                         if (autoImport == dev.memehammad.clashtimers.AutoImport.State.ON) {
-                            Text("On", style = MaterialTheme.typography.titleMedium, color = scheme.primary)
+                            Text(tr(R.string.t_on), style = MaterialTheme.typography.titleMedium, color = scheme.primary)
                         } else {
                             androidx.compose.material3.FilledTonalButton(onClick = onAutoImport, shape = CircleShape) { Text(label) }
                         }
@@ -227,7 +230,7 @@ fun Setup(
                 onClick = onDone,
                 shape = CircleShape,
                 modifier = Modifier.fillMaxWidth().padding(top = 12.dp).height(56.dp),
-            ) { Text("Continue", style = MaterialTheme.typography.titleMedium) }
+            ) { Text(tr(R.string.continue_), style = MaterialTheme.typography.titleMedium) }
         }
     }
 }
