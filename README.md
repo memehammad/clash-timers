@@ -47,10 +47,10 @@ versions on GitHub.
   the widget updates on its own.
 
 <p align="center">
-  <img src="docs/img/widget_compact_light.png" alt="Clash of Clans widget, light mode" width="360">
-  <img src="docs/img/widget_compact_dark.png" alt="Clash of Clans widget, dark mode" width="360"><br>
-  <img src="docs/img/widget_small_light.png" alt="Small 4x1 Clash of Clans builder widget" width="360">
-  <img src="docs/img/widget_badge_dark.png" alt="1x1 free builder badge" width="120">
+  <img src="docs/img/teal/light/widget_compact.png" alt="Clash of Clans widget, light mode" width="360">
+  <img src="docs/img/rose/dark/widget_compact.png" alt="Clash of Clans widget, dark mode" width="360"><br>
+  <img src="docs/img/teal/light/widget_small.png" alt="Small 4x1 Clash of Clans builder widget" width="360">
+  <img src="docs/img/rose/dark/widget_badge.png" alt="1x1 free builder badge" width="120">
 </p>
 
 ## At a Glance (Smartspacer)

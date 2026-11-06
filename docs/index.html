@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="teal">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,39 +21,88 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Clash Timers", "alternateName": "Clash of Clans Widget", "description": "A Clash of Clans widget for Android that shows free builders, upgrade timers, laboratory research, pets and hero status on the home screen, with notifications.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Android 12+", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "image": "https://memehammad.github.io/clash-timers/img/hero.png", "downloadUrl": "https://github.com/memehammad/clash-timers/releases/latest", "url": "https://memehammad.github.io/clash-timers/", "license": "https://opensource.org/licenses/MIT"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is there a Clash of Clans widget for Android?", "acceptedAnswer": {"@type": "Answer", "text": "Clash of Clans has no widget of its own. Clash Timers adds one: free builders, upgrade timers, research and heroes on your home screen."}}, {"@type": "Question", "name": "Do I need to log in?", "acceptedAnswer": {"@type": "Answer", "text": "No. It uses the game’s own Data Export. No account or Supercell ID is needed."}}, {"@type": "Question", "name": "Can I get banned?", "acceptedAnswer": {"@type": "Answer", "text": "Clash Timers never touches the game. It only reads the export the game gives you, and nothing is sent anywhere."}}, {"@type": "Question", "name": "Does it update by itself?", "acceptedAnswer": {"@type": "Answer", "text": "Timers count down live. After starting new upgrades, copy a fresh export, or turn on auto-import with Shizuku and it happens on its own."}}, {"@type": "Question", "name": "Is there an iPhone version?", "acceptedAnswer": {"@type": "Answer", "text": "No, Clash Timers is for Android 12 and newer."}}]}</script>
 <style>
-  /* Material You tonal schemes from two real wallpapers (teal and rose), light and dark. */
+  /* Material You "Tonal Spot" schemes, generated with Google's material-color-utilities
+     from two wallpaper colours (teal #4E8FA8, rose #B5655A), as Android does. */
   :root, [data-palette="teal"] {
-    --surface: #F6FAFE; --surface-low: #EEF3F7; --surface-high: #E2E8EC; --on-surface: #171C20; --on-surface-variant: #40484D;
-    --outline-variant: #C0C7CD;
-    --primary: #1F6681; --on-primary: #FFFFFF; --primary-container: #C2E8FB; --on-primary-container: #001F2A;
-    --secondary-container: #D0E6F2; --on-secondary-container: #0A1E27;
-    --tertiary-container: #DFE0FF; --on-tertiary-container: #161A37;
-    --hero: #C2E8FB; --on-hero: #001F2A; --on-hero-variant: #24485A;
+    --surface: #F5FAFD;
+    --surface-low: #F0F4F7;
+    --surface-high: #E4E9EC;
+    --on-surface: #171C1F;
+    --on-surface-variant: #40484C;
+    --outline-variant: #C0C8CC;
+    --primary: #0C6780;
+    --on-primary: #FFFFFF;
+    --primary-container: #BAEAFF;
+    --on-primary-container: #004D62;
+    --secondary-container: #CFE6F1;
+    --on-secondary-container: #354A53;
+    --tertiary-container: #E2DFFF;
+    --on-tertiary-container: #444465;
+    --surface-highest: #DEE3E6;
+    --hero: #BAEAFF;
+    --on-hero: #004D62;
+    --on-hero-variant: #004D62;
   }
   [data-palette="rose"] {
-    --surface: #FFF8F6; --surface-low: #FDF0ED; --surface-high: #F5E3DF; --on-surface: #231918; --on-surface-variant: #534341;
+    --surface: #FFF8F7;
+    --surface-low: #FFF0EE;
+    --surface-high: #F7E4E1;
+    --on-surface: #231918;
+    --on-surface-variant: #534341;
     --outline-variant: #D8C2BE;
-    --primary: #904A40; --on-primary: #FFFFFF; --primary-container: #FFDAD4; --on-primary-container: #3A0905;
-    --secondary-container: #FFDAD5; --on-secondary-container: #2C1512;
-    --tertiary-container: #FBDFA6; --on-tertiary-container: #251A00;
-    --hero: #FFDAD4; --on-hero: #3A0905; --on-hero-variant: #73342A;
+    --primary: #904A41;
+    --on-primary: #FFFFFF;
+    --primary-container: #FFDAD5;
+    --on-primary-container: #73342B;
+    --secondary-container: #FFDAD5;
+    --on-secondary-container: #5D3F3B;
+    --tertiary-container: #FCDFA6;
+    --on-tertiary-container: #574419;
+    --surface-highest: #F1DEDC;
+    --hero: #FFDAD5;
+    --on-hero: #73342B;
+    --on-hero-variant: #73342B;
   }
   @media (prefers-color-scheme: dark) {
     :root, [data-palette="teal"] {
-      --surface: #0F1417; --surface-low: #171C20; --surface-high: #252B2F; --on-surface: #DEE3E8; --on-surface-variant: #C0C7CD;
-      --outline-variant: #40484D;
-      --primary: #8FCFEB; --on-primary: #003547; --primary-container: #1F4A5A; --on-primary-container: #C2E8FB;
-      --secondary-container: #34444D; --on-secondary-container: #D0E6F2;
-      --tertiary-container: #424565; --on-tertiary-container: #DFE0FF;
-      --hero: #1B2D35; --on-hero: #DEF2FC; --on-hero-variant: #A9C7D4;
+      --surface: #0F1417;
+      --surface-low: #171C1F;
+      --surface-high: #252B2D;
+      --on-surface: #DEE3E6;
+      --on-surface-variant: #C0C8CC;
+      --outline-variant: #40484C;
+      --primary: #89D0ED;
+      --on-primary: #003545;
+      --primary-container: #004D62;
+      --on-primary-container: #BAEAFF;
+      --secondary-container: #354A53;
+      --on-secondary-container: #CFE6F1;
+      --tertiary-container: #444465;
+      --on-tertiary-container: #E2DFFF;
+      --surface-highest: #303638;
+      --hero: #252B2D;
+      --on-hero: #DEE3E6;
+      --on-hero-variant: #C0C8CC;
     }
     [data-palette="rose"] {
-      --surface: #1A1110; --surface-low: #231918; --surface-high: #322826; --on-surface: #F1DFDC; --on-surface-variant: #D8C2BE;
+      --surface: #1A1110;
+      --surface-low: #231918;
+      --surface-high: #322826;
+      --on-surface: #F1DEDC;
+      --on-surface-variant: #D8C2BE;
       --outline-variant: #534341;
-      --primary: #FFB4A8; --on-primary: #561E16; --primary-container: #5C2F28; --on-primary-container: #FFDAD4;
-      --secondary-container: #5D3F3B; --on-secondary-container: #FFDAD5;
-      --tertiary-container: #5B4316; --on-tertiary-container: #FBDFA6;
-      --hero: #33211E; --on-hero: #FFE6E1; --on-hero-variant: #E2BEB8;
+      --primary: #FFB4A9;
+      --on-primary: #561E17;
+      --primary-container: #73342B;
+      --on-primary-container: #FFDAD5;
+      --secondary-container: #5D3F3B;
+      --on-secondary-container: #FFDAD5;
+      --tertiary-container: #574419;
+      --on-tertiary-container: #FCDFA6;
+      --surface-highest: #3D3231;
+      --hero: #322826;
+      --on-hero: #F1DEDC;
+      --on-hero-variant: #D8C2BE;
     }
   }
   * { box-sizing: border-box; }
@@ -77,11 +126,18 @@
   .swatch { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; padding: 3px; cursor: pointer; background-clip: content-box; transition: border-radius .25s; }
   .swatch[aria-pressed="true"] { border-color: var(--on-hero); border-radius: 12px; }
   .swatch.teal { background-color: #4E8FA8; } .swatch.rose { background-color: #B5655A; }
+  /* Screenshots rendered in each palette and mode; only the matching one shows. */
+  .pm { display: none; }
+  [data-palette="teal"] .pm.teal.light, [data-palette="rose"] .pm.rose.light { display: block; }
+  @media (prefers-color-scheme: dark) {
+    [data-palette="teal"] .pm.teal.light, [data-palette="rose"] .pm.rose.light { display: none; }
+    [data-palette="teal"] .pm.teal.dark, [data-palette="rose"] .pm.rose.dark { display: block; }
+  }
   h1 {
     margin: 0; font-size: clamp(40px, 6.4vw, 76px); line-height: 1.02; letter-spacing: -0.02em;
     font-weight: 820; font-variation-settings: "wdth" 118, "opsz" 144;
   }
-  .hero p.lead { font-size: clamp(18px, 2vw, 21px); max-width: 34ch; margin: 24px 0 28px; color: var(--on-hero-variant); }
+  .hero p.lead { font-size: clamp(18px, 2vw, 21px); max-width: 34ch; margin: 24px 0 28px; color: var(--on-hero-variant); opacity: .85; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; }
   .btn {
     display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px;
@@ -93,7 +149,7 @@
   .btn-tonal { background: var(--surface); color: var(--primary); }
   .stage { position: relative; aspect-ratio: 1; max-width: 520px; width: 100%; justify-self: center; }
   .stage .shape { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .stage .shape path { fill: var(--primary); }
+  .stage .shape path { fill: var(--tertiary-container); }
   .stage .spin { animation: spin 60s linear infinite; transform-origin: 50% 50%; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .stage .spin { animation: none; } }
@@ -118,7 +174,7 @@
 
   /* Screenshots on a tonal panel. */
   .gallery { background: var(--primary-container); border-radius: 48px; padding: 40px 24px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; }
-  .gallery img { max-width: 100%; height: auto; }
+  .gallery img { width: 100%; height: auto; }
   .gallery .w { width: min(380px, 100%); }
   .gallery .b { width: 132px; }
 
@@ -174,8 +230,8 @@
     </div>
     <div class="stage" aria-hidden="true">
       <svg class="shape" viewBox="-4 -4 108 108"><g class="spin"><path d="M50.00,0.52 C52.56,0.52 55.12,1.55 57.00,3.61 C59.49,6.34 63.35,7.38 66.88,6.25 C72.19,4.56 77.81,7.81 79.00,13.25 C79.79,16.87 82.62,19.69 86.23,20.48 C91.68,21.67 94.92,27.29 93.23,32.61 C92.11,36.13 93.14,39.99 95.88,42.48 C100.00,46.24 100.00,52.73 95.88,56.49 C93.14,58.98 92.11,62.83 93.23,66.36 C94.92,71.67 91.68,77.29 86.23,78.49 C82.62,79.28 79.79,82.10 79.00,85.71 C77.81,91.16 72.19,94.41 66.88,92.72 C63.35,91.59 59.49,92.63 57.00,95.36 C53.24,99.48 46.76,99.48 43.00,95.36 C40.51,92.63 36.65,91.59 33.12,92.72 C27.81,94.41 22.19,91.16 21.00,85.71 C20.21,82.10 17.38,79.28 13.77,78.49 C8.32,77.29 5.08,71.67 6.77,66.36 C7.89,62.83 6.86,58.98 4.12,56.49 C0.00,52.73 0.00,46.24 4.12,42.48 C6.86,39.99 7.89,36.13 6.77,32.61 C5.08,27.29 8.32,21.68 13.77,20.48 C17.38,19.69 20.21,16.87 21.00,13.25 C22.19,7.81 27.81,4.56 33.12,6.25 C36.65,7.38 40.51,6.34 43.00,3.61 C44.88,1.55 47.44,0.52 50.00,0.52Z"/></g></svg>
-      <img class="w-big" src="img/widget_compact_dark.png" alt="">
-      <img class="w-badge" src="img/widget_badge_light.png" alt="">
+      <img class="w-big pm teal light" src="img/teal/light/widget_compact.png" alt=""><img class="w-big pm teal dark" src="img/teal/dark/widget_compact.png" alt=""><img class="w-big pm rose light" src="img/rose/light/widget_compact.png" alt=""><img class="w-big pm rose dark" src="img/rose/dark/widget_compact.png" alt="">
+      <img class="w-badge pm teal light" src="img/teal/light/widget_badge.png" alt=""><img class="w-badge pm teal dark" src="img/teal/dark/widget_badge.png" alt=""><img class="w-badge pm rose light" src="img/rose/light/widget_badge.png" alt=""><img class="w-badge pm rose dark" src="img/rose/dark/widget_badge.png" alt="">
     </div>
   </div>
 </header>
@@ -222,9 +278,9 @@
     <h2 id="sizes">A widget for every spot</h2>
     <p class="intro">From a 1×1 builder badge to a full list. It follows your wallpaper colours, in light and dark mode.</p>
     <div class="gallery">
-      <img class="w" src="img/widget_compact_light.png" alt="Clash of Clans widget, 4×2, light mode" width="380" loading="lazy">
-      <img class="w" src="img/widget_small_dark.png" alt="Clash of Clans builder widget, 4×1, dark mode" width="380" loading="lazy">
-      <img class="b" src="img/widget_badge_dark.png" alt="Free builder badge, 1×1" width="132" loading="lazy">
+      <div class="w"><img class=" pm teal light" src="img/teal/light/widget_compact.png" alt="Clash of Clans widget, 4×2" loading="lazy"><img class=" pm teal dark" src="img/teal/dark/widget_compact.png" alt="Clash of Clans widget, 4×2" loading="lazy"><img class=" pm rose light" src="img/rose/light/widget_compact.png" alt="Clash of Clans widget, 4×2" loading="lazy"><img class=" pm rose dark" src="img/rose/dark/widget_compact.png" alt="Clash of Clans widget, 4×2" loading="lazy"></div>
+      <div class="w"><img class=" pm teal light" src="img/teal/light/widget_small.png" alt="Clash of Clans builder widget, 4×1" loading="lazy"><img class=" pm teal dark" src="img/teal/dark/widget_small.png" alt="Clash of Clans builder widget, 4×1" loading="lazy"><img class=" pm rose light" src="img/rose/light/widget_small.png" alt="Clash of Clans builder widget, 4×1" loading="lazy"><img class=" pm rose dark" src="img/rose/dark/widget_small.png" alt="Clash of Clans builder widget, 4×1" loading="lazy"></div>
+      <div class="b"><img class=" pm teal light" src="img/teal/light/widget_badge.png" alt="Free builder badge, 1×1" loading="lazy"><img class=" pm teal dark" src="img/teal/dark/widget_badge.png" alt="Free builder badge, 1×1" loading="lazy"><img class=" pm rose light" src="img/rose/light/widget_badge.png" alt="Free builder badge, 1×1" loading="lazy"><img class=" pm rose dark" src="img/rose/dark/widget_badge.png" alt="Free builder badge, 1×1" loading="lazy"></div>
     </div>
   </section>
 
