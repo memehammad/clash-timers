@@ -11,8 +11,8 @@ that adds things to the At a Glance bar above your clock. Install Smartspacer, t
 Clash Timers under Targets (the bigger card) or Complications (the small chips next to the date).
 
 - See at a glance how many builders are free, or when the next one finishes.
-- The card comes in a colourful look: a little chip for builders, lab and so on, with a dot for
-  each builder (filled means busy). On older Android versions you get a clean classic card.
+- The card matches the rest of At a Glance. On Android 16 you can switch it to a colourful
+  look with a chip for builders, lab and so on, and a dot for each builder.
 - Small chips for builders, the lab and running potions fit right next to the date.
 - Tap any of them to jump straight into Clash of Clans.
 
@@ -24,9 +24,6 @@ Clash Timers under Targets (the bigger card) or Complications (the small chips n
 - which village it follows, and whether it shows on your lock screen.
 
 You can add the card or chips several times with different settings.
-
-**A fresh icon.** A golden stopwatch with a hammer for a hand, in the new Material style, and a
-matching themed icon for Android's monochrome icon option.
 
 ## 1.0.23
 

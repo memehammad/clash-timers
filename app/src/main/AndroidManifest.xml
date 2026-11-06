@@ -100,7 +100,7 @@
         <activity
             android:name=".SmartspaceSettingsActivity"
             android:exported="true"
-            android:icon="@drawable/ic_hammer"
+            android:icon="@drawable/ic_ss_hammer"
             android:label="Clash Timers settings"
             android:description="@string/smartspace_settings_desc" />
 

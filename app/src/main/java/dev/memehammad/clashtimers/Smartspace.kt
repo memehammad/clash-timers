@@ -35,7 +35,7 @@ data class SmartOptions(
     /** Card: also show on the lock screen. */
     val lockScreen: Boolean = true,
     /** Card look: playful (coloured chips, Android 16+) or plain. */
-    val style: String = "playful",
+    val style: String = "plain",
 ) {
     fun toJson(): String = JSONObject().put("village", village)
         .put("what", org.json.JSONArray(what.toList())).put("show", org.json.JSONArray(show.toList()))
@@ -208,7 +208,7 @@ object Smartspace {
         "pet" -> R.drawable.ic_paw
         "starlab" -> R.drawable.ic_star
         "boost" -> R.drawable.ic_bolt
-        else -> R.drawable.ic_hammer
+        else -> R.drawable.ic_ss_hammer
     }
 
     fun content(c: Context, o: SmartOptions, now: Long): Content? {
@@ -313,7 +313,7 @@ class BuildersTarget : SmartspacerTargetProvider() {
     override fun getConfig(smartspacerId: String?) = Config(
         label = "Clash Timers",
         description = "Builders, lab, pets or boosts: what's free and what finishes next",
-        icon = AndroidIcon.createWithResource(provideContext(), R.drawable.ic_hammer),
+        icon = AndroidIcon.createWithResource(provideContext(), R.drawable.ic_ss_hammer),
         allowAddingMoreThanOnce = true,
         configActivity = Smartspace.settingsIntent(provideContext(), "target"),
         refreshPeriodMinutes = 1,
@@ -351,7 +351,7 @@ abstract class ClashComplication(
         icon = AndroidIcon.createWithResource(provideContext(), when (default.what.first()) {
             "lab" -> R.drawable.ic_flask
             "boost" -> R.drawable.ic_bolt
-            else -> R.drawable.ic_hammer
+            else -> R.drawable.ic_ss_hammer
         }),
         allowAddingMoreThanOnce = true,
         configActivity = Smartspace.settingsIntent(provideContext(), "chip:${default.what.first()}"),
