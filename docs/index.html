@@ -148,6 +148,21 @@
   .btn svg { width: 22px; height: 22px; fill: currentColor; }
   .btn-filled { background: var(--primary); color: var(--on-primary); }
   .btn-tonal { background: var(--surface); color: var(--primary); }
+  /* Install help dialog */
+  dialog.install { border: 0; padding: 0; border-radius: 28px; background: var(--surface-high); color: var(--on-surface); width: min(92vw, 460px); box-shadow: 0 16px 60px rgba(0,0,0,.3); }
+  dialog.install::backdrop { background: rgba(0,0,0,.4); }
+  dialog.install .in { padding: 24px; }
+  dialog.install h2 { margin: 0 0 4px; font-size: 24px; font-weight: 700; }
+  dialog.install .sub { margin: 0 0 18px; color: var(--on-surface-variant); }
+  dialog.install ol { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 14px; }
+  dialog.install li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; }
+  dialog.install li::before { content: counter(s); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-container); color: var(--on-primary-container); font-weight: 700; }
+  dialog.install li b { display: block; }
+  dialog.install li span { color: var(--on-surface-variant); font-size: 15px; }
+  dialog.install .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; flex-wrap: wrap; }
+  dialog.install .row .btn { border: 0; cursor: pointer; }
+  dialog.install .row .btn { min-height: 44px; padding: 0 20px; font-size: 15px; }
+  dialog.install .tip { margin: 18px 0 0; font-size: 14px; color: var(--on-surface-variant); }
   /* Live demo: a working widget you can play with. */
   .demo-wrap { position: relative; display: grid; place-items: center; padding: 28px 0; }
   .demo-bg { position: absolute; width: min(118%, 560px); aspect-ratio: 1; z-index: 0; }
@@ -257,7 +272,7 @@
       <h1>The Clash of Clans widget for Android</h1>
       <p class="lead">See your free builders, upgrade timers, research and heroes on your home screen, and get a ping the moment a builder is free.</p>
       <div class="actions">
-        <a class="btn btn-filled" href="https://github.com/memehammad/clash-timers/releases/latest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5,20h14v-2H5V20zM19,9h-4V3H9v6H5l7,7L19,9z"/></svg>Download the app</a>
+        <a class="btn btn-filled js-dl" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5,20h14v-2H5V20zM19,9h-4V3H9v6H5l7,7L19,9z"/></svg>Download the app</a>
         <a class="btn btn-tonal" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Get it with Obtainium</a>
       </div>
       <div class="palettes" role="group" aria-label="Page colours">
@@ -347,7 +362,7 @@
     <ol class="steps">
         <li class="step">
           <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M100.00,50.00 C100.00,55.17 99.19,60.35 97.57,65.33 C94.34,75.29 88.03,83.97 79.56,90.12 C71.08,96.28 60.88,99.60 50.40,99.60 C39.93,99.60 29.73,96.28 21.25,90.12 C12.78,83.97 6.47,75.29 3.24,65.33 C0.00,55.36 0.00,44.64 3.24,34.67 C6.47,24.71 12.78,16.03 21.25,9.88 C29.73,3.72 39.93,0.40 50.40,0.40 C60.88,0.40 71.08,3.72 79.56,9.88 C88.03,16.03 94.34,24.71 97.57,34.67 C99.19,39.65 100.00,44.83 100.00,50.00Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">1</text></svg>
-          <div><h3>Install Clash Timers</h3><p>From the <a href="https://github.com/memehammad/clash-timers/releases/latest">latest release</a>, or with Obtainium to get updates automatically.</p></div>
+          <div><h3>Install Clash Timers</h3><p><a class="js-dl" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download>Download the APK</a>, or with Obtainium to get updates automatically.</p></div>
         </li>
         <li class="step">
           <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M87.14,87.08 C81.05,93.18 71.59,95.91 62.20,91.86 C60.84,91.27 59.48,90.69 58.12,90.10 C52.95,87.87 47.09,87.87 41.92,90.11 C40.58,90.70 39.23,91.28 37.89,91.86 C19.11,100.00 0.05,80.97 8.16,62.18 C8.74,60.82 9.33,59.46 9.92,58.10 C12.15,52.93 12.14,47.07 9.90,41.90 C9.32,40.56 8.74,39.21 8.16,37.87 C0.02,19.09 19.04,0.03 37.83,8.14 C39.19,8.73 40.55,9.31 41.91,9.90 C47.08,12.13 52.95,12.13 58.11,9.89 C59.46,9.30 60.80,8.72 62.15,8.14 C80.93,0.00 99.98,19.03 91.88,37.82 C91.29,39.18 90.70,40.54 90.12,41.90 C87.88,47.07 87.89,52.93 90.13,58.10 C90.71,59.44 91.29,60.79 91.88,62.13 C95.95,71.52 93.22,80.98 87.14,87.08Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">2</text></svg>
@@ -458,6 +473,31 @@
         try { localStorage.setItem('palette', b.dataset.p); } catch (e) {}
       });
     });
+  })();
+</script>
+<dialog class="install" id="install" aria-labelledby="install-title">
+  <div class="in">
+    <h2 id="install-title">Your download has started</h2>
+    <p class="sub">Installing takes about a minute.</p>
+    <ol>
+      <li><div><b>Open the file</b><span>Tap the download notification, or find ClashTimers.apk in Files &gt; Downloads.</span></div></li>
+      <li><div><b>Allow the install</b><span>If Android asks, tap Settings, turn on "Allow from this source", then go back.</span></div></li>
+      <li><div><b>Tap Install</b><span>If Play Protect warns about an unknown app, tap More details &gt; Install anyway. The app is open source.</span></div></li>
+      <li><div><b>Copy your export</b><span>In Clash: Settings &gt; More Settings &gt; Data Export &gt; Copy. Then open Clash Timers.</span></div></li>
+    </ol>
+    <p class="tip">Want automatic updates? Install with <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Obtainium</a> instead. Didn't start? <a href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download>Download again</a>.</p>
+    <div class="row"><button class="btn btn-filled" type="button" id="install-close">Got it</button></div>
+  </div>
+</dialog>
+<script>
+  (function () {
+    var d = document.getElementById('install');
+    if (!d || !d.showModal) return;
+    document.querySelectorAll('.js-dl').forEach(function (a) {
+      a.addEventListener('click', function () { setTimeout(function () { d.showModal(); }, 300); });
+    });
+    document.getElementById('install-close').addEventListener('click', function () { d.close(); });
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
   })();
 </script>
 </body>
