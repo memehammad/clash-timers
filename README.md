@@ -1,51 +1,67 @@
-# Clash Timers
+<p align="center">
+  <img src="docs/img/icon.png" alt="Clash Timers icon" width="112">
+</p>
 
-A Material You home-screen widget for Clash of Clans that shows your running
-upgrades, research and cooldowns, and tells you the moment a builder is free.
+<h1 align="center">Clash Timers: a Clash of Clans widget for Android</h1>
 
-No account, no login, no server: it reads the village export the game itself
-provides. Your village data never leaves the phone; the only network request
-is an optional check for new versions on GitHub.
+<p align="center"><a href="https://memehammad.github.io/clash-timers/">memehammad.github.io/clash-timers</a></p>
+
+<p align="center">
+  <b>Free builders, upgrade timers, lab research and hero status for Clash of Clans, right on your home screen.</b><br>
+  Free, open source, no login, no ads.
+</p>
+
+<p align="center">
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="54"></a>
+  &nbsp;
+  <a href="https://github.com/memehammad/clash-timers/releases/latest"><img src="https://img.shields.io/github/v/release/memehammad/clash-timers?label=Download%20APK&style=for-the-badge" alt="Download the APK" height="40"></a>
+</p>
+
+<p align="center">
+  <img src="docs/img/hero.png" alt="Clash of Clans widget on an Android home screen: free builders, laboratory, pets and heroes" width="720">
+</p>
+
+Clash Timers is a **Clash of Clans widget** for Android. It shows how many builders are free,
+counts down every running upgrade, and tells you the moment a builder, the laboratory or the
+pet house is free, so you never leave a builder idle again.
+
+No account, no login, no server: it reads the village export the game itself provides. Your
+village data never leaves your phone; the only network request is an optional check for new
+versions on GitHub.
+
+## Why you'll like it
+
+- **Free builders at a glance.** How many builders are idle, or a live countdown to the next one.
+- **Every timer in one place.** Buildings, heroes, Gear Ups, Crafting Station modules,
+  laboratory research, pets, Builder Base, the Builder's Apprentice and Clock Tower.
+- **Notifications** the moment something finishes, plus an optional nudge if a builder sits idle.
+- **Hero status.** Which heroes can attack, and when an upgrading one is back.
+- **Boost planner.** See what a Builder or Research Potion, Builder Bite, Study Soup or Pet
+  Potion would finish before you use it. Active boosts are counted in every timer.
+- **At a Glance support** through [Smartspacer](https://github.com/KieronQuinn/Smartspacer):
+  free builders and what finishes next, right above your clock.
+- **Any size, your style.** From a 1x1 builder badge up to a full list, in Material You colours
+  that follow your wallpaper, light or dark.
+- **Several villages**, each with its own widget if you like.
+- **Optional auto-import** with [Shizuku](https://shizuku.rikka.app/): tap Copy in Clash and
+  the widget updates on its own.
+
+<p align="center">
+  <img src="docs/img/widget_compact_light.png" alt="Clash of Clans widget, light mode" width="360">
+  <img src="docs/img/widget_compact_dark.png" alt="Clash of Clans widget, dark mode" width="360"><br>
+  <img src="docs/img/widget_small_light.png" alt="Small 4x1 Clash of Clans builder widget" width="360">
+  <img src="docs/img/widget_badge_dark.png" alt="1x1 free builder badge" width="120">
+</p>
 
 ## At a Glance (Smartspacer)
 
-Add Clash Timers to the At a Glance bar with [Smartspacer](https://github.com/KieronQuinn/Smartspacer): a card with free builders and what finishes next, plus small chips for builders, lab and potions. Each one can be set to show only what you care about, and only when it matters.
+Add Clash Timers to the At a Glance bar above your clock with
+[Smartspacer](https://github.com/KieronQuinn/Smartspacer). There's a card with free builders
+and what finishes next, plus small chips for builders, lab and potions. You choose what each
+one tracks and when it shows up, for example only when a builder is free or in the hour before
+one finishes.
 
-## Features
-
-- **Free builders at a glance.** How many builders are idle, or a live
-  countdown to the next one.
-- **Everything that's running.** Building and hero upgrades, Gear Ups,
-  laboratory research, pets, Builder Base, helper and Clock Tower cooldowns.
-- **Status chips** for Laboratory, Pet House, Builder Base and Star Laboratory.
-- **Hero availability.** Which heroes can attack, and when an upgrading one is
-  back.
-- **Boost planner.** See what a Builder or Research Potion, Builder Bite, Study
-  Soup or Pet Potion would finish before you use it.
-- **Several villages.** Every export is saved by player tag; switch and name
-  them in the app, and pick a village per widget (long-press → widget
-  settings).
-- **Re-export hint.** Once something has finished since your last export, the
-  widget dims after a while (6 h to 48 h, or never) and asks for a fresh one.
-- **Customisable widgets.** Long-press a widget → settings to pick its village
-  and what it shows: status chips, heroes, boost banner, progress bars and
-  which sections appear in the list.
-- **Boost-aware timers.** Builder, Research and Pet Potions, Builder Bite,
-  Study Soup, Clock Tower and the Lab Assistant / Builder's Apprentice are
-  factored into the finish times. The widget switches to a boost theme while
-  one is active.
-- **Optional auto-import** with [Shizuku](https://shizuku.rikka.app/): tap
-  Copy in Clash and the widget updates without opening the app.
-- **Countdowns or finish times.** Show "2h 22m" or "Tomorrow 12:30", your choice.
-- **Notifications** when an upgrade, research or cooldown finishes.
-- **Optional idle-builder reminder** if a builder stays free for 15 min to 2 h.
-- **Optional live status.** An ongoing notification counting down to the next
-  free builder; a Live Update chip in the status bar on Android 16.
-- **Material 3 Expressive design** that follows your wallpaper colours, in
-  light and dark mode.
-- **Any size.** The widget adapts from 1x1 (free-builder badge) through 2x1,
-  2x2 and tall or wide layouts up to the full list with live squiggly
-  progress.
+<p align="center"><img src="docs/img/smartspacer_chips.png" alt="Clash of Clans builders and lab in At a Glance" width="420"></p>
 
 ## Requirements
 
@@ -63,7 +79,7 @@ updates automatically): tap the badge above on your phone, or add
 [release](../../releases/latest) and open it on your phone. You may need to
 allow installing apps from your browser or file manager.
 
-## Usage
+## How to use it
 
 1. In Clash of Clans, open **Settings → More Settings → Data Export** and tap
    **Copy**.
@@ -109,6 +125,26 @@ wrong, tap the builder card in the app to set it manually.
 - The export key names for Builder Bite, Study Soup and an active Clock Tower
   boost aren't documented and are matched by name. If one isn't picked up,
   please open an issue with an export taken while it's active.
+
+## FAQ
+
+**Is there a Clash of Clans widget for Android?**
+Clash of Clans has no widget of its own. Clash Timers adds one: free builders, upgrade
+timers, research and heroes on your home screen.
+
+**Do I need to log in or give my Supercell ID?**
+No. It uses the game's own Data Export (Settings → More Settings → Data Export → Copy).
+
+**Is it safe? Can I get banned?**
+It never touches the game and uses only what the game exports for you, the same data that
+upgrade trackers use. Nothing is sent anywhere.
+
+**Does it update by itself?**
+Timers count down live. After you start new upgrades, copy a fresh export, or turn on
+auto-import with Shizuku so it happens on its own.
+
+**iPhone?**
+Android only (Android 12 and newer).
 
 ## Changelog
 

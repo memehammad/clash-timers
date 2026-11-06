@@ -2,6 +2,11 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## 1.1.1
+
+**A brand new icon.** A golden timer ring with a hammer in the middle, made in the new Material
+style. If you use themed icons, there's a matching monochrome version too.
+
 ## 1.1
 
 **Your builders, right on your home screen's At a Glance**

@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'tools/**'
+      - 'docs/**'
       - '.gitignore'
   workflow_dispatch:
 

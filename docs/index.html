@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clash of Clans Widget for Android: Clash Timers (free, open source)</title>
+<meta name="description" content="Clash Timers is a free Clash of Clans widget for Android: free builders, upgrade timers, lab research, pets and hero status on your home screen, with notifications. No login, no ads.">
+<link rel="canonical" href="https://memehammad.github.io/clash-timers/">
+<link rel="icon" href="img/icon.png">
+<meta name="theme-color" content="#2E2178">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clash of Clans Widget for Android: Clash Timers">
+<meta property="og:description" content="Free builders, upgrade timers, research and heroes for Clash of Clans on your Android home screen. Free and open source.">
+<meta property="og:url" content="https://memehammad.github.io/clash-timers/">
+<meta property="og:image" content="https://memehammad.github.io/clash-timers/img/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Clash Timers",
+  "alternateName": "Clash of Clans Widget",
+  "description": "A Clash of Clans widget for Android that shows free builders, upgrade timers, laboratory research, pets and hero status on the home screen, with notifications.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Android 12+",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "image": "https://memehammad.github.io/clash-timers/img/hero.png",
+  "downloadUrl": "https://github.com/memehammad/clash-timers/releases/latest",
+  "url": "https://memehammad.github.io/clash-timers/",
+  "license": "https://opensource.org/licenses/MIT"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Is there a Clash of Clans widget for Android?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Clash of Clans has no widget of its own. Clash Timers is a free app that adds one: free builders, upgrade timers, research and heroes on your home screen."}},
+    {"@type": "Question", "name": "Do I need to log in to use the Clash of Clans widget?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. Clash Timers uses the game's own Data Export (Settings, More Settings, Data Export, Copy). No account or Supercell ID is needed."}},
+    {"@type": "Question", "name": "Can I get banned for using it?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Clash Timers never touches the game. It only reads the data export the game gives you, and nothing is sent anywhere."}},
+    {"@type": "Question", "name": "Does it notify me when a builder is free?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Yes. It notifies you when an upgrade, research or cooldown finishes, and can remind you if a builder stays idle."}}
+  ]
+}
+</script>
+<style>
+  :root { --bg:#1E1552; --bg2:#2E2178; --card:#FFFFFF14; --gold:#FFC23D; --text:#F3F0FF; --muted:#C9C2EE; }
+  * { box-sizing:border-box }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--text);
+         background:linear-gradient(160deg,var(--bg2),var(--bg)); min-height:100vh; line-height:1.55 }
+  main { max-width:980px; margin:0 auto; padding:48px 16px 64px }
+  header { display:flex; gap:20px; align-items:center }
+  header img { width:84px; height:84px; border-radius:24px }
+  h1 { font-size:clamp(28px,5vw,46px); line-height:1.1; margin:0 }
+  h1 span { color:var(--gold) }
+  .lead { font-size:19px; color:var(--muted); max-width:680px; margin:20px 0 28px }
+  .buttons { display:flex; gap:12px; flex-wrap:wrap }
+  .btn { display:inline-block; padding:14px 22px; border-radius:999px; font-weight:600; text-decoration:none }
+  .btn.primary { background:var(--gold); color:#2A1D00 }
+  .btn.ghost { background:var(--card); color:var(--text) }
+  .hero { width:100%; border-radius:28px; margin:40px 0; display:block }
+  h2 { font-size:26px; margin:48px 0 16px }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px }
+  .card { background:var(--card); border-radius:22px; padding:18px 20px }
+  .card b { display:block; font-size:17px; margin-bottom:4px }
+  .card p { margin:0; color:var(--muted) }
+  ol li { margin:6px 0 }
+  details { background:var(--card); border-radius:18px; padding:14px 18px; margin:8px 0 }
+  summary { cursor:pointer; font-weight:600 }
+  details p { color:var(--muted); margin:10px 0 0 }
+  a { color:var(--gold) }
+  footer { color:var(--muted); font-size:14px; margin-top:56px }
+  .shots { display:flex; gap:12px; flex-wrap:wrap; justify-content:center }
+  .shots img { max-width:100%; height:auto }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="img/icon.png" alt="Clash Timers app icon">
+    <h1>The <span>Clash of Clans widget</span> for Android</h1>
+  </header>
+  <p class="lead">Clash Timers puts your free builders, upgrade timers, laboratory research, pets and
+    heroes on your home screen, and tells you the moment a builder is free. Free, open source,
+    no login and no ads.</p>
+  <div class="buttons">
+    <a class="btn primary" href="https://github.com/memehammad/clash-timers/releases/latest">Download for Android</a>
+    <a class="btn ghost" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Get it with Obtainium</a>
+    <a class="btn ghost" href="https://github.com/memehammad/clash-timers">Source on GitHub</a>
+  </div>
+
+  <img class="hero" src="img/hero.png" alt="Clash of Clans widget on an Android home screen showing free builders, laboratory, pets and heroes" width="1200" height="630">
+
+  <h2>Everything Clash, at a glance</h2>
+  <div class="grid">
+    <div class="card"><b>Free builders</b><p>How many builders are idle, or a live countdown to the next one.</p></div>
+    <div class="card"><b>Every upgrade timer</b><p>Buildings, heroes, Gear Ups, Crafting Station, lab, pets, Builder Base, Apprentice and Clock Tower.</p></div>
+    <div class="card"><b>Notifications</b><p>Know the moment something finishes, and get a nudge if a builder sits idle.</p></div>
+    <div class="card"><b>Hero status</b><p>Which heroes can attack, and when an upgrading one is back.</p></div>
+    <div class="card"><b>Boost planner</b><p>See what a Builder Potion, Research Potion or Builder Bite would finish before you use it.</p></div>
+    <div class="card"><b>At a Glance</b><p>Free builders above your clock with Smartspacer, shown only when it matters.</p></div>
+    <div class="card"><b>Every widget size</b><p>From a 1x1 builder badge to a full list, in Material You colours, light or dark.</p></div>
+    <div class="card"><b>Private by design</b><p>No account, no server. Your village data never leaves your phone.</p></div>
+  </div>
+
+  <h2>Widgets in every size</h2>
+  <div class="shots">
+    <img src="img/widget_compact_light.png" alt="Clash of Clans widget 4x2, light mode" width="380" loading="lazy">
+    <img src="img/widget_compact_dark.png" alt="Clash of Clans widget 4x2, dark mode" width="380" loading="lazy">
+    <img src="img/widget_small_dark.png" alt="Clash of Clans builder widget 4x1" width="380" loading="lazy">
+    <img src="img/widget_badge_light.png" alt="Clash of Clans free builder badge 1x1" width="130" loading="lazy">
+  </div>
+
+  <h2>Set up in a minute</h2>
+  <ol>
+    <li>Install Clash Timers from the <a href="https://github.com/memehammad/clash-timers/releases/latest">latest release</a> (or with Obtainium for automatic updates).</li>
+    <li>In Clash of Clans, open <b>Settings → More Settings → Data Export</b> and tap <b>Copy</b>.</li>
+    <li>Open Clash Timers: the export is imported automatically.</li>
+    <li>Long-press your home screen → <b>Widgets</b> → <b>Clash Timers</b>.</li>
+  </ol>
+
+  <h2>Questions</h2>
+  <details><summary>Is there a Clash of Clans widget for Android?</summary>
+    <p>Clash of Clans has no widget of its own. Clash Timers adds one: free builders, upgrade timers, research and heroes on your home screen.</p></details>
+  <details><summary>Do I need to log in?</summary>
+    <p>No. It uses the game's own Data Export. No account or Supercell ID is needed.</p></details>
+  <details><summary>Can I get banned?</summary>
+    <p>Clash Timers never touches the game. It only reads the data export the game gives you, and nothing is sent anywhere.</p></details>
+  <details><summary>Does it update by itself?</summary>
+    <p>Timers count down live. After starting new upgrades, copy a fresh export, or turn on auto-import with Shizuku and it happens on its own.</p></details>
+  <details><summary>Is there an iPhone version?</summary>
+    <p>No, Clash Timers is Android only (Android 12 and newer).</p></details>
+
+  <footer>
+    Clash Timers is free and open source (MIT). This material is unofficial and is not endorsed by Supercell.
+    For more information see Supercell's <a href="https://supercell.com/en/fan-content-policy/">Fan Content Policy</a>.
+  </footer>
+</main>
+</body>
+</html>
