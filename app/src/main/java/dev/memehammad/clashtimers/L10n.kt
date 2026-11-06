@@ -8,7 +8,7 @@ object L10n {
     var context: Context? = null
 }
 
-/** A translated text from res/values*/strings.xml. */
+/** A translated text from the app's string resources. */
 fun tr(id: Int, vararg args: Any): String {
     val c = L10n.context ?: error("L10n not set up")
     return if (args.isEmpty()) c.getString(id) else c.getString(id, *args)

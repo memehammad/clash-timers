@@ -1,7 +1,6 @@
 package dev.memehammad.clashtimers.ui
 
 import androidx.compose.animation.core.LinearEasing
-import dev.memehammad.clashtimers.R
 import dev.memehammad.clashtimers.tr
 import dev.memehammad.clashtimers.trq
 import androidx.compose.animation.core.RepeatMode
