@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Clash Timers</string>
+    <string name="tile_name">Builders</string>
+    <string name="complication_name">Free builders</string>
+</resources>

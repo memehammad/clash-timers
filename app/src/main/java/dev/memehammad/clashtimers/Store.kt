@@ -242,5 +242,6 @@ object Refresh {
         Scheduler.reschedule(context)
         WidgetProvider.updateAll(context)
         LiveStatus.update(context)
+        WearSync.push(context)
     }
 }

@@ -90,6 +90,9 @@ dependencies {
 
     // Smartspacer (At a Glance) targets and complications.
     implementation("com.kieronquinn.smartspacer:sdk-plugin:1.1.2")
+
+    // Wear OS sync (experimental, preview builds).
+    implementation("com.google.android.gms:play-services-wearable:19.0.0")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

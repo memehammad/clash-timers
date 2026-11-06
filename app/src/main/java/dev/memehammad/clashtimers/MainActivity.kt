@@ -105,6 +105,7 @@ class MainActivity : ComponentActivity() {
         // Auto-import may have added data while we were in the background.
         reload()
         LiveStatus.update(this)
+        WearSync.push(this)
         checkUpdate(force = false)
     }
 
