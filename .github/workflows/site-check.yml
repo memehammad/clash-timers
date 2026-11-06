@@ -1,0 +1,16 @@
+name: Site check
+on:
+  push:
+    branches: [site-check-run]
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in "" "de/" "es/" "index.html" "privacy.html" "sitemap.xml"; do
+            echo "== $u: $(curl -s -o /dev/null -w '%{http_code} %{size_download}' "https://memehammad.github.io/clash-timers/$u")" >> out.txt
+          done
+          curl -sI https://memehammad.github.io/clash-timers/ >> out.txt
+          cat out.txt
