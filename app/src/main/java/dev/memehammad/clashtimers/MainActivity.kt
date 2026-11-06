@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     companion object {
         const val EXTRA_TUTORIAL = "tutorial"
+        const val EXTRA_SETUP = "setup"
     }
 
     private val village = mutableStateOf<Village?>(null)
@@ -38,9 +39,14 @@ class MainActivity : ComponentActivity() {
         autoImport.value = AutoImport.state(this)
     }
     private val snackbar = SnackbarHostState()
-    private val tutorial = mutableStateOf(false)
+    /** 0 = main screen, 1 = first-run setup, 2 = tutorial. */
+    private val intro = mutableIntStateOf(0)
+    private val notificationsOn = mutableStateOf(true)
     private val notificationPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { notificationsOn.value = notificationsAllowed() }
+
+    private fun notificationsAllowed(): Boolean = Build.VERSION.SDK_INT < 33 ||
+        checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +54,28 @@ class MainActivity : ComponentActivity() {
         reload()
         Store.register(this, storeListener)
         // First run (no village yet), or asked for explicitly.
-        tutorial.value = intent?.getBooleanExtra(EXTRA_TUTORIAL, false) == true ||
-            (!Store.tutorialSeen(this) && Store.tags(this).isEmpty())
+        val firstRun = !Store.tutorialSeen(this) && Store.tags(this).isEmpty()
+        intro.intValue = when {
+            intent?.getBooleanExtra(EXTRA_SETUP, false) == true || firstRun -> 1
+            intent?.getBooleanExtra(EXTRA_TUTORIAL, false) == true -> 2
+            else -> 0
+        }
+        notificationsOn.value = notificationsAllowed()
         handleShare(intent)
 
         setContent {
             AppTheme {
-                if (tutorial.value) {
+                if (intro.intValue == 1) {
+                    dev.memehammad.clashtimers.ui.Setup(
+                        notificationsOn = notificationsOn.value,
+                        onNotifications = { notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS) },
+                        reminderMinutes = extras.value.reminderMinutes,
+                        onReminder = actions.onReminder,
+                        autoImport = autoImport.value,
+                        onAutoImport = { onAutoImportClick() },
+                        onDone = { intro.intValue = 2 },
+                    )
+                } else if (intro.intValue == 2) {
                     androidx.activity.compose.BackHandler { closeTutorial() }
                     dev.memehammad.clashtimers.ui.Tutorial { closeTutorial() }
                 } else MainScreen(
@@ -75,9 +96,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= 33 &&
-            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-        ) {
+        // Setup asks on first run; returning users are asked here.
+        if (intro.intValue != 1 && !notificationsAllowed()) {
             notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
@@ -85,6 +105,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         autoImport.value = AutoImport.state(this)
+        notificationsOn.value = notificationsAllowed()
         AutoImport.ensure(this)
         // Auto-import may have added data while we were in the background.
         reload()
@@ -121,11 +142,11 @@ class MainActivity : ComponentActivity() {
 
     private fun closeTutorial() {
         Store.setTutorialSeen(this)
-        tutorial.value = false
+        intro.intValue = 0
     }
 
     private val actions = ScreenActions(
-        onTutorial = { tutorial.value = true },
+        onTutorial = { intro.intValue = 2 },
         onSelectVillage = { tag ->
             Store.setCurrentTag(this, tag)
             Refresh.all(this)

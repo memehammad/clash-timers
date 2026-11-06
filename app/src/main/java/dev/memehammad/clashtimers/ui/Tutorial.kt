@@ -156,3 +156,103 @@ fun Tutorial(onDone: () -> Unit) {
         }
     }
 }
+
+/** First-run setup: notifications, idle reminder and optional auto-import. Followed by [Tutorial]. */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+fun Setup(
+    notificationsOn: Boolean,
+    onNotifications: () -> Unit,
+    reminderMinutes: Int,
+    onReminder: (Int) -> Unit,
+    autoImport: dev.memehammad.clashtimers.AutoImport.State,
+    onAutoImport: () -> Unit,
+    onDone: () -> Unit,
+) {
+    val scheme = MaterialTheme.colorScheme
+    Surface(color = scheme.surface, modifier = Modifier.fillMaxSize()) {
+        Column(Modifier.systemBarsPadding().padding(horizontal = 16.dp, vertical = 16.dp)) {
+            androidx.compose.foundation.lazy.LazyColumn(Modifier.weight(1f)) {
+                item {
+                    Column(Modifier.padding(start = 8.dp, top = 24.dp, bottom = 20.dp)) {
+                        Text("Quick setup", style = MaterialTheme.typography.displaySmall)
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "A few choices, then a short tour. You can change all of this later.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = scheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                item {
+                    SetupCard(R.drawable.shape_cookie, R.drawable.ic_hammer, "Notifications", "Get told the moment a builder, the lab or a pet is free.") {
+                        if (notificationsOn) {
+                            Text("On", style = MaterialTheme.typography.titleMedium, color = scheme.primary)
+                        } else {
+                            Button(onClick = onNotifications, shape = CircleShape) { Text("Allow") }
+                        }
+                    }
+                }
+                item {
+                    SetupCard(R.drawable.shape_clover, R.drawable.ic_hourglass, "Idle builder reminder", "Nudge me again if a builder sits free for a while.") {
+                        androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            for (m in listOf(0, 30, 60, 120)) {
+                                androidx.compose.material3.FilterChip(
+                                    selected = reminderMinutes == m,
+                                    onClick = { onReminder(m) },
+                                    label = { Text(if (m == 0) "Off" else if (m < 60) "$m min" else "${m / 60} h") },
+                                    shape = CircleShape,
+                                )
+                            }
+                        }
+                    }
+                }
+                item {
+                    val (label, text) = when (autoImport) {
+                        dev.memehammad.clashtimers.AutoImport.State.SHIZUKU_MISSING -> "Get Shizuku" to "Optional. With the free Shizuku app, exports import by themselves when you tap Copy in Clash."
+                        dev.memehammad.clashtimers.AutoImport.State.NEEDS_PERMISSION -> "Allow" to "Shizuku is installed. Allow it so exports import by themselves when you tap Copy in Clash."
+                        dev.memehammad.clashtimers.AutoImport.State.OFF -> "Turn on" to "Exports import by themselves when you tap Copy in Clash."
+                        dev.memehammad.clashtimers.AutoImport.State.ON -> "" to "On. Exports import by themselves when you tap Copy in Clash."
+                    }
+                    SetupCard(R.drawable.shape_flower, R.drawable.ic_bolt, "Auto-import", text) {
+                        if (autoImport == dev.memehammad.clashtimers.AutoImport.State.ON) {
+                            Text("On", style = MaterialTheme.typography.titleMedium, color = scheme.primary)
+                        } else {
+                            androidx.compose.material3.FilledTonalButton(onClick = onAutoImport, shape = CircleShape) { Text(label) }
+                        }
+                    }
+                }
+            }
+            Button(
+                onClick = onDone,
+                shape = CircleShape,
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp).height(56.dp),
+            ) { Text("Continue", style = MaterialTheme.typography.titleMedium) }
+        }
+    }
+}
+
+@Composable
+private fun SetupCard(shape: Int, icon: Int, title: String, text: String, action: @Composable () -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    Surface(
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
+        color = scheme.surfaceContainer,
+        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+    ) {
+        Row(Modifier.padding(20.dp), verticalAlignment = Alignment.Top) {
+            Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+                Icon(painterResource(shape), null, tint = scheme.primaryContainer, modifier = Modifier.size(48.dp))
+                Icon(painterResource(icon), null, tint = scheme.onPrimaryContainer, modifier = Modifier.size(24.dp))
+            }
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(text, style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
+                Spacer(Modifier.height(12.dp))
+                action()
+            }
+        }
+    }
+}
