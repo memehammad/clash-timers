@@ -88,7 +88,7 @@ private fun Screen(s: Summary?) {
             delay(1000)
         }
     }
-    val state = rememberScalingLazyListState()
+    val state = rememberScalingLazyListState(initialCenterItemIndex = 0)
     val scheme = MaterialTheme.colorScheme
     AppScaffold {
         ScreenScaffold(scrollState = state) {

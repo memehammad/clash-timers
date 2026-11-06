@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-    branches: [main, smartspacer]
+    branches: [main, smartspacer, wear-preview]
     paths-ignore:
       - '**.md'
       - 'tools/**'
@@ -39,6 +39,7 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon assembleRelease
           cp app/build/outputs/apk/release/app-release.apk ClashTimers.apk
+          cp wear/build/outputs/apk/release/wear-release.apk ClashTimers-Wear.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -60,7 +61,9 @@ jobs:
           prerelease: ${{ github.ref_name != 'main' }}
           make_latest: ${{ github.ref_name == 'main' }}
           body_path: release_notes.md
-          files: ClashTimers.apk
+          files: |
+            ClashTimers.apk
+            ClashTimers-Wear.apk
 
       - name: Store changelog for F-Droid / IzzyOnDroid (fastlane)
         if: github.ref_name == 'main'

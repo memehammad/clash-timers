@@ -2,6 +2,20 @@
 
 The newest section is used as the release notes on GitHub (and shown in Obtainium).
 
+## 1.3 preview: Wear OS (experimental)
+
+**Clash Timers on your watch.** This preview adds a Wear OS app. It's experimental and
+hasn't been tested on a real watch yet, so expect rough edges.
+
+- **Tile:** free builders in the middle, a gold ring for how many are busy, and when the
+  lab and pets are free.
+- **Complication:** free builders on your watch face, or a countdown when all are busy.
+- **App:** builders, lab, pets and what finishes next.
+
+Install both APKs from this release: ClashTimers.apk on your phone, ClashTimers-Wear.apk on
+your watch (for example with Wear Installer or adb). The phone sends your village to the
+watch whenever it updates. Notifications already show up on your watch as usual.
+
 ## 1.2
 
 **A friendlier first start.** New installs open with a quick setup: turn on notifications,

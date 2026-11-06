@@ -41,7 +41,10 @@ jobs:
             adb install -r wear/build/outputs/apk/debug/wear-debug.apk
             adb install -r wear/build/outputs/apk/androidTest/debug/wear-debug-androidTest.apk
             adb shell am instrument -w dev.memehammad.clashtimers.test/androidx.test.runner.AndroidJUnitRunner || true
-            adb shell am start -W -n dev.memehammad.clashtimers/dev.memehammad.clashtimers.wear.WearActivity; sleep 30
+            adb shell svc power stayon true
+            sleep 30
+            adb shell input keyevent KEYCODE_WAKEUP
+            adb shell am start -W -n dev.memehammad.clashtimers/dev.memehammad.clashtimers.wear.WearActivity; sleep 8
             adb exec-out screencap -p > shots/app_1.png
             adb shell input swipe 225 330 225 200 400; sleep 3
             adb exec-out screencap -p > shots/app_2.png
