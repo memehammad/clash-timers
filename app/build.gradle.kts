@@ -14,6 +14,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applicationId = "dev.memehammad.clashtimers"
         minSdk = 31
         targetSdk = 35
@@ -89,4 +90,6 @@ dependencies {
 
     // Smartspacer (At a Glance) targets and complications.
     implementation("com.kieronquinn.smartspacer:sdk-plugin:1.1.2")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

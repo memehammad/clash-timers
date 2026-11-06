@@ -34,11 +34,13 @@ data class SmartOptions(
     val boostInTitle: Boolean = true,
     /** Card: also show on the lock screen. */
     val lockScreen: Boolean = true,
+    /** Card look: playful (coloured chips, Android 16+) or plain. */
+    val style: String = "playful",
 ) {
     fun toJson(): String = JSONObject().put("village", village)
         .put("what", org.json.JSONArray(what.toList())).put("show", org.json.JSONArray(show.toList()))
         .put("soonMinutes", soonMinutes).put("text", text)
-        .put("boostInTitle", boostInTitle).put("lockScreen", lockScreen).toString()
+        .put("boostInTitle", boostInTitle).put("lockScreen", lockScreen).put("style", style).toString()
 
     companion object {
         val WHAT = listOf(
@@ -70,6 +72,7 @@ data class SmartOptions(
                 set(o, "show", default.show), o.optInt("soonMinutes", default.soonMinutes),
                 o.optString("text", default.text),
                 o.optBoolean("boostInTitle", default.boostInTitle), o.optBoolean("lockScreen", default.lockScreen),
+                o.optString("style", default.style),
             )
         }
     }
@@ -131,6 +134,9 @@ object Smartspace {
         /** When the next thing finishes (ms from now), for picking the most urgent item. */
         val nextMs: Long?,
         val count: String,
+        val what: String = "builder",
+        val busy: Int = 0,
+        val total: Int = 0,
     )
 
     /** What a card or chip says right now; empty when nothing should show. */
@@ -138,6 +144,55 @@ object Smartspace {
         val title: String get() = items.joinToString(" · ") { it.title }
         val subtitle: String get() = (items.filter { it.nextMs != null }.minByOrNull { it.nextMs!! } ?: items.first()).subtitle
         val icon: Int get() = (items.filter { it.nextMs != null }.minByOrNull { it.nextMs!! } ?: items.first()).icon
+    }
+
+    /** Colour roles per item, so builders, lab and boosts are told apart at a glance. */
+    private fun colors(what: String): Triple<Int, Int, Int> = when (what) {
+        "lab", "starlab" -> Triple(android.R.color.system_accent3_100, android.R.color.system_accent3_600, android.R.color.system_accent3_900)
+        "pet" -> Triple(android.R.color.system_accent2_100, android.R.color.system_accent2_600, android.R.color.system_accent2_900)
+        "boost" -> Triple(android.R.color.system_accent3_200, android.R.color.system_accent3_700, android.R.color.system_accent3_900)
+        else -> Triple(android.R.color.system_accent1_100, android.R.color.system_accent1_600, android.R.color.system_accent1_900)
+    }
+
+    /**
+     * The playful card (custom layout, Android 16+): a coloured chip per item with a dot per
+     * worker (solid = busy) and the next thing to finish underneath.
+     */
+    fun remoteViews(c: Context, x: Content, subtitle: String): android.widget.RemoteViews {
+        val v = android.widget.RemoteViews(c.packageName, R.layout.smartspace_card)
+        val chips = intArrayOf(R.id.ss_c0, R.id.ss_c1, R.id.ss_c2)
+        val bgs = intArrayOf(R.id.ss_c0_bg, R.id.ss_c1_bg, R.id.ss_c2_bg)
+        val badges = intArrayOf(R.id.ss_c0_badge, R.id.ss_c1_badge, R.id.ss_c2_badge)
+        val icons = intArrayOf(R.id.ss_c0_icon, R.id.ss_c1_icon, R.id.ss_c2_icon)
+        val texts = intArrayOf(R.id.ss_c0_text, R.id.ss_c1_text, R.id.ss_c2_text)
+        val dotRows = intArrayOf(R.id.ss_c0_dots, R.id.ss_c1_dots, R.id.ss_c2_dots)
+        val dots = arrayOf(
+            intArrayOf(R.id.ss_c0_d0, R.id.ss_c0_d1, R.id.ss_c0_d2, R.id.ss_c0_d3, R.id.ss_c0_d4, R.id.ss_c0_d5),
+            intArrayOf(R.id.ss_c1_d0, R.id.ss_c1_d1, R.id.ss_c1_d2, R.id.ss_c1_d3, R.id.ss_c1_d4, R.id.ss_c1_d5),
+            intArrayOf(R.id.ss_c2_d0, R.id.ss_c2_d1, R.id.ss_c2_d2, R.id.ss_c2_d3, R.id.ss_c2_d4, R.id.ss_c2_d5),
+        )
+        for (i in 0..2) {
+            val it = x.items.getOrNull(i)
+            v.setViewVisibility(chips[i], if (it == null) android.view.View.GONE else android.view.View.VISIBLE)
+            if (it == null) continue
+            val (bg, accent, on) = colors(it.what)
+            v.setColorStateList(bgs[i], "setImageTintList", bg)
+            v.setColorStateList(badges[i], "setImageTintList", accent)
+            v.setImageViewResource(icons[i], it.icon)
+            v.setColorStateList(icons[i], "setImageTintList", bg)
+            v.setTextViewText(texts[i], it.chip)
+            v.setColor(texts[i], "setTextColor", on)
+            val showDots = it.total in 1..6
+            v.setViewVisibility(dotRows[i], if (showDots) android.view.View.VISIBLE else android.view.View.GONE)
+            for (k in 0..5) {
+                v.setViewVisibility(dots[i][k], if (showDots && k < it.total) android.view.View.VISIBLE else android.view.View.GONE)
+                // Busy workers are solid; free ones are faint.
+                v.setColorStateList(dots[i][k], "setImageTintList", accent)
+                v.setInt(dots[i][k], "setImageAlpha", if (k < it.busy) 255 else 70)
+            }
+        }
+        v.setTextViewText(R.id.ss_sub, subtitle)
+        return v
     }
 
     private fun slotOf(what: String) = when (what) {
@@ -175,7 +230,7 @@ object Smartspace {
                 // A running boost counts as "busy"; "free" never applies to it.
                 if ("busy" !in o.show) return null
             }
-            return Item(Status.boostLabel(active), "${b.name} ends ${Format.phrase(left, now)}", compact(left), iconOf(what), left, "")
+            return Item(Status.boostLabel(active), "${b.name} ends ${Format.phrase(left, now)}", compact(left), iconOf(what), left, "", what)
         }
 
         val slot = slotOf(what)
@@ -218,7 +273,7 @@ object Smartspace {
             freeAt != null -> compact(freeAt)
             else -> "busy"
         }
-        return Item(title, subtitle, chip, iconOf(what), first?.remainingMs(now), "$label ${s.busy}/${s.total}")
+        return Item(title, subtitle, chip, iconOf(what), first?.remainingMs(now), "$label ${s.busy}/${s.total}", what, s.busy, s.total)
     }
 }
 
@@ -229,14 +284,26 @@ class BuildersTarget : SmartspacerTargetProvider() {
         val o = Smartspace.options(c, smartspacerId, SmartOptions())
         val x = Smartspace.content(c, o, System.currentTimeMillis()) ?: return emptyList()
         return listOf(
-            TargetTemplate.Basic(
-                id = "clash_$smartspacerId",
-                componentName = ComponentName(c, BuildersTarget::class.java),
-                title = Text(x.title),
-                subtitle = Text(if (o.text == "count" && x.items.size > 1) x.items.joinToString(" · ") { it.count } else x.subtitle),
-                icon = Smartspace.icon(c, x.icon),
-                onClick = Smartspace.tap(c),
-            ).create().apply {
+            run {
+                val sub = if (o.text == "count" && x.items.size > 1) x.items.joinToString(" · ") { it.count } else x.subtitle
+                val basic = TargetTemplate.Basic(
+                    id = "clash_$smartspacerId",
+                    componentName = ComponentName(c, BuildersTarget::class.java),
+                    title = Text(x.title),
+                    subtitle = Text(sub),
+                    icon = Smartspace.icon(c, x.icon),
+                    onClick = Smartspace.tap(c),
+                )
+                // Playful custom card where supported (Android 16+); the plain card elsewhere.
+                if (o.style == "playful") {
+                    TargetTemplate.RemoteViews(
+                        Smartspace.remoteViews(c, x, sub).apply {
+                            setOnClickPendingIntent(R.id.ss_sub, Notifier.openClash(c))
+                        },
+                        basic,
+                    ).create()
+                } else basic.create()
+            }.apply {
                 canBeDismissed = false
                 if (!o.lockScreen) limitToSurfaces = setOf(UiSurface.HOMESCREEN)
             },

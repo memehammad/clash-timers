@@ -158,6 +158,19 @@ class SmartspaceSettingsActivity : ComponentActivity() {
                         }
 
                         if (isCard) {
+                            item { Label("Look") }
+                            item {
+                                Option("Playful: coloured chips with a dot per builder", o.style == "playful") { save(o.copy(style = "playful")) }
+                            }
+                            item { Option("Plain: like other At a Glance cards", o.style == "plain") { save(o.copy(style = "plain")) } }
+                            item {
+                                Text(
+                                    "The playful look needs Android 16 (or the Smartspacer widget); elsewhere you get the plain card.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(start = 8.dp, top = 4.dp, end = 8.dp),
+                                )
+                            }
                             item { Label("Extras") }
                             if ("boost" !in o.what) {
                                 item {
