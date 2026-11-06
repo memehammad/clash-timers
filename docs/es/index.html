@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="es" data-palette="teal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widget de Clash of Clans para Android – Clash Timers</title>
+<meta name="description" content="Clash Timers es un widget gratuito de Clash of Clans para Android: constructores libres, temporizadores de mejoras, investigación, animales y héroes en tu pantalla de inicio, con notificaciones. Sin registro ni anuncios.">
+<link rel="canonical" href="https://memehammad.github.io/clash-timers/es/">
+<link rel="alternate" hreflang="en" href="https://memehammad.github.io/clash-timers/">
+<link rel="alternate" hreflang="de" href="https://memehammad.github.io/clash-timers/de/">
+<link rel="alternate" hreflang="es" href="https://memehammad.github.io/clash-timers/es/">
+<link rel="alternate" hreflang="fr" href="https://memehammad.github.io/clash-timers/fr/">
+<link rel="alternate" hreflang="pt" href="https://memehammad.github.io/clash-timers/pt/">
+<link rel="alternate" hreflang="x-default" href="https://memehammad.github.io/clash-timers/">
+<link rel="icon" href="../img/icon.png">
+<meta name="theme-color" content="#C2E8FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B2D35" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Widget de Clash of Clans para Android – Clash Timers">
+<meta property="og:description" content="Constructores libres, temporizadores de mejoras, investigación y héroes de Clash of Clans en tu pantalla de inicio de Android. Gratis y de código abierto.">
+<meta property="og:url" content="https://memehammad.github.io/clash-timers/es/">
+<meta property="og:image" content="https://memehammad.github.io/clash-timers/img/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Clash Timers", "alternateName": "Clash of Clans Widget", "description": "A Clash of Clans widget for Android that shows free builders, upgrade timers, laboratory research, pets and hero status on the home screen, with notifications.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Android 12+", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "image": "https://memehammad.github.io/clash-timers/img/hero.png", "downloadUrl": "https://github.com/memehammad/clash-timers/releases/latest", "url": "https://memehammad.github.io/clash-timers/es/", "license": "https://opensource.org/licenses/MIT"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Hay un widget de Clash of Clans para Android?", "acceptedAnswer": {"@type": "Answer", "text": "Clash of Clans no tiene widget propio. Clash Timers añade uno: constructores libres, temporizadores, investigación y héroes en tu pantalla de inicio."}}, {"@type": "Question", "name": "¿Tengo que iniciar sesión?", "acceptedAnswer": {"@type": "Answer", "text": "No. Usa la exportación de datos del propio juego. No necesitas cuenta ni Supercell ID."}}, {"@type": "Question", "name": "¿Me pueden banear?", "acceptedAnswer": {"@type": "Answer", "text": "Clash Timers nunca toca el juego. Solo lee la exportación que te da el juego y no envía nada a ninguna parte."}}, {"@type": "Question", "name": "¿Se actualiza solo?", "acceptedAnswer": {"@type": "Answer", "text": "Los temporizadores corren en vivo. Tras empezar mejoras, copia una exportación nueva o activa la importación automática con Shizuku y se hace sola."}}, {"@type": "Question", "name": "¿Hay versión para iPhone?", "acceptedAnswer": {"@type": "Answer", "text": "No, Clash Timers es para Android 12 y posteriores."}}]}</script>
+<style>
+  /* Material You "Tonal Spot" schemes, generated with Google's material-color-utilities
+     from two wallpaper colours (teal #4E8FA8, rose #B5655A), as Android does. */
+  :root, [data-palette="teal"] {
+    --surface: #F5FAFD;
+    --surface-low: #F0F4F7;
+    --surface-high: #E4E9EC;
+    --on-surface: #171C1F;
+    --on-surface-variant: #40484C;
+    --outline-variant: #C0C8CC;
+    --primary: #0C6780;
+    --on-primary: #FFFFFF;
+    --primary-container: #BAEAFF;
+    --on-primary-container: #004D62;
+    --secondary-container: #CFE6F1;
+    --on-secondary-container: #354A53;
+    --tertiary-container: #E2DFFF;
+    --on-tertiary-container: #444465;
+    --surface-highest: #DEE3E6;
+    --hero: #BAEAFF;
+    --on-hero: #004D62;
+    --on-hero-variant: #004D62;
+  }
+  [data-palette="rose"] {
+    --surface: #FFF8F7;
+    --surface-low: #FFF0EE;
+    --surface-high: #F7E4E1;
+    --on-surface: #231918;
+    --on-surface-variant: #534341;
+    --outline-variant: #D8C2BE;
+    --primary: #904A41;
+    --on-primary: #FFFFFF;
+    --primary-container: #FFDAD5;
+    --on-primary-container: #73342B;
+    --secondary-container: #FFDAD5;
+    --on-secondary-container: #5D3F3B;
+    --tertiary-container: #FCDFA6;
+    --on-tertiary-container: #574419;
+    --surface-highest: #F1DEDC;
+    --hero: #FFDAD5;
+    --on-hero: #73342B;
+    --on-hero-variant: #73342B;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root, [data-palette="teal"] {
+      --surface: #0F1417;
+      --surface-low: #171C1F;
+      --surface-high: #252B2D;
+      --on-surface: #DEE3E6;
+      --on-surface-variant: #C0C8CC;
+      --outline-variant: #40484C;
+      --primary: #89D0ED;
+      --on-primary: #003545;
+      --primary-container: #004D62;
+      --on-primary-container: #BAEAFF;
+      --secondary-container: #354A53;
+      --on-secondary-container: #CFE6F1;
+      --tertiary-container: #444465;
+      --on-tertiary-container: #E2DFFF;
+      --surface-highest: #303638;
+      --hero: #252B2D;
+      --on-hero: #DEE3E6;
+      --on-hero-variant: #C0C8CC;
+    }
+    [data-palette="rose"] {
+      --surface: #1A1110;
+      --surface-low: #231918;
+      --surface-high: #322826;
+      --on-surface: #F1DEDC;
+      --on-surface-variant: #D8C2BE;
+      --outline-variant: #534341;
+      --primary: #FFB4A9;
+      --on-primary: #561E17;
+      --primary-container: #73342B;
+      --on-primary-container: #FFDAD5;
+      --secondary-container: #5D3F3B;
+      --on-secondary-container: #FFDAD5;
+      --tertiary-container: #574419;
+      --on-tertiary-container: #FCDFA6;
+      --surface-highest: #3D3231;
+      --hero: #322826;
+      --on-hero: #F1DEDC;
+      --on-hero-variant: #D8C2BE;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--surface); color: var(--on-surface);
+    font-family: "Roboto Flex", system-ui, sans-serif; font-size: 17px; line-height: 1.55;
+    font-variation-settings: "wdth" 100;
+  }
+  a { color: var(--primary); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  :focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; border-radius: 12px; }
+
+  /* Hero: one big expressive moment. */
+  .hero { background: var(--hero); color: var(--on-hero); border-radius: 0 0 48px 48px; overflow: hidden; }
+  .hero { overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding-top: 40px; padding-bottom: 56px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 18px; margin-bottom: 40px; }
+  .brand svg { width: 44px; height: 44px; }
+  .brand .ring-track { stroke: var(--primary-container); } .brand .ring { stroke: var(--primary); } .brand .glyph { fill: var(--primary); }
+  .palettes { display: flex; align-items: center; gap: 10px; margin-top: 28px; color: var(--on-hero-variant); font-size: 15px; }
+  .swatch { width: 36px; height: 36px; border-radius: 50%; border: 2px solid transparent; padding: 3px; cursor: pointer; background-clip: content-box; transition: border-radius .25s; }
+  .swatch[aria-pressed="true"] { border-color: var(--on-hero); border-radius: 12px; }
+  .swatch.teal { background-color: #4E8FA8; } .swatch.rose { background-color: #B5655A; }
+  /* Screenshots rendered in each palette and mode; only the matching one shows. */
+  .pm { display: none; }
+  [data-palette="teal"] .pm.teal.light, [data-palette="rose"] .pm.rose.light { display: block; }
+  @media (prefers-color-scheme: dark) {
+    [data-palette="teal"] .pm.teal.light, [data-palette="rose"] .pm.rose.light { display: none; }
+    [data-palette="teal"] .pm.teal.dark, [data-palette="rose"] .pm.rose.dark { display: block; }
+  }
+  h1 {
+    margin: 0; font-size: clamp(40px, 6.4vw, 76px); line-height: 1.02; letter-spacing: -0.02em;
+    font-weight: 820; font-variation-settings: "wdth" 118, "opsz" 144;
+  }
+  .hero p.lead { font-size: clamp(18px, 2vw, 21px); max-width: 34ch; margin: 24px 0 28px; color: var(--on-hero-variant); opacity: .85; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px;
+    font: 600 17px/1 "Roboto Flex", sans-serif; text-decoration: none; transition: border-radius .25s ease;
+  }
+  .btn:hover { border-radius: 18px; }
+  .btn svg { width: 22px; height: 22px; fill: currentColor; }
+  .btn-filled { background: var(--primary); color: var(--on-primary); }
+  .btn-tonal { background: var(--surface); color: var(--primary); }
+  /* Install help dialog */
+  dialog.install { border: 0; padding: 0; border-radius: 28px; background: var(--surface-high); color: var(--on-surface); width: min(92vw, 460px); box-shadow: 0 16px 60px rgba(0,0,0,.3); }
+  dialog.install::backdrop { background: rgba(0,0,0,.4); }
+  dialog.install .in { padding: 24px; }
+  dialog.install h2 { margin: 0 0 4px; font-size: 24px; font-weight: 700; }
+  dialog.install .sub { margin: 0 0 18px; color: var(--on-surface-variant); }
+  dialog.install ol { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 14px; }
+  dialog.install li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; }
+  dialog.install li::before { content: counter(s); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-container); color: var(--on-primary-container); font-weight: 700; }
+  dialog.install li b { display: block; }
+  dialog.install li span { color: var(--on-surface-variant); font-size: 15px; }
+  dialog.install .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; flex-wrap: wrap; }
+  dialog.install .row .btn { border: 0; cursor: pointer; }
+  dialog.install .row .btn { min-height: 44px; padding: 0 20px; font-size: 15px; }
+  dialog.install .tip { margin: 18px 0 0; font-size: 14px; color: var(--on-surface-variant); }
+  /* Live demo: a working widget you can play with. */
+  .demo-wrap { position: relative; display: grid; place-items: center; padding: 28px 0; }
+  .demo-bg { position: absolute; width: min(118%, 560px); aspect-ratio: 1; z-index: 0; }
+  .demo-bg path { fill: var(--secondary-container); }
+  .demo-bg g { animation: spin 80s linear infinite; transform-origin: 50% 50%; transform-box: fill-box; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .demo {
+    position: relative; z-index: 1; width: min(100%, 420px); background: var(--surface-low); color: var(--on-surface);
+    border-radius: 32px; padding: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.18);
+  }
+  .demo-head { display: flex; align-items: center; gap: 14px; background: var(--primary-container); color: var(--on-primary-container);
+    border-radius: 24px; padding: 14px 16px; }
+  .badge { position: relative; flex: none; width: 60px; height: 60px; }
+  .badge svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.3,1.6,.5,1), opacity .3s; }
+  .badge .busy path { fill: var(--surface-highest); }
+  .badge .free path { fill: var(--primary); }
+  .badge .free { opacity: 0; transform: scale(.4) rotate(-90deg); }
+  .badge.is-free .free { opacity: 1; transform: none; }
+  .badge.is-free .busy { opacity: 0; transform: scale(.4) rotate(90deg); }
+  .badge.pop .free { animation: pop .7s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { 0% { transform: scale(.6) rotate(-40deg); } 100% { transform: none; } }
+  .badge b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 26px; font-weight: 820; }
+  .badge.is-free b { color: var(--on-primary); }
+  .demo-title { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .demo-sub { font-size: 15px; opacity: .8; font-variant-numeric: tabular-nums; }
+  .rows { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+  .row { background: var(--surface-high); border-radius: 8px; padding: 12px 14px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+  .row:first-child { border-top-left-radius: 20px; border-top-right-radius: 20px; }
+  .row:last-child { border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+  .row .name { font-weight: 650; }
+  .row .time { font-variant-numeric: tabular-nums; font-weight: 650; color: var(--primary); }
+  .row .lvl { grid-column: 1 / -1; font-size: 14px; color: var(--on-surface-variant); margin-top: -2px; }
+  /* Wavy progress: one long static wave slid by a CSS animation (runs on the compositor, so it
+     stays smooth), clipped to the progress width with soft ends. */
+  .row .bar { grid-column: 1 / -1; position: relative; height: 12px; margin-top: 6px; }
+  .row .wclip {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 4px, #000 calc(100% - 7px), transparent);
+            mask-image: linear-gradient(to right, transparent, #000 4px, #000 calc(100% - 7px), transparent);
+  }
+  .row .wv { display: block; width: 452px; height: 12px; margin-left: -20px; animation: wv 1.6s linear infinite; will-change: transform; }
+  .row .wv path { fill: none; stroke: var(--primary); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+  .row.fast .wv { animation-duration: .55s; }
+  @keyframes wv { from { transform: translateX(0); } to { transform: translateX(20px); } }
+  .row .trk { position: absolute; top: 4.4px; height: 3.2px; right: 0; border-radius: 2px; background: var(--outline-variant); }
+  @media (prefers-reduced-motion: reduce) { .row .wv { animation: none; } }
+  .row.done { background: var(--secondary-container); color: var(--on-secondary-container); }
+  .row.done .time { color: inherit; }
+  .row.idle { background: transparent; border: 2px dashed var(--outline-variant); }
+  .row.idle .name { color: var(--on-surface-variant); font-weight: 500; }
+  .demo-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .chip { flex: 1; min-height: 48px; border: 0; border-radius: 999px; font: 600 15px "Roboto Flex", sans-serif; cursor: pointer;
+    background: var(--secondary-container); color: var(--on-secondary-container); transition: border-radius .25s, transform .15s; }
+  .chip.primary { background: var(--primary); color: var(--on-primary); }
+  .chip:hover { border-radius: 16px; } .chip:active { transform: scale(.97); }
+  .chip:disabled { opacity: .45; cursor: default; }
+  .demo-note { text-align: center; font-size: 14px; color: var(--on-hero-variant); margin: 14px 0 0; position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) { .demo-bg g, .badge svg, .badge.pop .free { animation: none; transition: none; } }
+
+  section { padding: 72px 0 0; }
+  h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.1; margin: 0 0 12px; font-weight: 760; font-variation-settings: "wdth" 112, "opsz" 72; letter-spacing: -0.01em; }
+  .intro { color: var(--on-surface-variant); max-width: 60ch; margin: 0 0 32px; }
+
+  /* Features: a list with a different Material shape for each item. */
+  .features { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .feature { display: flex; gap: 18px; align-items: flex-start; padding: 20px; border-radius: 28px; background: var(--surface-high); }
+  .feature-shape { flex: none; width: 64px; height: 64px; }
+  .fill-primary { fill: var(--primary-container); } .on-primary { fill: var(--on-primary-container); }
+  .fill-secondary { fill: var(--secondary-container); } .on-secondary { fill: var(--on-secondary-container); }
+  .fill-tertiary { fill: var(--tertiary-container); } .on-tertiary { fill: var(--on-tertiary-container); }
+  h3 { margin: 6px 0 4px; font-size: 20px; line-height: 1.25; font-weight: 680; }
+  .feature p, .step p { margin: 0; color: var(--on-surface-variant); }
+
+  /* Screenshots on a tonal panel. */
+  .gallery { background: var(--primary-container); border-radius: 48px; padding: 40px 24px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; }
+  /* Gallery: live widgets drawn in code, in the page's Material You colours. */
+  .lw { background: var(--surface-low); color: var(--on-surface); border-radius: 28px; padding: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+  .lw-compact { width: min(380px, 100%); display: grid; gap: 6px; }
+  .lw-head { display: flex; align-items: center; gap: 14px; background: var(--primary-container); color: var(--on-primary-container); border-radius: 22px; padding: 12px 14px; }
+  .lw-shape { position: relative; flex: none; width: 52px; height: 52px; }
+  .lw-shape svg, .lw-big svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 24s linear infinite; }
+  .lw-shape path { fill: var(--primary); }
+  .lw-shape b, .lw-big b { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 820; font-size: 22px; color: var(--on-primary); }
+  .lw-title { font-weight: 650; font-size: 18px; line-height: 1.2; }
+  .lw-sub { font-size: 14px; opacity: .8; font-variant-numeric: tabular-nums; }
+  .lw-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .lw-chip { background: var(--surface-high); border-radius: 12px; padding: 8px 10px; display: grid; font-size: 12px; line-height: 1.3; min-width: 0; }
+  .lw-chip b { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .lw-chip.idle { background: var(--tertiary-container); color: var(--on-tertiary-container); border-radius: 999px; }
+  .lw-foot { background: var(--surface-high); border-radius: 10px; padding: 7px 12px; font-size: 13px; color: var(--on-surface-variant); }
+  .lw-small { width: min(380px, 100%); display: flex; align-items: center; gap: 14px; border-radius: 999px; padding: 10px 22px 10px 12px; }
+  .lw-small .lw-shape { width: 48px; height: 48px; }
+  .lw-badge { width: 132px; display: grid; justify-items: center; gap: 8px; }
+  .lw-big { position: relative; width: 112px; height: 112px; }
+  .lw-big path { fill: var(--primary); }
+  .lw-big b { font-size: 46px; }
+  .lw-pill { background: var(--primary); color: var(--on-primary); border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 650; white-space: nowrap; }
+  .js-shape.pop svg { animation: pop .7s cubic-bezier(.3,1.6,.5,1), spin 24s linear infinite .7s; }
+  .js-shape.busy path { fill: var(--surface-highest); }
+  .js-shape.busy b { color: var(--on-surface); }
+  @media (max-width: 420px) { .lw-chip { padding: 7px 7px; } .lw-chip b { font-size: 12.5px; } }
+  @media (prefers-reduced-motion: reduce) { .lw-shape svg, .lw-big svg { animation: none; } }
+
+  /* Setup: a real sequence, so it gets numbers. */
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .step-shape { width: 72px; height: 72px; margin-bottom: 8px; }
+  .step-shape path { fill: var(--primary-container); }
+  .step-shape text { fill: var(--on-primary-container); font: 800 40px "Roboto Flex", sans-serif; }
+
+  /* FAQ: Material list with expanding items. */
+  .faq { max-width: 760px; }
+  details { border-radius: 24px; background: var(--surface-low); margin-bottom: 6px; transition: background .2s; }
+  details[open] { background: var(--secondary-container); }
+  summary { list-style: none; cursor: pointer; padding: 20px 24px; font-weight: 640; font-size: 18px; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { flex: none; width: 24px; height: 24px; fill: currentColor; transition: transform .25s; }
+  details[open] summary svg { transform: rotate(180deg); }
+  details p { margin: 0; padding: 0 24px 22px; color: var(--on-secondary-container); }
+
+  footer { margin-top: 88px; padding: 32px 0 48px; border-top: 1px solid var(--outline-variant); color: var(--on-surface-variant); font-size: 15px; }
+  .langs a, .langs b { white-space: nowrap; }
+  footer p { margin: 0 0 8px; max-width: 70ch; }
+
+  @media (max-width: 880px) {
+    .hero-inner { grid-template-columns: 1fr; padding-bottom: 48px; }
+    .brand { margin-bottom: 28px; }
+    .features { grid-template-columns: 1fr; }
+    .demo-bg { width: 100%; }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) {
+    .steps { grid-template-columns: 1fr; }
+    .gallery { border-radius: 32px; padding: 28px 16px; }
+    .btn { flex: 1 1 auto; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="brand"><svg viewBox="22 22 64 64" aria-hidden="true"><circle cx="54" cy="54" r="22" fill="none" class="ring-track" stroke-width="7"/><path class="ring" d="M54.00,32.00 A22,22 0 1 1 33.33,46.48" fill="none" stroke-width="7" stroke-linecap="round"/><g transform="translate(54 54) rotate(-30) scale(1.25) translate(-12 -12)"><path class="glyph" d="M18,3l-3,3V3H9C6.24,3 4,5.24 4,8h5v3h6V8l3,3h2V3H18zM9,13v7c0,0.55 0.45,1 1,1h4c0.55,0 1,-0.45 1,-1v-7H9z"/></g></svg>Clash Timers</div>
+      <h1>El widget de Clash of Clans para Android</h1>
+      <p class="lead">Mira tus constructores libres, temporizadores, investigaciones y héroes en la pantalla de inicio, y recibe un aviso en cuanto un constructor quede libre.</p>
+      <div class="actions">
+        <a class="btn btn-filled js-dl" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5,20h14v-2H5V20zM19,9h-4V3H9v6H5l7,7L19,9z"/></svg>Descargar la app</a>
+        <a class="btn btn-tonal" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Obtener con Obtainium</a>
+      </div>
+      <div class="palettes" role="group" aria-label="Colores de la página">
+        <span>Colores</span>
+        <button class="swatch teal" data-p="teal" aria-pressed="true" aria-label="Turquesa"></button>
+        <button class="swatch rose" data-p="rose" aria-pressed="false" aria-label="Rosa"></button>
+      </div>
+    </div>
+    <div>
+      <div class="demo-wrap">
+        <svg class="demo-bg" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M50.00,0.52 C52.56,0.52 55.12,1.55 57.00,3.61 C59.49,6.34 63.35,7.38 66.88,6.25 C72.19,4.56 77.81,7.81 79.00,13.25 C79.79,16.87 82.62,19.69 86.23,20.48 C91.68,21.67 94.92,27.29 93.23,32.61 C92.11,36.13 93.14,39.99 95.88,42.48 C100.00,46.24 100.00,52.73 95.88,56.49 C93.14,58.98 92.11,62.83 93.23,66.36 C94.92,71.67 91.68,77.29 86.23,78.49 C82.62,79.28 79.79,82.10 79.00,85.71 C77.81,91.16 72.19,94.41 66.88,92.72 C63.35,91.59 59.49,92.63 57.00,95.36 C53.24,99.48 46.76,99.48 43.00,95.36 C40.51,92.63 36.65,91.59 33.12,92.72 C27.81,94.41 22.19,91.16 21.00,85.71 C20.21,82.10 17.38,79.28 13.77,78.49 C8.32,77.29 5.08,71.67 6.77,66.36 C7.89,62.83 6.86,58.98 4.12,56.49 C0.00,52.73 0.00,46.24 4.12,42.48 C6.86,39.99 7.89,36.13 6.77,32.61 C5.08,27.29 8.32,21.68 13.77,20.48 C17.38,19.69 20.21,16.87 21.00,13.25 C22.19,7.81 27.81,4.56 33.12,6.25 C36.65,7.38 40.51,6.34 43.00,3.61 C44.88,1.55 47.44,0.52 50.00,0.52Z"/></g></svg>
+        <div class="demo" role="region" aria-label="Prueba el widget">
+          <div class="demo-head">
+            <div class="badge" id="badge" aria-hidden="true">
+              <svg class="busy" viewBox="0 0 100 100"><path d="M50.00,1.42 C53.65,1.42 57.30,2.73 60.19,5.35 C63.13,8.01 67.00,9.42 70.96,9.27 C78.76,8.97 85.51,14.63 86.57,22.37 C87.11,26.30 89.16,29.86 92.30,32.29 C98.47,37.08 100.00,45.76 95.84,52.36 C93.72,55.72 93.01,59.77 93.85,63.65 C95.50,71.28 91.09,78.91 83.66,81.30 C79.88,82.51 76.73,85.15 74.88,88.67 C71.24,95.57 62.96,98.58 55.73,95.63 C52.06,94.13 47.94,94.13 44.27,95.63 C37.04,98.58 28.76,95.57 25.12,88.67 C23.27,85.15 20.12,82.51 16.34,81.30 C8.91,78.91 4.50,71.28 6.15,63.65 C6.99,59.77 6.28,55.72 4.16,52.36 C0.00,45.76 1.53,37.08 7.70,32.29 C10.84,29.86 12.89,26.30 13.43,22.37 C14.49,14.63 21.24,8.97 29.04,9.27 C33.00,9.42 36.87,8.01 39.81,5.35 C42.70,2.73 46.35,1.42 50.00,1.42Z"/></svg>
+              <svg class="free" viewBox="0 0 100 100"><path d="M99.69,50.00 C99.69,51.79 99.07,53.59 97.83,55.04 C95.30,58.01 92.77,60.98 90.24,63.95 C89.18,65.19 88.54,66.74 88.41,68.37 C88.10,72.26 87.79,76.15 87.48,80.04 C87.18,83.84 84.15,86.87 80.35,87.17 C76.46,87.48 72.57,87.79 68.68,88.10 C67.05,88.23 65.50,88.87 64.26,89.93 C61.29,92.46 58.32,94.99 55.35,97.52 C52.45,100.00 48.17,100.00 45.27,97.52 C42.30,94.99 39.33,92.46 36.36,89.93 C35.11,88.87 33.57,88.23 31.94,88.10 C28.05,87.79 24.16,87.48 20.27,87.17 C16.46,86.87 13.44,83.84 13.14,80.04 C12.83,76.15 12.52,72.26 12.21,68.37 C12.08,66.74 11.44,65.19 10.38,63.95 C7.85,60.98 5.32,58.01 2.79,55.04 C0.31,52.14 0.31,47.86 2.79,44.96 C5.32,41.99 7.85,39.02 10.38,36.05 C11.44,34.81 12.08,33.26 12.21,31.63 C12.52,27.74 12.83,23.85 13.14,19.96 C13.44,16.16 16.46,13.13 20.27,12.83 C24.16,12.52 28.05,12.21 31.94,11.90 C33.57,11.77 35.11,11.13 36.36,10.07 C39.33,7.54 42.30,5.01 45.27,2.48 C48.17,0.00 52.45,0.00 55.35,2.48 C58.32,5.01 61.29,7.54 64.26,10.07 C65.50,11.13 67.05,11.77 68.68,11.90 C72.57,12.21 76.46,12.52 80.35,12.83 C84.15,13.13 87.18,16.16 87.48,19.96 C87.79,23.85 88.10,27.74 88.41,31.63 C88.54,33.26 89.18,34.81 90.24,36.05 C92.77,39.02 95.30,41.99 97.83,44.96 C99.07,46.41 99.69,48.21 99.69,50.00Z"/></svg>
+              <b id="free-count">0</b>
+            </div>
+            <div>
+              <div class="demo-title" id="demo-title">Todos los constructores ocupados</div>
+              <div class="demo-sub" id="demo-sub" aria-live="polite">Próximo libre en 0:20</div>
+            </div>
+          </div>
+          <ul class="rows" id="rows"></ul>
+          <div class="demo-actions">
+            <button class="chip primary" id="potion" type="button">Usar Pócima del constructor</button>
+            <button class="chip" id="upgrade" type="button">Empezar una mejora</button>
+          </div>
+        </div>
+        <p class="demo-note">Una vista previa en vivo con temporizadores de prueba. Prueba los botones.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section aria-labelledby="what">
+    <h2 id="what">No vuelvas a dejar un constructor sin trabajo</h2>
+    <p class="intro">Gratis, de código abierto y privado. Sin registro ni anuncios. Lee la exportación de aldea que el juego ya te da.</p>
+    <ul class="features">
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.00,1.42 C53.65,1.42 57.30,2.73 60.19,5.35 C63.13,8.01 67.00,9.42 70.96,9.27 C78.76,8.97 85.51,14.63 86.57,22.37 C87.11,26.30 89.16,29.86 92.30,32.29 C98.47,37.08 100.00,45.76 95.84,52.36 C93.72,55.72 93.01,59.77 93.85,63.65 C95.50,71.28 91.09,78.91 83.66,81.30 C79.88,82.51 76.73,85.15 74.88,88.67 C71.24,95.57 62.96,98.58 55.73,95.63 C52.06,94.13 47.94,94.13 44.27,95.63 C37.04,98.58 28.76,95.57 25.12,88.67 C23.27,85.15 20.12,82.51 16.34,81.30 C8.91,78.91 4.50,71.28 6.15,63.65 C6.99,59.77 6.28,55.72 4.16,52.36 C0.00,45.76 1.53,37.08 7.70,32.29 C10.84,29.86 12.89,26.30 13.43,22.37 C14.49,14.63 21.24,8.97 29.04,9.27 C33.00,9.42 36.87,8.01 39.81,5.35 C42.70,2.73 46.35,1.42 50.00,1.42Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M18,3l-3,3V3H9C6.24,3 4,5.24 4,8h5v3h6V8l3,3h2V3H18zM9,13v7c0,0.55 0.45,1 1,1h4c0.55,0 1,-0.45 1,-1v-7H9z" class="on-primary"/></g></svg>
+          <div><h3>Constructores libres, en vivo</h3><p>Cuántos constructores están libres o una cuenta atrás hasta el siguiente.</p></div>
+        </li>
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.00,9.81 C50.48,9.44 50.97,9.07 51.45,8.70 C62.76,0.00 78.77,1.04 88.87,11.13 C98.96,21.23 100.00,37.24 91.30,48.55 C90.93,49.03 90.56,49.52 90.19,50.00 C90.56,50.48 90.93,50.97 91.30,51.45 C100.00,62.76 98.96,78.77 88.87,88.87 C78.77,98.96 62.76,100.00 51.45,91.30 C50.97,90.93 50.48,90.56 50.00,90.19 C49.52,90.56 49.03,90.93 48.55,91.30 C37.24,100.00 21.23,98.96 11.13,88.87 C1.04,78.77 0.00,62.76 8.70,51.45 C9.07,50.97 9.44,50.48 9.81,50.00 C9.44,49.52 9.07,49.03 8.70,48.55 C0.00,37.24 1.04,21.23 11.13,11.13 C21.23,1.04 37.24,0.00 48.55,8.70 C49.03,9.07 49.52,9.44 50.00,9.81Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M15,1H9v2h6V1zM11,14h2V8h-2v6zM19.03,7.39l1.42,-1.42c-0.43,-0.51 -0.9,-0.99 -1.41,-1.41l-1.42,1.42C16.07,4.74 14.12,4 12,4c-4.97,0 -9,4.03 -9,9s4.02,9 9,9 9,-4.03 9,-9c0,-2.12 -0.74,-4.07 -1.97,-5.61zM12,20c-3.87,0 -7,-3.13 -7,-7s3.13,-7 7,-7 7,3.13 7,7 -3.13,7 -7,7z" class="on-primary"/></g></svg>
+          <div><h3>Todos los temporizadores</h3><p>Edificios, héroes, perfeccionamientos, taller, laboratorio, animales, base del constructor, aprendiz y Torre del reloj.</p></div>
+        </li>
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M99.69,50.00 C99.69,51.79 99.07,53.59 97.83,55.04 C95.30,58.01 92.77,60.98 90.24,63.95 C89.18,65.19 88.54,66.74 88.41,68.37 C88.10,72.26 87.79,76.15 87.48,80.04 C87.18,83.84 84.15,86.87 80.35,87.17 C76.46,87.48 72.57,87.79 68.68,88.10 C67.05,88.23 65.50,88.87 64.26,89.93 C61.29,92.46 58.32,94.99 55.35,97.52 C52.45,100.00 48.17,100.00 45.27,97.52 C42.30,94.99 39.33,92.46 36.36,89.93 C35.11,88.87 33.57,88.23 31.94,88.10 C28.05,87.79 24.16,87.48 20.27,87.17 C16.46,86.87 13.44,83.84 13.14,80.04 C12.83,76.15 12.52,72.26 12.21,68.37 C12.08,66.74 11.44,65.19 10.38,63.95 C7.85,60.98 5.32,58.01 2.79,55.04 C0.31,52.14 0.31,47.86 2.79,44.96 C5.32,41.99 7.85,39.02 10.38,36.05 C11.44,34.81 12.08,33.26 12.21,31.63 C12.52,27.74 12.83,23.85 13.14,19.96 C13.44,16.16 16.46,13.13 20.27,12.83 C24.16,12.52 28.05,12.21 31.94,11.90 C33.57,11.77 35.11,11.13 36.36,10.07 C39.33,7.54 42.30,5.01 45.27,2.48 C48.17,0.00 52.45,0.00 55.35,2.48 C58.32,5.01 61.29,7.54 64.26,10.07 C65.50,11.13 67.05,11.77 68.68,11.90 C72.57,12.21 76.46,12.52 80.35,12.83 C84.15,13.13 87.18,16.16 87.48,19.96 C87.79,23.85 88.10,27.74 88.41,31.63 C88.54,33.26 89.18,34.81 90.24,36.05 C92.77,39.02 95.30,41.99 97.83,44.96 C99.07,46.41 99.69,48.21 99.69,50.00Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M12,22c1.1,0 2,-0.9 2,-2h-4c0,1.1 0.89,2 2,2zM18,16v-5c0,-3.07 -1.64,-5.64 -4.5,-6.32V4c0,-0.83 -0.67,-1.5 -1.5,-1.5s-1.5,0.67 -1.5,1.5v0.68C7.63,5.36 6,7.92 6,11v5l-2,2v1h16v-1l-2,-2z" class="on-primary"/></g></svg>
+          <div><h3>Un aviso al terminar</h3><p>Notificaciones en cuanto algo termina y un recordatorio si un constructor está sin trabajo.</p></div>
+        </li>
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M49.95,100.00 C49.14,100.00 48.33,99.95 47.52,99.87 C43.56,99.46 39.76,97.72 32.16,94.24 C26.00,91.42 19.84,88.59 13.68,85.77 C5.27,81.91 0.42,72.98 1.75,63.83 C3.14,54.36 4.52,44.89 5.90,35.42 C6.80,29.28 10.15,23.78 15.19,20.17 C22.73,14.76 30.27,9.36 37.81,3.96 C41.40,1.38 45.72,0.00 50.14,0.01 C54.56,0.02 58.87,1.41 62.45,4.00 C69.97,9.44 77.49,14.87 85.01,20.30 C90.04,23.93 93.37,29.45 94.24,35.59 C95.59,45.06 96.93,54.54 98.28,64.02 C99.58,73.17 94.69,82.09 86.27,85.91 C80.10,88.71 73.93,91.51 67.75,94.31 C60.14,97.76 56.34,99.49 52.38,99.88 C51.57,99.96 50.76,100.00 49.95,100.00Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M12,1L3,5v6c0,5.55 3.84,10.74 9,12 5.16,-1.26 9,-6.45 9,-12V5l-9,-4z" class="on-primary"/></g></svg>
+          <div><h3>Héroes listos para luchar</h3><p>Qué héroes pueden atacar y cuándo vuelve uno que se está mejorando.</p></div>
+        </li>
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M18.66,27.24 C19.36,26.28 19.73,25.07 19.63,23.81 C19.40,20.81 19.17,17.82 18.94,14.83 C18.65,10.99 22.50,8.18 26.07,9.63 C28.87,10.77 31.66,11.91 34.46,13.04 C36.81,14.00 39.50,13.12 40.83,10.96 C42.40,8.40 43.98,5.85 45.55,3.29 C47.57,0.01 52.34,0.00 54.37,3.27 C55.96,5.84 57.56,8.40 59.15,10.97 C60.49,13.12 63.18,13.99 65.53,13.02 C68.30,11.88 71.08,10.74 73.86,9.60 C77.42,8.13 81.28,10.92 81.00,14.76 C80.78,17.78 80.56,20.79 80.35,23.80 C80.16,26.33 81.83,28.62 84.30,29.21 C87.21,29.92 90.13,30.63 93.05,31.33 C96.79,32.24 98.27,36.77 95.79,39.72 C93.84,42.02 91.90,44.33 89.95,46.64 C88.32,48.58 88.32,51.41 89.96,53.34 C91.91,55.63 93.85,57.92 95.80,60.20 C98.29,63.14 96.83,67.67 93.09,68.60 C90.16,69.32 87.23,70.04 84.30,70.76 C81.84,71.37 80.17,73.67 80.37,76.19 C80.60,79.19 80.83,82.18 81.06,85.17 C81.35,89.01 77.50,91.82 73.93,90.37 C71.13,89.23 68.34,88.09 65.54,86.96 C63.19,86.00 60.50,86.88 59.17,89.04 C57.60,91.60 56.02,94.15 54.45,96.71 C52.43,99.99 47.66,100.00 45.63,96.73 C44.04,94.16 42.44,91.60 40.85,89.03 C39.51,86.88 36.82,86.01 34.47,86.98 C31.70,88.12 28.92,89.26 26.14,90.40 C22.58,91.87 18.72,89.08 19.00,85.24 C19.22,82.22 19.44,79.21 19.65,76.20 C19.84,73.67 18.17,71.38 15.70,70.79 C12.79,70.08 9.87,69.37 6.95,68.67 C3.21,67.76 1.73,63.23 4.21,60.28 C6.16,57.98 8.10,55.67 10.05,53.36 C11.68,51.42 11.68,48.59 10.04,46.66 C8.09,44.37 6.15,42.08 4.20,39.80 C1.71,36.86 3.17,32.33 6.91,31.40 C9.84,30.68 12.77,29.96 15.70,29.24 C16.93,28.93 17.96,28.21 18.66,27.24Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M7,2v11h3v9l7,-12h-4l4,-8z" class="on-primary"/></g></svg>
+          <div><h3>Planifica tus pócimas</h3><p>Mira qué terminaría una Pócima del constructor, una Pócima de investigación o un Builder Bite antes de usarlos.</p></div>
+        </li>
+        <li class="feature">
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M87.14,87.08 C81.05,93.18 71.59,95.91 62.20,91.86 C60.84,91.27 59.48,90.69 58.12,90.10 C52.95,87.87 47.09,87.87 41.92,90.11 C40.58,90.70 39.23,91.28 37.89,91.86 C19.11,100.00 0.05,80.97 8.16,62.18 C8.74,60.82 9.33,59.46 9.92,58.10 C12.15,52.93 12.14,47.07 9.90,41.90 C9.32,40.56 8.74,39.21 8.16,37.87 C0.02,19.09 19.04,0.03 37.83,8.14 C39.19,8.73 40.55,9.31 41.91,9.90 C47.08,12.13 52.95,12.13 58.11,9.89 C59.46,9.30 60.80,8.72 62.15,8.14 C80.93,0.00 99.98,19.03 91.88,37.82 C91.29,39.18 90.70,40.54 90.12,41.90 C87.88,47.07 87.89,52.93 90.13,58.10 C90.71,59.44 91.29,60.79 91.88,62.13 C95.95,71.52 93.22,80.98 87.14,87.08Z" class="fill-primary"/>
+            <g transform="translate(26 26) scale(2)"><path d="M18,8h-1V6c0,-2.76 -2.24,-5 -5,-5S7,3.24 7,6v2H6c-1.1,0 -2,0.9 -2,2v10c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V10c0,-1.1 -0.9,-2 -2,-2zM12,17c-1.1,0 -2,-0.9 -2,-2s0.9,-2 2,-2 2,0.9 2,2 -0.9,2 -2,2zM9,8V6c0,-1.66 1.34,-3 3,-3s3,1.34 3,3v2H9z" class="on-primary"/></g></svg>
+          <div><h3>Privado por diseño</h3><p>Sin cuenta y sin servidor. Los datos de tu aldea se quedan en tu móvil.</p></div>
+        </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="sizes">
+    <h2 id="sizes">Un widget para cada rincón</h2>
+    <p class="intro">Desde una insignia de 1×1 hasta una lista completa. Sigue los colores de tu fondo, en modo claro y oscuro.</p>
+    <div class="gallery" aria-label="Vistas previas en vivo">
+      <div class="lw lw-compact" role="img" aria-label="Widget de Clash of Clans, 4×2: constructores libres, laboratorio, animales y héroes">
+        <div class="lw-head">
+          <div class="lw-shape js-shape"><svg viewBox="0 0 100 100"><path d="M50.00,1.42 C53.65,1.42 57.30,2.73 60.19,5.35 C63.13,8.01 67.00,9.42 70.96,9.27 C78.76,8.97 85.51,14.63 86.57,22.37 C87.11,26.30 89.16,29.86 92.30,32.29 C98.47,37.08 100.00,45.76 95.84,52.36 C93.72,55.72 93.01,59.77 93.85,63.65 C95.50,71.28 91.09,78.91 83.66,81.30 C79.88,82.51 76.73,85.15 74.88,88.67 C71.24,95.57 62.96,98.58 55.73,95.63 C52.06,94.13 47.94,94.13 44.27,95.63 C37.04,98.58 28.76,95.57 25.12,88.67 C23.27,85.15 20.12,82.51 16.34,81.30 C8.91,78.91 4.50,71.28 6.15,63.65 C6.99,59.77 6.28,55.72 4.16,52.36 C0.00,45.76 1.53,37.08 7.70,32.29 C10.84,29.86 12.89,26.30 13.43,22.37 C14.49,14.63 21.24,8.97 29.04,9.27 C33.00,9.42 36.87,8.01 39.81,5.35 C42.70,2.73 46.35,1.42 50.00,1.42Z"/></svg><b class="js-free">1</b></div>
+          <div><div class="lw-title js-title">1 constructor libre</div><div class="lw-sub js-sub">5 de 6 trabajando</div></div>
+        </div>
+        <div class="lw-chips">
+          <div class="lw-chip"><span>Lab.</span><b class="js-cd" data-s="20999">5:49:59</b></div>
+          <div class="lw-chip idle"><span>Lab. astral</span><b>Libre</b></div>
+          <div class="lw-chip"><span>Animales</span><b class="js-cd" data-s="63999">17:46:39</b></div>
+          <div class="lw-chip idle"><span>BC</span><b>Libre</b></div>
+        </div>
+        <div class="lw-foot">Héroes 2/3 listos · RA vuelve en 1d 9h</div>
+      </div>
+      <div class="lw lw-small" role="img" aria-label="Widget de constructores de Clash of Clans, 4×1">
+        <div class="lw-shape js-shape"><svg viewBox="0 0 100 100"><path d="M50.00,1.42 C53.65,1.42 57.30,2.73 60.19,5.35 C63.13,8.01 67.00,9.42 70.96,9.27 C78.76,8.97 85.51,14.63 86.57,22.37 C87.11,26.30 89.16,29.86 92.30,32.29 C98.47,37.08 100.00,45.76 95.84,52.36 C93.72,55.72 93.01,59.77 93.85,63.65 C95.50,71.28 91.09,78.91 83.66,81.30 C79.88,82.51 76.73,85.15 74.88,88.67 C71.24,95.57 62.96,98.58 55.73,95.63 C52.06,94.13 47.94,94.13 44.27,95.63 C37.04,98.58 28.76,95.57 25.12,88.67 C23.27,85.15 20.12,82.51 16.34,81.30 C8.91,78.91 4.50,71.28 6.15,63.65 C6.99,59.77 6.28,55.72 4.16,52.36 C0.00,45.76 1.53,37.08 7.70,32.29 C10.84,29.86 12.89,26.30 13.43,22.37 C14.49,14.63 21.24,8.97 29.04,9.27 C33.00,9.42 36.87,8.01 39.81,5.35 C42.70,2.73 46.35,1.42 50.00,1.42Z"/></svg><b class="js-free">1</b></div>
+        <div><div class="lw-title js-title">1 constructor libre</div><div class="lw-sub js-sub">5 de 6 trabajando</div></div>
+      </div>
+      <div class="lw-badge" role="img" aria-label="Insignia de constructores libres, 1×1">
+        <div class="lw-big js-shape"><svg viewBox="0 0 100 100"><path d="M99.69,50.00 C99.69,51.79 99.07,53.59 97.83,55.04 C95.30,58.01 92.77,60.98 90.24,63.95 C89.18,65.19 88.54,66.74 88.41,68.37 C88.10,72.26 87.79,76.15 87.48,80.04 C87.18,83.84 84.15,86.87 80.35,87.17 C76.46,87.48 72.57,87.79 68.68,88.10 C67.05,88.23 65.50,88.87 64.26,89.93 C61.29,92.46 58.32,94.99 55.35,97.52 C52.45,100.00 48.17,100.00 45.27,97.52 C42.30,94.99 39.33,92.46 36.36,89.93 C35.11,88.87 33.57,88.23 31.94,88.10 C28.05,87.79 24.16,87.48 20.27,87.17 C16.46,86.87 13.44,83.84 13.14,80.04 C12.83,76.15 12.52,72.26 12.21,68.37 C12.08,66.74 11.44,65.19 10.38,63.95 C7.85,60.98 5.32,58.01 2.79,55.04 C0.31,52.14 0.31,47.86 2.79,44.96 C5.32,41.99 7.85,39.02 10.38,36.05 C11.44,34.81 12.08,33.26 12.21,31.63 C12.52,27.74 12.83,23.85 13.14,19.96 C13.44,16.16 16.46,13.13 20.27,12.83 C24.16,12.52 28.05,12.21 31.94,11.90 C33.57,11.77 35.11,11.13 36.36,10.07 C39.33,7.54 42.30,5.01 45.27,2.48 C48.17,0.00 52.45,0.00 55.35,2.48 C58.32,5.01 61.29,7.54 64.26,10.07 C65.50,11.13 67.05,11.77 68.68,11.90 C72.57,12.21 76.46,12.52 80.35,12.83 C84.15,13.13 87.18,16.16 87.48,19.96 C87.79,23.85 88.10,27.74 88.41,31.63 C88.54,33.26 89.18,34.81 90.24,36.05 C92.77,39.02 95.30,41.99 97.83,44.96 C99.07,46.41 99.69,48.21 99.69,50.00Z"/></svg><b class="js-free">1</b></div>
+        <div class="lw-pill js-title">1 constructor libre</div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="setup">
+    <h2 id="setup">Listo en un minuto</h2>
+    <p class="intro">Android 12 o posterior.</p>
+    <ol class="steps">
+        <li class="step">
+          <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M100.00,50.00 C100.00,55.17 99.19,60.35 97.57,65.33 C94.34,75.29 88.03,83.97 79.56,90.12 C71.08,96.28 60.88,99.60 50.40,99.60 C39.93,99.60 29.73,96.28 21.25,90.12 C12.78,83.97 6.47,75.29 3.24,65.33 C0.00,55.36 0.00,44.64 3.24,34.67 C6.47,24.71 12.78,16.03 21.25,9.88 C29.73,3.72 39.93,0.40 50.40,0.40 C60.88,0.40 71.08,3.72 79.56,9.88 C88.03,16.03 94.34,24.71 97.57,34.67 C99.19,39.65 100.00,44.83 100.00,50.00Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">1</text></svg>
+          <div><h3>Instala Clash Timers</h3><p><a class="js-dl" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download>Descarga el APK</a>, o con Obtainium para recibir actualizaciones automáticas.</p></div>
+        </li>
+        <li class="step">
+          <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M87.14,87.08 C81.05,93.18 71.59,95.91 62.20,91.86 C60.84,91.27 59.48,90.69 58.12,90.10 C52.95,87.87 47.09,87.87 41.92,90.11 C40.58,90.70 39.23,91.28 37.89,91.86 C19.11,100.00 0.05,80.97 8.16,62.18 C8.74,60.82 9.33,59.46 9.92,58.10 C12.15,52.93 12.14,47.07 9.90,41.90 C9.32,40.56 8.74,39.21 8.16,37.87 C0.02,19.09 19.04,0.03 37.83,8.14 C39.19,8.73 40.55,9.31 41.91,9.90 C47.08,12.13 52.95,12.13 58.11,9.89 C59.46,9.30 60.80,8.72 62.15,8.14 C80.93,0.00 99.98,19.03 91.88,37.82 C91.29,39.18 90.70,40.54 90.12,41.90 C87.88,47.07 87.89,52.93 90.13,58.10 C90.71,59.44 91.29,60.79 91.88,62.13 C95.95,71.52 93.22,80.98 87.14,87.08Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">2</text></svg>
+          <div><h3>Copia tu aldea</h3><p>En Clash of Clans: Ajustes, Más ajustes, Exportar datos, Copiar.</p></div>
+        </li>
+        <li class="step">
+          <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.00,4.28 C53.38,4.28 56.75,5.30 59.64,7.34 C70.37,14.92 81.11,22.49 91.84,30.07 C97.59,34.12 100.00,41.47 97.77,48.14 C93.73,60.26 89.68,72.37 85.64,84.49 C83.40,91.19 77.12,95.72 70.05,95.72 C56.68,95.72 43.32,95.72 29.95,95.72 C22.88,95.72 16.60,91.19 14.36,84.49 C10.32,72.37 6.27,60.26 2.23,48.14 C0.00,41.47 2.41,34.12 8.16,30.07 C18.89,22.49 29.63,14.92 40.36,7.34 C43.25,5.30 46.62,4.28 50.00,4.28Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">3</text></svg>
+          <div><h3>Abre la app</h3><p>La exportación se recoge sola.</p></div>
+        </li>
+        <li class="step">
+          <svg class="step-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M99.69,50.00 C99.69,51.79 99.07,53.59 97.83,55.04 C95.30,58.01 92.77,60.98 90.24,63.95 C89.18,65.19 88.54,66.74 88.41,68.37 C88.10,72.26 87.79,76.15 87.48,80.04 C87.18,83.84 84.15,86.87 80.35,87.17 C76.46,87.48 72.57,87.79 68.68,88.10 C67.05,88.23 65.50,88.87 64.26,89.93 C61.29,92.46 58.32,94.99 55.35,97.52 C52.45,100.00 48.17,100.00 45.27,97.52 C42.30,94.99 39.33,92.46 36.36,89.93 C35.11,88.87 33.57,88.23 31.94,88.10 C28.05,87.79 24.16,87.48 20.27,87.17 C16.46,86.87 13.44,83.84 13.14,80.04 C12.83,76.15 12.52,72.26 12.21,68.37 C12.08,66.74 11.44,65.19 10.38,63.95 C7.85,60.98 5.32,58.01 2.79,55.04 C0.31,52.14 0.31,47.86 2.79,44.96 C5.32,41.99 7.85,39.02 10.38,36.05 C11.44,34.81 12.08,33.26 12.21,31.63 C12.52,27.74 12.83,23.85 13.14,19.96 C13.44,16.16 16.46,13.13 20.27,12.83 C24.16,12.52 28.05,12.21 31.94,11.90 C33.57,11.77 35.11,11.13 36.36,10.07 C39.33,7.54 42.30,5.01 45.27,2.48 C48.17,0.00 52.45,0.00 55.35,2.48 C58.32,5.01 61.29,7.54 64.26,10.07 C65.50,11.13 67.05,11.77 68.68,11.90 C72.57,12.21 76.46,12.52 80.35,12.83 C84.15,13.13 87.18,16.16 87.48,19.96 C87.79,23.85 88.10,27.74 88.41,31.63 C88.54,33.26 89.18,34.81 90.24,36.05 C92.77,39.02 95.30,41.99 97.83,44.96 C99.07,46.41 99.69,48.21 99.69,50.00Z"/><text x="50" y="50" dy="0.35em" text-anchor="middle">4</text></svg>
+          <div><h3>Añade el widget</h3><p>Mantén pulsada la pantalla de inicio, abre Widgets y elige Clash Timers.</p></div>
+        </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="faq" class="faq">
+    <h2 id="faq">Preguntas</h2>
+        <details><summary>¿Hay un widget de Clash of Clans para Android?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6z"/></svg></summary><p>Clash of Clans no tiene widget propio. Clash Timers añade uno: constructores libres, temporizadores, investigación y héroes en tu pantalla de inicio.</p></details>
+        <details><summary>¿Tengo que iniciar sesión?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6z"/></svg></summary><p>No. Usa la <a href="../guides/data-export/">exportación de datos del juego</a>. No necesitas cuenta ni Supercell ID.</p></details>
+        <details><summary>¿Me pueden banear?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6z"/></svg></summary><p>Clash Timers nunca toca el juego. Solo lee la exportación que te da el juego y no envía nada a ninguna parte.</p></details>
+        <details><summary>¿Se actualiza solo?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6z"/></svg></summary><p>Los temporizadores corren en vivo. Tras empezar mejoras, copia una exportación nueva o activa la importación automática con Shizuku y se hace sola.</p></details>
+        <details><summary>¿Hay versión para iPhone?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6z"/></svg></summary><p>No, Clash Timers es para Android 12 y posteriores.</p></details>
+  </section>
+
+  <footer>
+    <p>Clash Timers es gratis y de código abierto con licencia MIT. <a href="https://github.com/memehammad/clash-timers">Código fuente en GitHub</a> · <a href="../privacy.html">Privacidad</a> · <a href="../guides/">Guías (EN)</a>.</p>
+    <p>Este material no es oficial y no está respaldado por Supercell. Para más información, consulta la <a href="https://supercell.com/en/fan-content-policy/">Política de contenido de fans de Supercell</a>.</p>
+    <p class="langs"><a href="https://memehammad.github.io/clash-timers/" hreflang="en" lang="en">English</a> · <a href="https://memehammad.github.io/clash-timers/de/" hreflang="de" lang="de">Deutsch</a> · <b>Español</b> · <a href="https://memehammad.github.io/clash-timers/fr/" hreflang="fr" lang="fr">Français</a> · <a href="https://memehammad.github.io/clash-timers/pt/" hreflang="pt" lang="pt">Português</a></p>
+  </footer>
+</main>
+<script>
+  // Live widget demo: three builders with short demo timers.
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var names = ['Torre de arqueras', 'Torre infernal', 'Rey bárbaro', 'Torre de mago', 'Almacén de elixir', 'Reina arquera', 'Cañón', 'Ballesta', 'Gran centinela'];
+    var builders = [
+      { name: 'Torre de arqueras', lvl: 20, total: 20, left: 20 },
+      { name: 'Rey bárbaro', lvl: 94, total: 45, left: 34 },
+      { name: 'Torre infernal', lvl: 10, total: 75, left: 61 },
+    ];
+    var rows = document.getElementById('rows'), badge = document.getElementById('badge');
+    var count = document.getElementById('free-count'), title = document.getElementById('demo-title'), sub = document.getElementById('demo-sub');
+    var potionBtn = document.getElementById('potion'), upgradeBtn = document.getElementById('upgrade');
+    var boost = 0, phase = 0, lastFree = 0;
+
+    function fmt(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+    // One long wave (wavelength 20px, amplitude 3px), built once and reused by every row.
+    var WAVE = (function () {
+      var d = 'M0,6';
+      for (var x = 1; x <= 452; x++) d += 'L' + x + ',' + (6 + Math.sin(x / 20 * Math.PI * 2) * 3).toFixed(2);
+      return d;
+    })();
+    var shape = '';
+    function build() {
+      // Rebuild the rows only when a row changes state; per-frame updates touch just text and paths.
+      var html = '';
+      builders.forEach(function (b, i) {
+        if (!b) { html += '<li class="row idle"><span class="name">Constructor libre</span><span class="time"></span></li>'; return; }
+        if (b.left <= 0) {
+          html += '<li class="row done"><span class="name">' + b.name + '</span><span class="time">Listo</span><span class="lvl">Nivel ' + (b.lvl + 1) + ' alcanzado</span></li>';
+          return;
+        }
+        html += '<li class="row" data-i="' + i + '"><span class="name">' + b.name + '</span><span class="time"></span>' +
+          '<span class="lvl"></span><div class="bar" aria-hidden="true"><div class="wclip"><svg class="wv" viewBox="0 0 452 12"><path d="' + WAVE + '"/></svg></div><span class="trk"></span></div></li>';
+      });
+      rows.innerHTML = html;
+    }
+    function render() {
+      var free = 0, next = Infinity, sig = '';
+      builders.forEach(function (b) {
+        var st = !b ? 'i' : b.left <= 0 ? 'd' : 'r';
+        sig += st + (b ? b.name : '');
+        if (st !== 'r') free++; else next = Math.min(next, b.left);
+      });
+      if (sig !== shape) { shape = sig; build(); }
+      rows.querySelectorAll('.row[data-i]').forEach(function (li) {
+        var b = builders[+li.dataset.i];
+        li.querySelector('.time').textContent = fmt(b.left);
+        li.querySelector('.lvl').textContent = 'Nivel ' + b.lvl + ' \u2192 ' + (b.lvl + 1) + (boost > 0 ? ' \u00b7 acelerado' : '');
+        var pct = Math.max(0, Math.min(1, 1 - b.left / b.total)) * 100;
+        li.querySelector('.wclip').style.width = pct + '%';
+        var t = li.querySelector('.trk');
+        t.style.left = 'calc(' + pct + '% + 6px)';
+        t.style.display = pct > 96 ? 'none' : '';
+        li.classList.toggle('fast', boost > 0);
+      });
+      count.textContent = free;
+      badge.classList.toggle('is-free', free > 0);
+      if (free > lastFree) { badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
+      lastFree = free;
+      title.textContent = free === 0 ? 'Todos los constructores ocupados' : free === 1 ? '1 constructor libre' : free + ' constructores libres';
+      sub.textContent = next < Infinity ? (free === 0 ? 'Próximo libre en ' : 'Lo próximo termina en ') + fmt(next) + (boost > 0 ? ' \u00b7 pócima ' + fmt(boost) : '') : 'Hora de construir algo';
+      potionBtn.disabled = next === Infinity || boost > 0;
+      upgradeBtn.disabled = free === 0;
+    }
+    var last = 0;
+    function frame(t) {
+      // Smooth at the display's refresh rate; the wave drifts at a steady speed.
+      var dt = last ? Math.min(0.1, (t - last) / 1000) : 0, speed = boost > 0 ? 10 : 1;
+      last = t;
+      if (boost > 0) boost = Math.max(0, boost - dt);
+      builders.forEach(function (b) { if (b && b.left > 0) b.left -= dt * speed; });
+      render();
+      requestAnimationFrame(frame);
+    }
+    potionBtn.addEventListener('click', function () { boost = 6; render(); });
+    upgradeBtn.addEventListener('click', function () {
+      var i = builders.findIndex(function (b) { return !b || b.left <= 0; });
+      if (i < 0) return;
+      var total = 25 + Math.round(Math.random() * 50);
+      builders[i] = { name: names[Math.floor(Math.random() * names.length)], lvl: 5 + Math.floor(Math.random() * 15), total: total, left: total };
+      render();
+    });
+    render();
+    requestAnimationFrame(frame);
+  })();
+</script>
+<script>
+  // Gallery widgets: real countdowns, and every so often a builder finishes and the count pops.
+  (function () {
+    var cds = document.querySelectorAll('.lw .js-cd');
+    function hms(t) { t = Math.max(0, t); return Math.floor(t / 3600) + ':' + String(Math.floor(t / 60) % 60).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); }
+    var cycle = 11, free = 1;
+    function setFree(n, next) {
+      document.querySelectorAll('.gallery .js-free').forEach(function (e) { e.textContent = n; });
+      document.querySelectorAll('.gallery .js-title').forEach(function (e) {
+        e.textContent = n === 0 ? 'Todos los constructores ocupados' : n === 1 ? '1 constructor libre' : n + ' constructores libres';
+      });
+      document.querySelectorAll('.gallery .js-sub').forEach(function (e) {
+        e.textContent = n === 0 ? 'Próximo libre en 0:' + String(next).padStart(2, '0') : (6 - n) + ' de 6 trabajando';
+      });
+      document.querySelectorAll('.gallery .js-shape').forEach(function (e) {
+        e.classList.toggle('busy', n === 0);
+        if (n > free) { e.classList.remove('pop'); void e.offsetWidth; e.classList.add('pop'); }
+      });
+      free = n;
+    }
+    setInterval(function () {
+      cds.forEach(function (e) { var t = +e.dataset.s - 1; e.dataset.s = t; e.textContent = hms(t); });
+      // All busy with a short countdown, then a builder finishes and the count pops; repeat.
+      cycle = (cycle + 1) % 22;
+      if (cycle < 12) setFree(0, 12 - cycle);
+      else setFree(1);
+    }, 1000);
+  })();
+</script>
+<script>
+  // Swap between the two Material You schemes; remembered on this device only.
+  (function () {
+    var root = document.documentElement, buttons = document.querySelectorAll('.swatch');
+    function use(p) {
+      root.setAttribute('data-palette', p);
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.p === p)); });
+    }
+    try { var saved = localStorage.getItem('palette'); if (saved) use(saved); } catch (e) {}
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        use(b.dataset.p);
+        try { localStorage.setItem('palette', b.dataset.p); } catch (e) {}
+      });
+    });
+  })();
+</script>
+<dialog class="install" id="install" aria-labelledby="install-title">
+  <div class="in">
+    <h2 id="install-title">Tu descarga ha empezado</h2>
+    <p class="sub">La instalación tarda alrededor de un minuto.</p>
+    <ol>
+      <li><div><b>Abre el archivo</b><span>Toca la notificación de descarga o busca ClashTimers.apk en Archivos &gt; Descargas.</span></div></li>
+      <li><div><b>Permite la instalación</b><span>Si Android lo pide, toca Ajustes, activa "Permitir de esta fuente" y vuelve.</span></div></li>
+      <li><div><b>Toca Instalar</b><span>Si Play Protect ofrece analizar la app, adelante, es de código abierto. Si avisa de una app desconocida, toca Más detalles &gt; Instalar de todas formas.</span></div></li>
+      <li><div><b>Copia tu exportación</b><span>En Clash: Ajustes &gt; Más ajustes &gt; Exportar datos &gt; Copiar. Después abre Clash Timers.</span></div></li>
+    </ol>
+    <p class="tip">¿Quieres actualizaciones automáticas? Instala con <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/memehammad/clash-timers">Obtainium</a> en su lugar. ¿No empezó? <a href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk" download>Descargar de nuevo</a>.</p>
+    <div class="row"><button class="btn btn-filled" type="button" id="install-close">Entendido</button></div>
+  </div>
+</dialog>
+<script>
+  (function () {
+    var d = document.getElementById('install');
+    if (!d || !d.showModal) return;
+    document.querySelectorAll('.js-dl').forEach(function (a) {
+      a.addEventListener('click', function () { setTimeout(function () { d.showModal(); }, 300); });
+    });
+    document.getElementById('install-close').addEventListener('click', function () { d.close(); });
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  })();
+</script>
+</body>
+</html>
