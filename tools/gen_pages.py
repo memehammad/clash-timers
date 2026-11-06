@@ -118,6 +118,7 @@ pages.append(page(
     "Short, practical guides for keeping your Clash of Clans village busy from your Android phone.",
     """  <ol class="steps">
     <li><a href="data-export/"><b>How to use the Clash of Clans Data Export</b></a><br>Where to find it, what's in it and what you can do with it.</li>
+    <li><a href="notifications-not-working/"><b>Clash of Clans notifications not working?</b></a><br>Why the game's alerts go missing on Android, and how to fix it.</li>
     <li><a href="builder-notifications/"><b>Get a notification when your builders are free</b></a><br>Alerts for builders, lab, pets and the Goblin Builder on Android.</li>
     <li><a href="../"><b>The Clash of Clans widget for Android</b></a><br>Free builders and timers on your home screen.</li>
   </ol>""",
@@ -170,6 +171,36 @@ pages.append(page(
   <h2>Also on your watch and At a Glance</h2>
   <p>Notifications show up on a connected watch as usual. Clash Timers can also show free builders in the At a Glance bar above your clock through Smartspacer.</p>""",
     [HOME, GUIDES, ("Builder notifications", "guides/builder-notifications/")],
+))
+
+pages.append(page(
+    "guides/notifications-not-working/", "en",
+    "Clash of Clans notifications not working on Android? How to fix it",
+    "Not getting Clash of Clans notifications when builders finish? Check these Android settings, or use reliable local alerts that don't depend on the game.",
+    "Clash of Clans notifications not working?",
+    "Upgrade done, builder idle, and your phone stayed quiet? You're not alone. Here's why the game's notifications go missing on Android, what to check, and a way to get alerts that always arrive.",
+    """  <h2>Why the alerts go missing</h2>
+  <p>Clash of Clans sends its notifications from Supercell's servers through Google's push service. Several things on the phone can stop them along the way: notifications turned off for the game, Android putting the app to sleep to save battery, Do Not Disturb, or a data saver that blocks the game in the background. If you play on more than one device, the alert may also land on the other one.</p>
+  <h2>Fix it step by step</h2>
+  <ol class="steps">
+    <li><b>Allow notifications.</b> Long-press the Clash of Clans icon, tap App info, then Notifications, and make sure they're on, including every category below the main switch.</li>
+    <li><b>Check the game's own settings.</b> In Clash of Clans, open Settings and make sure notifications are switched on there too.</li>
+    <li><b>Stop battery optimisation.</b> In App info, open Battery and choose Unrestricted (or "Don't optimise"). Samsung, Xiaomi, OnePlus and Huawei phones also have their own sleeping-apps lists. Take the game off them.</li>
+    <li><b>Allow background data.</b> In App info, open Mobile data and turn on background data and unrestricted data usage.</li>
+    <li><b>Check Do Not Disturb and modes.</b> Make sure Clash of Clans isn't silenced by Do Not Disturb, Bedtime, or a focus mode.</li>
+    <li><b>Open the game once on this phone.</b> If you also play on a tablet or another phone, the last device you played on is the safest bet for alerts.</li>
+    <li><b>Update and restart.</b> Update the game from the Play Store, then restart your phone.</li>
+  </ol>
+  <h2>Alerts that always arrive</h2>
+  <p>Even with everything set up, server push notifications can arrive late or not at all. <a href="../../">Clash Timers</a> works differently: it reads the game's Data Export and schedules the alerts <b>on your phone</b>, with Android's alarm system. No server and no internet are involved, so they arrive on time, even in flight mode.</p>
+  <ul>
+    <li>A notification for every finished upgrade, research and pet, including the Goblin Builder.</li>
+    <li>Active Builder and Research Potions are counted, so alerts move earlier when you boost.</li>
+    <li>An optional reminder when a builder sits idle for 30 minutes or more.</li>
+    <li>A home screen widget that shows free builders at a glance.</li>
+  </ul>
+  <p>See <a href="../builder-notifications/">how to set up builder notifications</a> for the details.</p>""",
+    [HOME, GUIDES, ("Notifications not working", "guides/notifications-not-working/")],
 ))
 
 # Sitemap (gen_i18n.py adds the home page in every language).

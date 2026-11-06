@@ -153,6 +153,16 @@ T = {
         "Los temporizadores corren en vivo. Tras empezar mejoras, copia una exportación nueva o activa la importación automática con Shizuku y se hace sola.",
         "Les minuteurs défilent en direct. Après de nouvelles améliorations, copie un nouvel export, ou active l'import automatique avec Shizuku et tout se fait seul.",
         "Os timers correm ao vivo. Depois de iniciar melhorias, copie uma nova exportação ou ative a importação automática com o Shizuku e tudo acontece sozinho."),
+    "Clash of Clans notifications not working?": (
+        "Clash of Clans Benachrichtigungen kommen nicht?", "¿No te llegan las notificaciones de Clash of Clans?",
+        "Les notifications de Clash of Clans ne marchent pas ?", "Notificações do Clash of Clans não funcionam?"),
+    "The game’s alerts come from Supercell’s servers and are easily blocked by battery saving or notification settings. Clash Timers schedules its alerts on your phone instead, so they arrive on time.": (
+        "Die Benachrichtigungen des Spiels kommen von Supercells Servern und werden leicht durch Energiesparen oder Benachrichtigungseinstellungen blockiert. Clash Timers plant seine Benachrichtigungen direkt auf deinem Handy, deshalb kommen sie pünktlich.",
+        "Los avisos del juego vienen de los servidores de Supercell y el ahorro de batería o los ajustes de notificaciones los bloquean fácilmente. Clash Timers programa sus avisos en tu móvil, así que llegan a tiempo.",
+        "Les alertes du jeu viennent des serveurs de Supercell et sont facilement bloquées par l'économie d'énergie ou les réglages de notifications. Clash Timers programme ses alertes sur ton téléphone, elles arrivent donc à l'heure.",
+        "Os avisos do jogo vêm dos servidores da Supercell e são facilmente bloqueados pela economia de bateria ou pelas configurações de notificação. O Clash Timers agenda os avisos no seu celular, então eles chegam na hora."),
+    ">How to fix the game’s notifications<": (">So reparierst du die Benachrichtigungen des Spiels (EN)<", ">Cómo arreglar las notificaciones del juego (EN)<",
+                                              ">Comment réparer les notifications du jeu (EN)<", ">Como consertar as notificações do jogo (EN)<"),
     "Is there an iPhone version?": ("Gibt es eine iPhone-Version?", "¿Hay versión para iPhone?", "Existe-t-il une version iPhone ?", "Existe versão para iPhone?"),
     "No, Clash Timers is for Android 12 and newer.": ("Nein, Clash Timers ist für Android 12 und neuer.", "No, Clash Timers es para Android 12 y posteriores.",
                                                       "Non, Clash Timers est pour Android 12 et plus récent.", "Não, o Clash Timers é para Android 12 ou mais recente."),
