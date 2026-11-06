@@ -1,33 +1,34 @@
 # Changelog
 
-The newest section is used as the release notes on GitHub (and shown in Obtainium).
+The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
+version number: a new heading makes a new release.
 
-## 1.3
+## 1.1
 
 **Clash Timers speaks your language.** The app is now in German, Spanish, French and
 Portuguese, and follows your phone's language. Buildings, troops and heroes use the same
 names as in the game. A few of the newest ones stay in English for now. On Android 13 and
 newer you can also pick the app's language in Android settings.
 
-## 1.2
+## 1.0.42
 
 **A friendlier first start.** New installs open with a quick setup: turn on notifications,
 pick an idle-builder reminder and set up auto-import if you like. After that, a short
 four-step tour shows how the app works. You can watch the tour again any time under
 "How it works" at the bottom of the app.
 
-## 1.1.2
+## 1.0.37
 
 **Goblin Builder alerts.** When the Goblin Builder (or Goblin Researcher) finishes a job, you now
 get a "Goblin Builder is free" notification, so you can give him the next one. The game only
 shares his work while he's busy, so export once after you give him a job.
 
-## 1.1.1
+## 1.0.35
 
 **A brand new icon.** A golden timer ring with a hammer in the middle, made in the new Material
 style. If you use themed icons, there's a matching monochrome version too.
 
-## 1.1
+## 1.0.32
 
 **Your builders, right on your home screen's At a Glance**
 

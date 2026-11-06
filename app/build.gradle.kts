@@ -19,7 +19,8 @@ android {
         minSdk = 31
         targetSdk = 35
         versionCode = buildNumber
-        versionName = "1.0.$buildNumber"
+        // The newest CHANGELOG.md heading (set by CI), e.g. "1.1".
+        versionName = System.getenv("VERSION_NAME")?.takeIf { it.isNotBlank() } ?: "1.0.$buildNumber"
     }
 
     // Uses app/release.jks when present (local, or decoded from the SIGNING_KEY secret in CI);
