@@ -118,7 +118,8 @@
 
   /* Hero: one big expressive moment. */
   .hero { background: var(--hero); color: var(--on-hero); border-radius: 0 0 48px 48px; overflow: hidden; }
-  .hero-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 32px; align-items: center; padding-top: 40px; padding-bottom: 64px; }
+  .hero { overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding-top: 40px; padding-bottom: 56px; }
   .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 18px; margin-bottom: 40px; }
   .brand svg { width: 44px; height: 44px; }
   .brand .ring-track { stroke: var(--primary-container); } .brand .ring { stroke: var(--primary); } .brand .glyph { fill: var(--primary); }
@@ -147,15 +148,53 @@
   .btn svg { width: 22px; height: 22px; fill: currentColor; }
   .btn-filled { background: var(--primary); color: var(--on-primary); }
   .btn-tonal { background: var(--surface); color: var(--primary); }
-  .stage { position: relative; aspect-ratio: 1; max-width: 520px; width: 100%; justify-self: center; }
-  .stage .shape { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .stage .shape path { fill: var(--tertiary-container); }
-  .stage .spin { animation: spin 60s linear infinite; transform-origin: 50% 50%; }
+  /* Live demo: a working widget you can play with. */
+  .demo-wrap { position: relative; display: grid; place-items: center; padding: 28px 0; }
+  .demo-bg { position: absolute; width: min(118%, 560px); aspect-ratio: 1; z-index: 0; }
+  .demo-bg path { fill: var(--secondary-container); }
+  .demo-bg g { animation: spin 80s linear infinite; transform-origin: 50% 50%; transform-box: fill-box; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .stage .spin { animation: none; } }
-  .stage img { position: absolute; border-radius: 28px; box-shadow: 0 12px 40px rgba(20,10,60,.35); }
-  .stage .w-big { width: 74%; left: 13%; top: 36%; }
-  .stage .w-badge { width: 22%; left: 12%; top: 6%; box-shadow: none; }
+  .demo {
+    position: relative; z-index: 1; width: min(100%, 420px); background: var(--surface-low); color: var(--on-surface);
+    border-radius: 32px; padding: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.18);
+  }
+  .demo-head { display: flex; align-items: center; gap: 14px; background: var(--primary-container); color: var(--on-primary-container);
+    border-radius: 24px; padding: 14px 16px; }
+  .badge { position: relative; flex: none; width: 60px; height: 60px; }
+  .badge svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.3,1.6,.5,1), opacity .3s; }
+  .badge .busy path { fill: var(--surface-highest); }
+  .badge .free path { fill: var(--primary); }
+  .badge .free { opacity: 0; transform: scale(.4) rotate(-90deg); }
+  .badge.is-free .free { opacity: 1; transform: none; }
+  .badge.is-free .busy { opacity: 0; transform: scale(.4) rotate(90deg); }
+  .badge.pop .free { animation: pop .7s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { 0% { transform: scale(.6) rotate(-40deg); } 100% { transform: none; } }
+  .badge b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 26px; font-weight: 820; }
+  .badge.is-free b { color: var(--on-primary); }
+  .demo-title { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .demo-sub { font-size: 15px; opacity: .8; font-variant-numeric: tabular-nums; }
+  .rows { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+  .row { background: var(--surface-high); border-radius: 8px; padding: 12px 14px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+  .row:first-child { border-top-left-radius: 20px; border-top-right-radius: 20px; }
+  .row:last-child { border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+  .row .name { font-weight: 650; }
+  .row .time { font-variant-numeric: tabular-nums; font-weight: 650; color: var(--primary); }
+  .row .lvl { grid-column: 1 / -1; font-size: 14px; color: var(--on-surface-variant); margin-top: -2px; }
+  .row svg { grid-column: 1 / -1; width: 100%; height: 12px; margin-top: 6px; overflow: visible; }
+  .row .wave { fill: none; stroke: var(--primary); stroke-width: 3.2; stroke-linecap: round; }
+  .row .track { stroke: var(--outline-variant); stroke-width: 3.2; stroke-linecap: round; }
+  .row.done { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+  .row.done .time { color: inherit; }
+  .row.idle { background: transparent; border: 2px dashed var(--outline-variant); }
+  .row.idle .name { color: var(--on-surface-variant); font-weight: 500; }
+  .demo-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .chip { flex: 1; min-height: 48px; border: 0; border-radius: 999px; font: 600 15px "Roboto Flex", sans-serif; cursor: pointer;
+    background: var(--secondary-container); color: var(--on-secondary-container); transition: border-radius .25s, transform .15s; }
+  .chip.primary { background: var(--primary); color: var(--on-primary); }
+  .chip:hover { border-radius: 16px; } .chip:active { transform: scale(.97); }
+  .chip:disabled { opacity: .45; cursor: default; }
+  .demo-note { text-align: center; font-size: 14px; color: var(--on-hero-variant); margin: 14px 0 0; position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) { .demo-bg g, .badge svg, .badge.pop .free { animation: none; transition: none; } }
 
   section { padding: 72px 0 0; }
   h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.1; margin: 0 0 12px; font-weight: 760; font-variation-settings: "wdth" 112, "opsz" 72; letter-spacing: -0.01em; }
@@ -200,8 +239,8 @@
   @media (max-width: 880px) {
     .hero-inner { grid-template-columns: 1fr; padding-bottom: 48px; }
     .brand { margin-bottom: 28px; }
-    .stage { max-width: 420px; }
     .features { grid-template-columns: 1fr; }
+    .demo-bg { width: 100%; }
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 520px) {
@@ -228,10 +267,29 @@
         <button class="swatch rose" data-p="rose" aria-pressed="false" aria-label="Rose"></button>
       </div>
     </div>
-    <div class="stage" aria-hidden="true">
-      <svg class="shape" viewBox="-4 -4 108 108"><g class="spin"><path d="M50.00,0.52 C52.56,0.52 55.12,1.55 57.00,3.61 C59.49,6.34 63.35,7.38 66.88,6.25 C72.19,4.56 77.81,7.81 79.00,13.25 C79.79,16.87 82.62,19.69 86.23,20.48 C91.68,21.67 94.92,27.29 93.23,32.61 C92.11,36.13 93.14,39.99 95.88,42.48 C100.00,46.24 100.00,52.73 95.88,56.49 C93.14,58.98 92.11,62.83 93.23,66.36 C94.92,71.67 91.68,77.29 86.23,78.49 C82.62,79.28 79.79,82.10 79.00,85.71 C77.81,91.16 72.19,94.41 66.88,92.72 C63.35,91.59 59.49,92.63 57.00,95.36 C53.24,99.48 46.76,99.48 43.00,95.36 C40.51,92.63 36.65,91.59 33.12,92.72 C27.81,94.41 22.19,91.16 21.00,85.71 C20.21,82.10 17.38,79.28 13.77,78.49 C8.32,77.29 5.08,71.67 6.77,66.36 C7.89,62.83 6.86,58.98 4.12,56.49 C0.00,52.73 0.00,46.24 4.12,42.48 C6.86,39.99 7.89,36.13 6.77,32.61 C5.08,27.29 8.32,21.68 13.77,20.48 C17.38,19.69 20.21,16.87 21.00,13.25 C22.19,7.81 27.81,4.56 33.12,6.25 C36.65,7.38 40.51,6.34 43.00,3.61 C44.88,1.55 47.44,0.52 50.00,0.52Z"/></g></svg>
-      <img class="w-big pm teal light" src="img/teal/light/widget_compact.png" alt=""><img class="w-big pm teal dark" src="img/teal/dark/widget_compact.png" alt=""><img class="w-big pm rose light" src="img/rose/light/widget_compact.png" alt=""><img class="w-big pm rose dark" src="img/rose/dark/widget_compact.png" alt="">
-      <img class="w-badge pm teal light" src="img/teal/light/widget_badge.png" alt=""><img class="w-badge pm teal dark" src="img/teal/dark/widget_badge.png" alt=""><img class="w-badge pm rose light" src="img/rose/light/widget_badge.png" alt=""><img class="w-badge pm rose dark" src="img/rose/dark/widget_badge.png" alt="">
+    <div>
+      <div class="demo-wrap">
+        <svg class="demo-bg" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M50.00,0.52 C52.56,0.52 55.12,1.55 57.00,3.61 C59.49,6.34 63.35,7.38 66.88,6.25 C72.19,4.56 77.81,7.81 79.00,13.25 C79.79,16.87 82.62,19.69 86.23,20.48 C91.68,21.67 94.92,27.29 93.23,32.61 C92.11,36.13 93.14,39.99 95.88,42.48 C100.00,46.24 100.00,52.73 95.88,56.49 C93.14,58.98 92.11,62.83 93.23,66.36 C94.92,71.67 91.68,77.29 86.23,78.49 C82.62,79.28 79.79,82.10 79.00,85.71 C77.81,91.16 72.19,94.41 66.88,92.72 C63.35,91.59 59.49,92.63 57.00,95.36 C53.24,99.48 46.76,99.48 43.00,95.36 C40.51,92.63 36.65,91.59 33.12,92.72 C27.81,94.41 22.19,91.16 21.00,85.71 C20.21,82.10 17.38,79.28 13.77,78.49 C8.32,77.29 5.08,71.67 6.77,66.36 C7.89,62.83 6.86,58.98 4.12,56.49 C0.00,52.73 0.00,46.24 4.12,42.48 C6.86,39.99 7.89,36.13 6.77,32.61 C5.08,27.29 8.32,21.68 13.77,20.48 C17.38,19.69 20.21,16.87 21.00,13.25 C22.19,7.81 27.81,4.56 33.12,6.25 C36.65,7.38 40.51,6.34 43.00,3.61 C44.88,1.55 47.44,0.52 50.00,0.52Z"/></g></svg>
+        <div class="demo" role="region" aria-label="Try the widget">
+          <div class="demo-head">
+            <div class="badge" id="badge" aria-hidden="true">
+              <svg class="busy" viewBox="0 0 100 100"><path d="M50.00,1.42 C53.65,1.42 57.30,2.73 60.19,5.35 C63.13,8.01 67.00,9.42 70.96,9.27 C78.76,8.97 85.51,14.63 86.57,22.37 C87.11,26.30 89.16,29.86 92.30,32.29 C98.47,37.08 100.00,45.76 95.84,52.36 C93.72,55.72 93.01,59.77 93.85,63.65 C95.50,71.28 91.09,78.91 83.66,81.30 C79.88,82.51 76.73,85.15 74.88,88.67 C71.24,95.57 62.96,98.58 55.73,95.63 C52.06,94.13 47.94,94.13 44.27,95.63 C37.04,98.58 28.76,95.57 25.12,88.67 C23.27,85.15 20.12,82.51 16.34,81.30 C8.91,78.91 4.50,71.28 6.15,63.65 C6.99,59.77 6.28,55.72 4.16,52.36 C0.00,45.76 1.53,37.08 7.70,32.29 C10.84,29.86 12.89,26.30 13.43,22.37 C14.49,14.63 21.24,8.97 29.04,9.27 C33.00,9.42 36.87,8.01 39.81,5.35 C42.70,2.73 46.35,1.42 50.00,1.42Z"/></svg>
+              <svg class="free" viewBox="0 0 100 100"><path d="M99.69,50.00 C99.69,51.79 99.07,53.59 97.83,55.04 C95.30,58.01 92.77,60.98 90.24,63.95 C89.18,65.19 88.54,66.74 88.41,68.37 C88.10,72.26 87.79,76.15 87.48,80.04 C87.18,83.84 84.15,86.87 80.35,87.17 C76.46,87.48 72.57,87.79 68.68,88.10 C67.05,88.23 65.50,88.87 64.26,89.93 C61.29,92.46 58.32,94.99 55.35,97.52 C52.45,100.00 48.17,100.00 45.27,97.52 C42.30,94.99 39.33,92.46 36.36,89.93 C35.11,88.87 33.57,88.23 31.94,88.10 C28.05,87.79 24.16,87.48 20.27,87.17 C16.46,86.87 13.44,83.84 13.14,80.04 C12.83,76.15 12.52,72.26 12.21,68.37 C12.08,66.74 11.44,65.19 10.38,63.95 C7.85,60.98 5.32,58.01 2.79,55.04 C0.31,52.14 0.31,47.86 2.79,44.96 C5.32,41.99 7.85,39.02 10.38,36.05 C11.44,34.81 12.08,33.26 12.21,31.63 C12.52,27.74 12.83,23.85 13.14,19.96 C13.44,16.16 16.46,13.13 20.27,12.83 C24.16,12.52 28.05,12.21 31.94,11.90 C33.57,11.77 35.11,11.13 36.36,10.07 C39.33,7.54 42.30,5.01 45.27,2.48 C48.17,0.00 52.45,0.00 55.35,2.48 C58.32,5.01 61.29,7.54 64.26,10.07 C65.50,11.13 67.05,11.77 68.68,11.90 C72.57,12.21 76.46,12.52 80.35,12.83 C84.15,13.13 87.18,16.16 87.48,19.96 C87.79,23.85 88.10,27.74 88.41,31.63 C88.54,33.26 89.18,34.81 90.24,36.05 C92.77,39.02 95.30,41.99 97.83,44.96 C99.07,46.41 99.69,48.21 99.69,50.00Z"/></svg>
+              <b id="free-count">0</b>
+            </div>
+            <div>
+              <div class="demo-title" id="demo-title">All builders busy</div>
+              <div class="demo-sub" id="demo-sub" aria-live="polite">Next free in 0:20</div>
+            </div>
+          </div>
+          <ul class="rows" id="rows"></ul>
+          <div class="demo-actions">
+            <button class="chip primary" id="potion" type="button">Use a Builder Potion</button>
+            <button class="chip" id="upgrade" type="button">Start an upgrade</button>
+          </div>
+        </div>
+        <p class="demo-note">A live preview with demo timers. Try the buttons.</p>
+      </div>
     </div>
   </div>
 </header>
@@ -257,7 +315,7 @@
           <div><h3>A ping when it’s done</h3><p>Notifications the moment something finishes, and a nudge if a builder sits idle.</p></div>
         </li>
         <li class="feature">
-          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.00,28.59 C50.16,28.59 50.33,28.53 50.44,28.39 C54.29,23.99 58.15,19.58 62.00,15.18 C70.46,5.49 85.63,5.85 93.63,15.91 C100.00,23.92 99.85,35.30 93.27,43.13 C78.90,60.23 64.53,77.33 50.16,94.43 C50.12,94.48 50.06,94.51 50.00,94.51 C49.94,94.51 49.88,94.48 49.84,94.43 C35.47,77.33 21.10,60.23 6.73,43.13 C0.15,35.30 0.00,23.92 6.37,15.91 C14.37,5.85 29.54,5.49 38.00,15.18 C41.85,19.58 45.71,23.99 49.56,28.39 C49.67,28.53 49.84,28.59 50.00,28.59Z" class="fill-primary"/>
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M49.95,100.00 C49.14,100.00 48.33,99.95 47.52,99.87 C43.56,99.46 39.76,97.72 32.16,94.24 C26.00,91.42 19.84,88.59 13.68,85.77 C5.27,81.91 0.42,72.98 1.75,63.83 C3.14,54.36 4.52,44.89 5.90,35.42 C6.80,29.28 10.15,23.78 15.19,20.17 C22.73,14.76 30.27,9.36 37.81,3.96 C41.40,1.38 45.72,0.00 50.14,0.01 C54.56,0.02 58.87,1.41 62.45,4.00 C69.97,9.44 77.49,14.87 85.01,20.30 C90.04,23.93 93.37,29.45 94.24,35.59 C95.59,45.06 96.93,54.54 98.28,64.02 C99.58,73.17 94.69,82.09 86.27,85.91 C80.10,88.71 73.93,91.51 67.75,94.31 C60.14,97.76 56.34,99.49 52.38,99.88 C51.57,99.96 50.76,100.00 49.95,100.00Z" class="fill-primary"/>
             <g transform="translate(26 26) scale(2)"><path d="M12,1L3,5v6c0,5.55 3.84,10.74 9,12 5.16,-1.26 9,-6.45 9,-12V5l-9,-4z" class="on-primary"/></g></svg>
           <div><h3>Heroes ready to fight</h3><p>Which heroes can attack, and when an upgrading one is back.</p></div>
         </li>
@@ -267,7 +325,7 @@
           <div><h3>Plan your potions</h3><p>See what a Builder Potion, Research Potion or Builder Bite would finish before you use it.</p></div>
         </li>
         <li class="feature">
-          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.00,17.03 C50.58,16.14 51.16,15.26 51.74,14.37 C53.40,11.82 56.94,10.24 60.75,10.36 C64.53,10.47 67.90,12.14 69.49,14.68 C69.74,15.08 69.99,15.48 70.24,15.87 C71.12,17.27 71.66,18.78 71.82,20.31 C71.90,21.06 71.99,21.81 72.07,22.56 C74.65,18.17 82.45,17.18 86.85,20.69 C86.95,20.77 87.06,20.85 87.16,20.93 C89.75,22.99 91.33,25.64 91.65,28.44 C91.68,28.66 91.70,28.88 91.73,29.10 C92.13,32.53 90.75,35.94 87.87,38.64 C88.08,38.64 88.28,38.63 88.48,38.63 C91.75,38.54 94.85,39.71 96.69,41.72 C98.85,44.09 100.00,46.88 100.00,49.74 C100.00,49.91 100.00,50.09 100.00,50.26 C100.00,53.12 98.85,55.91 96.69,58.28 C94.85,60.29 91.75,61.46 88.48,61.37 C88.28,61.37 88.08,61.36 87.87,61.36 C90.75,64.06 92.13,67.47 91.73,70.90 C91.70,71.12 91.68,71.34 91.65,71.56 C91.33,74.36 89.75,77.01 87.16,79.07 C87.06,79.15 86.95,79.23 86.85,79.31 C82.45,82.82 74.65,81.83 72.07,77.44 C71.99,78.19 71.90,78.94 71.82,79.69 C71.66,81.22 71.12,82.73 70.24,84.13 C69.99,84.52 69.74,84.92 69.49,85.32 C67.90,87.86 64.53,89.53 60.75,89.64 C56.94,89.76 53.40,88.18 51.74,85.63 C51.16,84.74 50.58,83.86 50.00,82.97 C49.42,83.86 48.84,84.74 48.26,85.63 C46.60,88.18 43.06,89.76 39.25,89.64 C35.47,89.53 32.10,87.86 30.51,85.32 C30.26,84.92 30.01,84.52 29.76,84.13 C28.88,82.73 28.34,81.22 28.18,79.69 C28.10,78.94 28.01,78.19 27.93,77.44 C25.35,81.83 17.55,82.82 13.15,79.31 C13.05,79.23 12.94,79.15 12.84,79.07 C10.25,77.01 8.67,74.36 8.35,71.56 C8.32,71.34 8.30,71.12 8.27,70.90 C7.87,67.47 9.25,64.06 12.13,61.36 C11.92,61.36 11.72,61.37 11.52,61.37 C8.25,61.46 5.15,60.29 3.31,58.28 C1.15,55.91 0.00,53.12 0.00,50.26 C0.00,50.09 0.00,49.91 0.00,49.74 C0.00,46.88 1.15,44.09 3.31,41.72 C5.15,39.71 8.25,38.54 11.52,38.63 C11.72,38.63 11.92,38.64 12.13,38.64 C9.25,35.94 7.87,32.53 8.27,29.10 C8.30,28.88 8.32,28.66 8.35,28.44 C8.67,25.64 10.25,22.99 12.84,20.93 C12.94,20.85 13.05,20.77 13.15,20.69 C17.55,17.18 25.35,18.17 27.93,22.56 C28.01,21.81 28.10,21.06 28.18,20.31 C28.34,18.78 28.88,17.27 29.76,15.87 C30.01,15.48 30.26,15.08 30.51,14.68 C32.10,12.14 35.47,10.47 39.25,10.36 C43.06,10.24 46.60,11.82 48.26,14.37 C48.84,15.26 49.42,16.14 50.00,17.03Z" class="fill-secondary"/>
+          <svg class="feature-shape" viewBox="0 0 100 100" aria-hidden="true"><path d="M87.14,87.08 C81.05,93.18 71.59,95.91 62.20,91.86 C60.84,91.27 59.48,90.69 58.12,90.10 C52.95,87.87 47.09,87.87 41.92,90.11 C40.58,90.70 39.23,91.28 37.89,91.86 C19.11,100.00 0.05,80.97 8.16,62.18 C8.74,60.82 9.33,59.46 9.92,58.10 C12.15,52.93 12.14,47.07 9.90,41.90 C9.32,40.56 8.74,39.21 8.16,37.87 C0.02,19.09 19.04,0.03 37.83,8.14 C39.19,8.73 40.55,9.31 41.91,9.90 C47.08,12.13 52.95,12.13 58.11,9.89 C59.46,9.30 60.80,8.72 62.15,8.14 C80.93,0.00 99.98,19.03 91.88,37.82 C91.29,39.18 90.70,40.54 90.12,41.90 C87.88,47.07 87.89,52.93 90.13,58.10 C90.71,59.44 91.29,60.79 91.88,62.13 C95.95,71.52 93.22,80.98 87.14,87.08Z" class="fill-secondary"/>
             <g transform="translate(26 26) scale(2)"><path d="M18,8h-1V6c0,-2.76 -2.24,-5 -5,-5S7,3.24 7,6v2H6c-1.1,0 -2,0.9 -2,2v10c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V10c0,-1.1 -0.9,-2 -2,-2zM12,17c-1.1,0 -2,-0.9 -2,-2s0.9,-2 2,-2 2,0.9 2,2 -0.9,2 -2,2zM9,8V6c0,-1.66 1.34,-3 3,-3s3,1.34 3,3v2H9z" class="on-secondary"/></g></svg>
           <div><h3>Private by design</h3><p>No account and no server. Your village data stays on your phone.</p></div>
         </li>
@@ -321,6 +379,71 @@
     <p>This material is unofficial and is not endorsed by Supercell. For more information see Supercell’s <a href="https://supercell.com/en/fan-content-policy/">Fan Content Policy</a>.</p>
   </footer>
 </main>
+<script>
+  // Live widget demo: three builders with short demo timers.
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var names = ['Archer Tower', 'Inferno Tower', 'Barbarian King', 'Wizard Tower', 'Elixir Storage', 'Archer Queen', 'Cannon', 'X-Bow', 'Grand Warden'];
+    var builders = [
+      { name: 'Archer Tower', lvl: 20, total: 20, left: 20 },
+      { name: 'Barbarian King', lvl: 94, total: 45, left: 34 },
+      { name: 'Inferno Tower', lvl: 10, total: 75, left: 61 },
+    ];
+    var rows = document.getElementById('rows'), badge = document.getElementById('badge');
+    var count = document.getElementById('free-count'), title = document.getElementById('demo-title'), sub = document.getElementById('demo-sub');
+    var potionBtn = document.getElementById('potion'), upgradeBtn = document.getElementById('upgrade');
+    var boost = 0, phase = 0, lastFree = 0;
+
+    function fmt(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+    function wave(p) {
+      // Wavy line for the done part, flat track for the rest (like the widget).
+      var w = 300, end = Math.max(0, Math.min(1, p)) * w, d = 'M2,6', amp = 3.2, len = 18;
+      for (var x = 2; x <= end; x += 2) d += ' L' + x.toFixed(1) + ',' + (6 + Math.sin((x + phase) / len * Math.PI * 2) * amp).toFixed(2);
+      var track = end < w - 8 ? '<line class="track" x1="' + Math.min(w - 4, end + 10) + '" y1="6" x2="' + (w - 2) + '" y2="6"/>' : '';
+      return '<svg viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">' + (end > 4 ? '<path class="wave" d="' + d + '"/>' : '') + track + '</svg>';
+    }
+    function render() {
+      var free = 0, next = Infinity, html = '';
+      builders.forEach(function (b) {
+        if (!b) { free++; html += '<li class="row idle"><span class="name">Free builder</span><span class="time"></span></li>'; return; }
+        if (b.left <= 0) {
+          free++;
+          html += '<li class="row done"><span class="name">' + b.name + '</span><span class="time">Done</span><span class="lvl">Level ' + (b.lvl + 1) + ' reached</span></li>';
+          return;
+        }
+        next = Math.min(next, b.left);
+        html += '<li class="row"><span class="name">' + b.name + '</span><span class="time">' + fmt(b.left) + '</span>' +
+          '<span class="lvl">Level ' + b.lvl + ' → ' + (b.lvl + 1) + (boost > 0 ? ' · boosted' : '') + '</span>' + wave(1 - b.left / b.total) + '</li>';
+      });
+      rows.innerHTML = html;
+      count.textContent = free;
+      badge.classList.toggle('is-free', free > 0);
+      if (free > lastFree) { badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
+      lastFree = free;
+      title.textContent = free === 0 ? 'All builders busy' : free === 1 ? '1 builder free' : free + ' builders free';
+      sub.textContent = next < Infinity ? (free === 0 ? 'Next free in ' : 'Next done in ') + fmt(next) + (boost > 0 ? ' · potion ' + fmt(boost) : '') : 'Time to build something';
+      potionBtn.disabled = next === Infinity || boost > 0;
+      upgradeBtn.disabled = free === 0;
+    }
+    function tick() {
+      var dt = 0.25, speed = boost > 0 ? 10 : 1;
+      if (boost > 0) boost = Math.max(0, boost - dt);
+      builders.forEach(function (b) { if (b && b.left > 0) b.left -= dt * speed; });
+      if (!reduce) phase -= 1.5;
+      render();
+    }
+    potionBtn.addEventListener('click', function () { boost = 6; render(); });
+    upgradeBtn.addEventListener('click', function () {
+      var i = builders.findIndex(function (b) { return !b || b.left <= 0; });
+      if (i < 0) return;
+      var total = 25 + Math.round(Math.random() * 50);
+      builders[i] = { name: names[Math.floor(Math.random() * names.length)], lvl: 5 + Math.floor(Math.random() * 15), total: total, left: total };
+      render();
+    });
+    render();
+    setInterval(tick, 250);
+  })();
+</script>
 <script>
   // Swap between the two Material You schemes; remembered on this device only.
   (function () {
