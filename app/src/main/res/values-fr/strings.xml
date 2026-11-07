@@ -291,4 +291,7 @@
     <string name="wo_import_d">Copie dans Clash, puis touche le bouton pour mettre à jour sans ouvrir l\'appli</string>
     <string name="import_now">Importer depuis le presse-papiers</string>
     <string name="import_hint">Pas d\'export de village dans le presse-papiers. Copie-le d\'abord dans Clash.</string>
+    <string name="battery_t">Alertes fiables</string>
+    <string name="battery_d">Recommandé sur Samsung, Xiaomi, OnePlus et téléphones similaires : leur économie d\'énergie peut bloquer les alertes. Clash Timers consomme très peu de batterie.</string>
+    <string name="battery_ok">Sans restriction</string>
 </resources>

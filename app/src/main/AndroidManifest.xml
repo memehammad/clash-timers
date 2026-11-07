@@ -10,6 +10,7 @@
         android:name="android.permission.SCHEDULE_EXACT_ALARM"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- Android 16 Live Updates for the optional ongoing builder status. -->
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
 

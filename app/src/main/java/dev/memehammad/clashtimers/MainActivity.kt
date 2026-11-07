@@ -37,6 +37,24 @@ class MainActivity : ComponentActivity() {
     /** 0 = main screen, 1 = first-run setup, 2 = tutorial. */
     private val intro = mutableIntStateOf(0)
     private val notificationsOn = mutableStateOf(true)
+    private val batteryOk = mutableStateOf(true)
+
+    private fun batteryUnrestricted(): Boolean =
+        getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) == true
+
+    /** Asks Android to let the app run unrestricted, so phone makers' battery savers can't block alerts. */
+    private fun askBattery() {
+        try {
+            @android.annotation.SuppressLint("BatteryLife")
+            val i = android.content.Intent(
+                android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                android.net.Uri.parse("package:$packageName"),
+            )
+            startActivity(i)
+        } catch (e: Exception) {
+            startActivity(android.content.Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+        }
+    }
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { notificationsOn.value = notificationsAllowed() }
 
@@ -56,6 +74,7 @@ class MainActivity : ComponentActivity() {
             else -> 0
         }
         notificationsOn.value = notificationsAllowed()
+        batteryOk.value = batteryUnrestricted()
         handleShare(intent)
 
         setContent {
@@ -68,6 +87,8 @@ class MainActivity : ComponentActivity() {
                         onReminder = actions.onReminder,
                         autoImport = autoImport.value,
                         onAutoImport = { onAutoImportClick() },
+                        batteryOk = batteryOk.value,
+                        onBattery = { askBattery() },
                         onDone = { intro.intValue = 2 },
                     )
                 } else if (intro.intValue == 2) {
@@ -101,6 +122,7 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         autoImport.value = AutoImport.state(this)
         notificationsOn.value = notificationsAllowed()
+        batteryOk.value = batteryUnrestricted()
         AutoImport.ensure(this)
         // Auto-import may have added data while we were in the background.
         reload()

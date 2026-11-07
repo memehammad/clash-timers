@@ -169,6 +169,8 @@ fun Setup(
     onReminder: (Int) -> Unit,
     autoImport: dev.memehammad.clashtimers.AutoImport.State,
     onAutoImport: () -> Unit,
+    batteryOk: Boolean,
+    onBattery: () -> Unit,
     onDone: () -> Unit,
 ) {
     val scheme = MaterialTheme.colorScheme
@@ -192,6 +194,15 @@ fun Setup(
                             Text(tr(R.string.t_on), style = MaterialTheme.typography.titleMedium, color = scheme.primary)
                         } else {
                             Button(onClick = onNotifications, shape = CircleShape) { Text(tr(R.string.t_allow)) }
+                        }
+                    }
+                }
+                item {
+                    SetupCard(R.drawable.shape_sunny, R.drawable.ic_battery, tr(R.string.battery_t), tr(R.string.battery_d)) {
+                        if (batteryOk) {
+                            Text(tr(R.string.battery_ok), style = MaterialTheme.typography.titleMedium, color = scheme.primary)
+                        } else {
+                            androidx.compose.material3.FilledTonalButton(onClick = onBattery, shape = CircleShape) { Text(tr(R.string.t_allow)) }
                         }
                     }
                 }

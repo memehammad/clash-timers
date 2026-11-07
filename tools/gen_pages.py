@@ -118,7 +118,7 @@ pages.append(page(
     "Short, practical guides for keeping your Clash of Clans village busy from your Android phone.",
     """  <ol class="steps">
     <li><a href="data-export/"><b>How to use the Clash of Clans Data Export</b></a><br>Where to find it, what's in it and what you can do with it.</li>
-    <li><a href="notifications-not-working/"><b>Clash of Clans notifications not working?</b></a><br>Why the game's alerts go missing on Android, and how to fix it.</li>
+    <li><a href="notifications-not-working/"><b>Clash of Clans notifications not working?</b></a><br>Get alerts from your own phone that always arrive.</li>
     <li><a href="builder-notifications/"><b>Get a notification when your builders are free</b></a><br>Alerts for builders, lab, pets and the Goblin Builder on Android.</li>
     <li><a href="../"><b>The Clash of Clans widget for Android</b></a><br>Free builders and timers on your home screen.</li>
   </ol>""",
@@ -175,31 +175,29 @@ pages.append(page(
 
 pages.append(page(
     "guides/notifications-not-working/", "en",
-    "Clash of Clans notifications not working on Android? How to fix it",
-    "Not getting Clash of Clans notifications when builders finish? Check these Android settings, or use reliable local alerts that don't depend on the game.",
+    "Clash of Clans notifications not working? Get alerts that always arrive",
+    "Missing Clash of Clans notifications when builders finish? Clash Timers sends alerts from your phone itself, on time, for every upgrade, research and pet. Free for Android.",
     "Clash of Clans notifications not working?",
-    "Upgrade done, builder idle, and your phone stayed quiet? You're not alone. Here's why the game's notifications go missing on Android, what to check, and a way to get alerts that always arrive.",
-    """  <h2>Why the alerts go missing</h2>
-  <p>Clash of Clans sends its notifications from Supercell's servers through Google's push service. Several things on the phone can stop them along the way: notifications turned off for the game, Android putting the app to sleep to save battery, Do Not Disturb, or a data saver that blocks the game in the background. If you play on more than one device, the alert may also land on the other one.</p>
-  <h2>Fix it step by step</h2>
-  <ol class="steps">
-    <li><b>Allow notifications.</b> Long-press the Clash of Clans icon, tap App info, then Notifications, and make sure they're on, including every category below the main switch.</li>
-    <li><b>Check the game's own settings.</b> In Clash of Clans, open Settings and make sure notifications are switched on there too.</li>
-    <li><b>Stop battery optimisation.</b> In App info, open Battery and choose Unrestricted (or "Don't optimise"). Samsung, Xiaomi, OnePlus and Huawei phones also have their own sleeping-apps lists. Take the game off them.</li>
-    <li><b>Allow background data.</b> In App info, open Mobile data and turn on background data and unrestricted data usage.</li>
-    <li><b>Check Do Not Disturb and modes.</b> Make sure Clash of Clans isn't silenced by Do Not Disturb, Bedtime, or a focus mode.</li>
-    <li><b>Open the game once on this phone.</b> If you also play on a tablet or another phone, the last device you played on is the safest bet for alerts.</li>
-    <li><b>Update and restart.</b> Update the game from the Play Store, then restart your phone.</li>
-  </ol>
-  <h2>Alerts that always arrive</h2>
-  <p>Even with everything set up, server push notifications can arrive late or not at all. <a href="../../">Clash Timers</a> works differently: it reads the game's Data Export and schedules the alerts <b>on your phone</b>, with Android's alarm system. No server and no internet are involved, so they arrive on time, even in flight mode.</p>
+    "Upgrade done, builder idle, and your phone stayed quiet? Clash Timers fixes that: alerts that come from your own phone, on time, every time.",
+    """  <a class="btn" href="https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk">Get Clash Timers, free</a>
+  <h2>Why the game's alerts go missing</h2>
+  <p>Clash of Clans sends its notifications from Supercell's servers over the internet. On the way, they can be delayed or dropped: by battery saving, notification settings, a weak connection, or because you last played on another device.</p>
+  <h2>Clash Timers: alerts from your own phone</h2>
+  <p><a href="../../">Clash Timers</a> reads the game's Data Export and schedules every alert <b>on your phone</b>, with Android's alarm system. No server and no internet are involved, so the alerts arrive on time, even in flight mode.</p>
   <ul>
-    <li>A notification for every finished upgrade, research and pet, including the Goblin Builder.</li>
-    <li>Active Builder and Research Potions are counted, so alerts move earlier when you boost.</li>
-    <li>An optional reminder when a builder sits idle for 30 minutes or more.</li>
-    <li>A home screen widget that shows free builders at a glance.</li>
+    <li><b>Every finish:</b> upgrades, research, pets, Builder Base and the Goblin Builder.</li>
+    <li><b>Boosts counted:</b> Builder and Research Potions move the alert earlier.</li>
+    <li><b>Idle reminder:</b> a nudge if a builder sits free for 30 minutes or more.</li>
+    <li><b>A home screen widget</b> showing free builders at a glance.</li>
+    <li><b>Free, open source, no login.</b></li>
   </ul>
-  <p>See <a href="../builder-notifications/">how to set up builder notifications</a> for the details.</p>""",
+  <ol class="steps">
+    <li>Install Clash Timers and allow notifications in the quick setup.</li>
+    <li>In Clash of Clans, copy your village: Settings, More Settings, Data Export, Copy.</li>
+    <li>Open Clash Timers. Every running upgrade now has its alert.</li>
+  </ol>
+  <h2>Still want to fix the game's own notifications?</h2>
+  <p>Long-press the Clash of Clans icon, tap App info and check that notifications are on, battery is set to Unrestricted and background data is allowed. Also check Do Not Disturb, and open the game once on the phone you want alerts on.</p>""",
     [HOME, GUIDES, ("Notifications not working", "guides/notifications-not-working/")],
 ))
 

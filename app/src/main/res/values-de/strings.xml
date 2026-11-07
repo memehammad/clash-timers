@@ -284,4 +284,7 @@
     <string name="wo_import_d">In Clash kopieren, dann auf den Knopf tippen: aktualisiert, ohne die App zu öffnen</string>
     <string name="import_now">Aus der Zwischenablage importieren</string>
     <string name="import_hint">Kein Dorf-Export in der Zwischenablage. Kopiere ihn zuerst in Clash.</string>
+    <string name="battery_t">Zuverlässige Benachrichtigungen</string>
+    <string name="battery_d">Empfohlen auf Samsung, Xiaomi, OnePlus und ähnlichen Handys: deren Energiesparen kann Benachrichtigungen blockieren. Clash Timers braucht kaum Akku.</string>
+    <string name="battery_ok">Unbeschränkt</string>
 </resources>
