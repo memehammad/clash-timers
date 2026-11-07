@@ -1,0 +1,6 @@
+- Reliable alerts: the quick setup now offers to let Clash Timers run without battery
+  restrictions. Recommended on Samsung, Xiaomi, OnePlus and similar phones, whose battery
+  savers can block alerts. On Pixels and most other phones it's not needed.
+- Clearer auto-import: the app now says plainly that auto-import only reads what you copy
+  while Clash of Clans is open, and ignores everything else.
+
