@@ -5,6 +5,20 @@ data class WidgetOptions(val bits: Int = ALL) {
     fun has(flag: Int) = bits and flag != 0
     fun with(flag: Int, on: Boolean) = WidgetOptions(if (on) bits or flag else bits and flag.inv())
 
+    /**
+     * Import button: on by default, but off while Shizuku auto-import is on (it isn't needed then),
+     * unless the user picked a setting for this widget.
+     */
+    fun showImport(context: android.content.Context): Boolean =
+        if (has(IMPORT_SET)) has(IMPORT)
+        else try {
+            AutoImport.state(context) != AutoImport.State.ON
+        } catch (e: Throwable) {
+            true
+        }
+
+    fun withImport(on: Boolean) = with(IMPORT, on).with(IMPORT_SET, true)
+
     val sections: Set<Section>
         get() = SECTION_FLAGS.filter { (_, f) -> has(f) }.map { it.first }.toSet()
 
@@ -20,6 +34,9 @@ data class WidgetOptions(val bits: Int = ALL) {
         const val LIST_BUILDER_BASE = 256
         const val LIST_HELPERS = 512
         const val IMPORT = 1024
+
+        /** The user chose [IMPORT] themselves; otherwise it follows auto-import. */
+        const val IMPORT_SET = 2048
         const val ALL = 0x7FF
 
         /** Marks options saved by a version that knows about [IMPORT]. */
@@ -36,7 +53,6 @@ data class WidgetOptions(val bits: Int = ALL) {
 
         /** (flag, label, description) shown in the widget settings. */
         val ITEMS get() = listOf(
-            Triple(IMPORT, tr(R.string.wo_import), tr(R.string.wo_import_d)),
             Triple(CHIPS, tr(R.string.wo_chips), tr(R.string.wo_chips_d)),
             Triple(HEROES, tr(R.string.t_heroes), tr(R.string.wo_heroes_d)),
             Triple(BOOST, tr(R.string.wo_boost), tr(R.string.wo_boost_d)),

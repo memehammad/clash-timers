@@ -95,6 +95,11 @@ class WidgetConfigActivity : ComponentActivity() {
                         }
 
                         item { Label(tr(R.string.show_on_widget)) }
+                        item {
+                            Toggle(tr(R.string.wo_import), tr(R.string.wo_import_d), opts.showImport(this@WidgetConfigActivity)) {
+                                saveOpts(opts.withImport(it))
+                            }
+                        }
                         for ((flag, label, desc) in WidgetOptions.ITEMS) {
                             item {
                                 Toggle(label, desc, opts.has(flag)) { saveOpts(opts.with(flag, it)) }
