@@ -5,6 +5,9 @@ Run from the repo root: python3 tools/gen_pages.py
 """
 import json
 from pathlib import Path
+from datetime import date
+
+TODAY = date.today().isoformat()  # lastmod: the day the pages were last generated
 
 SITE = "https://memehammad.github.io/clash-timers/"
 APK = "https://github.com/memehammad/clash-timers/releases/latest/download/ClashTimers.apk"
@@ -52,7 +55,7 @@ def page(path, lang, title, description, h1, lead, body, crumbs, alternates=None
          "inLanguage": lang, "url": url, "image": SITE + "img/hero.png",
          "author": {"@type": "Person", "name": "memehammad", "url": "https://github.com/memehammad"},
          "publisher": {"@type": "Organization", "name": "Clash Timers", "logo": {"@type": "ImageObject", "url": SITE + "img/icon.png"}},
-         "dateModified": "2026-11-06"},
+         "dateModified": TODAY},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + h} for i, (n, h) in enumerate(crumbs)]},
     ]
@@ -202,10 +205,10 @@ pages.append(page(
 ))
 
 # Sitemap (gen_i18n.py adds the home page in every language).
-urls = [f"  <url><loc>{u}</loc><lastmod>2026-11-06</lastmod></url>" for u in pages]
+urls = [f"  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in pages]
 urls.append(f"  <url><loc>{SITE}privacy.html</loc></url>")
 (DOCS / "sitemap.xml").write_text(
-    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>\n'
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
     + "\n".join(urls) + "\n</urlset>\n")
 print("\n".join(pages))

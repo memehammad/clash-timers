@@ -8,6 +8,9 @@ so each one can rank in its own language. Run after changing docs/index.html:
 import json
 import re
 from pathlib import Path
+from datetime import date
+
+TODAY = date.today().isoformat()  # lastmod: the day the pages were last generated
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -306,7 +309,7 @@ def main():
     alt += f'<xhtml:link rel="alternate" hreflang="x-default" href="{SITE}"/>'
     sm = (DOCS / "sitemap.xml").read_text()
     sm = re.sub(r"  <url><loc>[^<]*/clash-timers/(?:[a-z]{2}/)?</loc>.*?</url>\n", "", sm)
-    homes = "".join(f"  <url><loc>{SITE}{'' if c == 'en' else c + '/'}</loc><lastmod>2026-11-06</lastmod>{alt}</url>\n" for c in ["en"] + LANGS)
+    homes = "".join(f"  <url><loc>{SITE}{'' if c == 'en' else c + '/'}</loc><lastmod>{TODAY}</lastmod>{alt}</url>\n" for c in ["en"] + LANGS)
     sm = sm.replace('xmlns:xhtml="http://www.w3.org/1999/xhtml">\n', 'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + homes, 1)
     (DOCS / "sitemap.xml").write_text(sm)
     print("built", ", ".join(LANGS))
