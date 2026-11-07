@@ -47,6 +47,8 @@ data class ScreenExtras(
     val villages: List<Pair<String, String>> = emptyList(),
     val currentTag: String? = null,
     val reminderMinutes: Int = 0,
+    /** Sections with "finished" notifications turned off. */
+    val mutedSections: Set<String> = emptySet(),
     val liveUpdate: Boolean = false,
     val liveChip: Int = 0,
     val timeMode: Int = 0,
@@ -63,6 +65,7 @@ data class ScreenActions(
     val onRenameVillage: (String, String) -> Unit = { _, _ -> },
     val onRemoveVillage: (String) -> Unit = {},
     val onReminder: (Int) -> Unit = {},
+    val onMuteSection: (String, Boolean) -> Unit = { _, _ -> },
     val onLiveUpdate: (Boolean) -> Unit = {},
     val onLiveChip: (Int) -> Unit = {},
     val onTimeMode: (Int) -> Unit = {},
@@ -405,6 +408,29 @@ internal fun SettingsCard(extras: ScreenExtras, actions: ScreenActions) {
                         selected = extras.staleHours == h,
                         onClick = { actions.onStaleHours(h) },
                         label = { Text(if (h == 0) tr(R.string.never) else tr(R.string.t_hours, h)) },
+                        shape = CircleShape,
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
+            Text(tr(R.string.notify_about), style = MaterialTheme.typography.titleMedium)
+            Text(
+                tr(R.string.notify_about_d),
+                style = MaterialTheme.typography.bodyMedium,
+                color = scheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(10.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                for ((key, label) in listOf(
+                    "BUILDERS" to R.string.t_builders, "LAB" to R.string.t_lab, "PETS" to R.string.t_pet_house,
+                    "BUILDER_BASE" to R.string.t_bb, "HELPERS" to R.string.t_helpers,
+                )) {
+                    val on = key !in extras.mutedSections
+                    FilterChip(
+                        selected = on,
+                        onClick = { actions.onMuteSection(key, on) },
+                        label = { Text(tr(label)) },
                         shape = CircleShape,
                     )
                 }

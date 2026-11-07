@@ -288,4 +288,6 @@
     <string name="battery_t">Reliable alerts</string>
     <string name="battery_d">Recommended on Samsung, Xiaomi, OnePlus and similar phones: their battery savers can block alerts. Clash Timers barely uses any battery.</string>
     <string name="battery_ok">Unrestricted</string>
+    <string name="notify_about">Notify me when these finish</string>
+    <string name="notify_about_d">Turn off what you don\'t need, like boosts and helper cooldowns.</string>
 </resources>

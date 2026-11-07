@@ -57,16 +57,21 @@ object Scheduler {
             codes += code.toString()
         }
 
+        val muted = Store.mutedSections(context)
         for (v in villages) {
             val name = Store.name(context, v.tag)
             for (t in v.timers) {
                 val code = "${v.tag}|${t.key}".hashCode()
+                // Muted kinds still get their alarm (it refreshes the widget), just no notification.
+                val section = if (t.section == Section.OTHER) Section.BUILDERS else t.section
+                val intent = baseIntent(context, code, ACTION_DONE).putExtra(EXTRA_CODE, code)
+                if (section.name !in muted) {
+                    intent.putExtra(EXTRA_TITLE, t.doneTitle)
+                        .putExtra(EXTRA_TEXT, if (many) "${t.doneText} · $name" else t.doneText)
+                }
                 schedule(
                     code, t.endSec * 1000,
-                    baseIntent(context, code, ACTION_DONE)
-                        .putExtra(EXTRA_TITLE, t.doneTitle)
-                        .putExtra(EXTRA_TEXT, if (many) "${t.doneText} · $name" else t.doneText)
-                        .putExtra(EXTRA_CODE, code),
+                    intent,
                 )
             }
 

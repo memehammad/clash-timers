@@ -145,6 +145,7 @@ class MainActivity : ComponentActivity() {
             villages = Store.tags(this).map { it to Store.name(this, it) },
             currentTag = v?.tag,
             reminderMinutes = Store.reminderMinutes(this),
+            mutedSections = Store.mutedSections(this),
             liveUpdate = Store.liveUpdate(this),
             liveChip = Store.liveChip(this),
             timeMode = Store.timeMode(this),
@@ -177,6 +178,12 @@ class MainActivity : ComponentActivity() {
         onRemoveVillage = { tag ->
             Store.remove(this, tag)
             Refresh.all(this)
+            reload()
+        },
+        onMuteSection = { key, mute ->
+            val m = Store.mutedSections(this)
+            Store.setMutedSections(this, if (mute) m + key else m - key)
+            Scheduler.reschedule(this)
             reload()
         },
         onReminder = { minutes ->

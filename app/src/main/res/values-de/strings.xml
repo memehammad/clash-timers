@@ -287,4 +287,6 @@
     <string name="battery_t">Zuverlässige Benachrichtigungen</string>
     <string name="battery_d">Empfohlen auf Samsung, Xiaomi, OnePlus und ähnlichen Handys: deren Energiesparen kann Benachrichtigungen blockieren. Clash Timers braucht kaum Akku.</string>
     <string name="battery_ok">Unbeschränkt</string>
+    <string name="notify_about">Benachrichtigen, wenn hier etwas fertig ist</string>
+    <string name="notify_about_d">Schalte aus, was du nicht brauchst, zum Beispiel Boosts und Helfer-Abklingzeiten.</string>
 </resources>

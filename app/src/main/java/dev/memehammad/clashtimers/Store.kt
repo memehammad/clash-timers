@@ -135,6 +135,13 @@ object Store {
         prefs(context).edit().putBoolean("auto_import", enabled).apply()
     }
 
+    /** Sections whose "finished" notifications are turned off (Section names). */
+    fun mutedSections(context: Context): Set<String> = prefs(context).getStringSet("muted_sections", emptySet()).orEmpty()
+
+    fun setMutedSections(context: Context, muted: Set<String>) {
+        prefs(context).edit().putStringSet("muted_sections", muted.toSet()).apply()
+    }
+
     /** Remind again when a builder stays idle this many minutes; 0 = off. */
     fun reminderMinutes(context: Context): Int = prefs(context).getInt("reminder_min", 0)
 

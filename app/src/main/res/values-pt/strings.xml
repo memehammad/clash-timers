@@ -294,4 +294,6 @@
     <string name="battery_t">Avisos confiáveis</string>
     <string name="battery_d">Recomendado em Samsung, Xiaomi, OnePlus e celulares parecidos: a economia de bateria deles pode bloquear avisos. O Clash Timers quase não gasta bateria.</string>
     <string name="battery_ok">Sem restrições</string>
+    <string name="notify_about">Avisar quando terminarem</string>
+    <string name="notify_about_d">Desative o que não precisar, como impulsos e recargas de ajudantes.</string>
 </resources>
