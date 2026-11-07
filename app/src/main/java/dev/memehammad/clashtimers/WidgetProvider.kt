@@ -200,7 +200,7 @@ class WidgetProvider : AppWidgetProvider() {
 
         private fun fillStatus(context: Context, v: RemoteViews, village: Village?, override: Int, now: Long, opts: WidgetOptions) {
             val open = openApp(context)
-            v.setViewVisibility(R.id.s_import, if (opts.has(WidgetOptions.IMPORT)) View.VISIBLE else View.GONE)
+            v.setViewVisibility(R.id.s_import, if (opts.showImport(context)) View.VISIBLE else View.GONE)
             v.setOnClickPendingIntent(R.id.s_import, importNow(context))
             v.setOnClickPendingIntent(R.id.s_block, open)
             v.setOnClickPendingIntent(R.id.s_chips, open)

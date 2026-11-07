@@ -108,8 +108,7 @@ object Store {
 
     fun widgetOptions(context: Context, widgetId: Int): WidgetOptions {
         val bits = prefs(context).getInt("widget_opts_$widgetId", WidgetOptions.ALL)
-        // Options saved before the import button existed: turn it on, like for new widgets.
-        return WidgetOptions(if (bits and WidgetOptions.SAVED_V2 == 0) bits or WidgetOptions.IMPORT else bits)
+        return WidgetOptions(bits)
     }
 
     fun setWidgetOptions(context: Context, widgetId: Int, options: WidgetOptions) {

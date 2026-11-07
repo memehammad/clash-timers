@@ -261,6 +261,8 @@ class MainActivity : ComponentActivity() {
             AutoImport.State.ON -> AutoImport.setEnabled(this, false)
         }
         autoImport.value = AutoImport.state(this)
+        // The widget's import button follows auto-import by default.
+        WidgetProvider.updateAll(this)
     }
 
     override fun onNewIntent(intent: Intent) {
