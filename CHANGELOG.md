@@ -3,6 +3,12 @@
 The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
 version number: a new heading makes a new release.
 
+## 1.2.3
+
+**Preview: a proper settings screen.** Settings moved off the bottom of the main screen into
+their own page (the gear at the top). They're grouped into Notifications, Display, Import &
+widget and About, in the same style as Android's own settings. Nothing else changed.
+
 ## 1.2.2
 
 **Pick what you get notified about.** In the settings, under "Notify me when these finish",

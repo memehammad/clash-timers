@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
     private val intro = mutableIntStateOf(0)
     private val notificationsOn = mutableStateOf(true)
     private val batteryOk = mutableStateOf(true)
+    private val settingsOpen = mutableStateOf(false)
 
     private fun batteryUnrestricted(): Boolean =
         getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) == true
@@ -75,6 +76,7 @@ class MainActivity : ComponentActivity() {
         }
         notificationsOn.value = notificationsAllowed()
         batteryOk.value = batteryUnrestricted()
+        settingsOpen.value = intent?.getBooleanExtra("settings", false) == true
         handleShare(intent)
 
         setContent {
@@ -94,6 +96,15 @@ class MainActivity : ComponentActivity() {
                 } else if (intro.intValue == 2) {
                     androidx.activity.compose.BackHandler { closeTutorial() }
                     dev.memehammad.clashtimers.ui.Tutorial { closeTutorial() }
+                } else if (settingsOpen.value) {
+                    androidx.activity.compose.BackHandler { settingsOpen.value = false }
+                    dev.memehammad.clashtimers.ui.SettingsScreen(
+                        extras = extras.value,
+                        actions = actions,
+                        autoImport = autoImport.value,
+                        onAutoImport = { onAutoImportClick() },
+                        onBack = { settingsOpen.value = false },
+                    )
                 } else MainScreen(
                     village = village.value,
                     builderOverride = builderOverride.intValue,
@@ -154,6 +165,7 @@ class MainActivity : ComponentActivity() {
             updateCheck = Store.updateCheck(this),
             update = update,
             version = BuildConfig.VERSION_NAME,
+            batteryOk = batteryUnrestricted(),
         )
         Format.configure(this)
     }
@@ -164,7 +176,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private val actions = ScreenActions(
-        onTutorial = { intro.intValue = 2 },
+        onTutorial = { settingsOpen.value = false; intro.intValue = 2 },
+        onBattery = { askBattery() },
+        onSettings = { settingsOpen.value = true },
         onSelectVillage = { tag ->
             Store.setCurrentTag(this, tag)
             Refresh.all(this)

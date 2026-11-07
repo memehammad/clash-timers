@@ -4,7 +4,7 @@ name: Build APK
 # hand. Other pushes to app code just build, so mistakes show up without a new release.
 on:
   push:
-    branches: [main, smartspacer, wear-preview]
+    branches: [main, smartspacer, wear-preview, settings-preview]
     paths:
       - 'app/**'
       - 'wear/**'

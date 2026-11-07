@@ -296,4 +296,9 @@
     <string name="battery_ok">Sem restrições</string>
     <string name="notify_about">Avisar quando terminarem</string>
     <string name="notify_about_d">Desative o que não precisar, como impulsos e recargas de ajudantes.</string>
+    <string name="settings_t">Configurações</string>
+    <string name="back">Voltar</string>
+    <string name="g_display">Exibição</string>
+    <string name="g_import">Importação e widget</string>
+    <string name="g_about">Sobre</string>
 </resources>

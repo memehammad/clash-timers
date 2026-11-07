@@ -290,4 +290,9 @@
     <string name="battery_ok">Unrestricted</string>
     <string name="notify_about">Notify me when these finish</string>
     <string name="notify_about_d">Turn off what you don\'t need, like boosts and helper cooldowns.</string>
+    <string name="settings_t">Settings</string>
+    <string name="back">Back</string>
+    <string name="g_display">Display</string>
+    <string name="g_import">Import &amp; widget</string>
+    <string name="g_about">About</string>
 </resources>

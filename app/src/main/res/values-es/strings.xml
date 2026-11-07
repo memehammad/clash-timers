@@ -296,4 +296,9 @@
     <string name="battery_ok">Sin restricciones</string>
     <string name="notify_about">Avisarme cuando terminen</string>
     <string name="notify_about_d">Desactiva lo que no necesites, como potenciadores y enfriamientos de ayudantes.</string>
+    <string name="settings_t">Ajustes</string>
+    <string name="back">Atrás</string>
+    <string name="g_display">Pantalla</string>
+    <string name="g_import">Importar y widget</string>
+    <string name="g_about">Acerca de</string>
 </resources>

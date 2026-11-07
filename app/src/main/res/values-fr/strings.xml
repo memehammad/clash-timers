@@ -296,4 +296,9 @@
     <string name="battery_ok">Sans restriction</string>
     <string name="notify_about">Me prévenir quand ceci se termine</string>
     <string name="notify_about_d">Désactive ce dont tu n\'as pas besoin, comme les boosts et les recharges des assistants.</string>
+    <string name="settings_t">Paramètres</string>
+    <string name="back">Retour</string>
+    <string name="g_display">Affichage</string>
+    <string name="g_import">Import et widget</string>
+    <string name="g_about">À propos</string>
 </resources>

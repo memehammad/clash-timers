@@ -29,6 +29,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -115,7 +116,7 @@ fun MainScreen(
                 bottom = pad.calculateBottomPadding() + 32.dp,
             ),
         ) {
-            item(key = "header") { Header(village, now, onPaste, extras.villages.firstOrNull { it.first == village?.tag }?.second) }
+            item(key = "header") { Header(village, now, onPaste, extras.villages.firstOrNull { it.first == village?.tag }?.second, actions.onSettings) }
             if (extras.villages.size > 1) {
                 item(key = "villages") { VillageBar(extras, actions) }
             }
@@ -150,9 +151,15 @@ fun MainScreen(
                     }
                 }
             }
-            item(key = "settings") { SettingsCard(extras, actions) }
-            item(key = "auto") { AutoImportCard(autoImport, onAutoImport) }
-            item(key = "about") { AboutFooter(extras.version, actions.onTutorial) }
+            item(key = "settings") {
+                Box(Modifier.fillMaxWidth().padding(top = 28.dp), contentAlignment = Alignment.Center) {
+                    FilledTonalButton(onClick = actions.onSettings, shape = CircleShape) {
+                        Icon(androidx.compose.material.icons.Icons.Filled.Settings, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(tr(R.string.settings_t))
+                    }
+                }
+            }
         }
     }
 
@@ -222,7 +229,7 @@ private fun BoostBanner(boosts: List<Timer>, now: Long) {
 }
 
 @Composable
-private fun Header(village: Village?, now: Long, onPaste: () -> Unit, name: String? = null) {
+private fun Header(village: Village?, now: Long, onPaste: () -> Unit, name: String? = null, onSettings: () -> Unit = {}) {
     Row(
         Modifier.fillMaxWidth().padding(start = 8.dp, bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -238,6 +245,10 @@ private fun Header(village: Village?, now: Long, onPaste: () -> Unit, name: Stri
             }
         }
         FilledTonalButton(onClick = onPaste, shape = CircleShape) { Text(tr(R.string.t_paste)) }
+        Spacer(Modifier.width(4.dp))
+        androidx.compose.material3.IconButton(onClick = onSettings) {
+            Icon(androidx.compose.material.icons.Icons.Filled.Settings, tr(R.string.settings_t))
+        }
     }
 }
 

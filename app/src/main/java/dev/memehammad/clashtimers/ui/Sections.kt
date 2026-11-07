@@ -58,6 +58,8 @@ data class ScreenExtras(
     /** Newer version on GitHub, if any. */
     val update: String? = null,
     val version: String = "",
+    /** App runs without battery restrictions. */
+    val batteryOk: Boolean = true,
 )
 
 data class ScreenActions(
@@ -73,6 +75,8 @@ data class ScreenActions(
     val onStaleHours: (Int) -> Unit = {},
     val onUpdateCheck: (Boolean) -> Unit = {},
     val onTutorial: () -> Unit = {},
+    val onBattery: () -> Unit = {},
+    val onSettings: () -> Unit = {},
 )
 
 // --- Villages ------------------------------------------------------------------------------------
