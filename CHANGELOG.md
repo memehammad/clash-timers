@@ -3,6 +3,12 @@
 The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
 version number: a new heading makes a new release.
 
+## 1.2.2
+
+**Pick what you get notified about.** In the settings, under "Notify me when these finish",
+you can now switch off notifications for builders, the lab, the Pet House, the Builder Base or
+helpers and boosts. Turn off boosts and helper cooldowns if you only care about upgrades.
+
 ## 1.2.1
 
 - **Reliable alerts:** the quick setup now offers to let Clash Timers run without battery
