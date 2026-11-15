@@ -73,7 +73,10 @@ def page(path, lang, title, description, h1, lead, body, crumbs, alternates=None
 <title>{title}</title>
 <meta name="description" content="{description}">
 <link rel="canonical" href="{url}">
-{alt}<link rel="icon" href="{SITE}img/icon.png">
+{alt}<link rel="icon" href="{SITE}favicon.ico" sizes="any">
+<link rel="icon" href="{SITE}img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="{SITE}img/apple-touch-icon.png">
+<meta property="og:site_name" content="Clash Timers">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
