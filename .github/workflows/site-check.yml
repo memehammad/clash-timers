@@ -1,0 +1,13 @@
+name: Site check
+on:
+  push:
+    branches: [site-check-run]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in "" "favicon.ico" "robots.txt" "icon-192.png" "clash-timers/"; do
+            echo "== $u: $(curl -s -o /dev/null -w '%{http_code} %{content_type}' "https://memehammad.github.io/$u?x=$RANDOM")"
+          done
+          curl -s "https://memehammad.github.io/?x=$RANDOM" | grep -o '"name": "Clash Timers"' | head -1
