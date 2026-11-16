@@ -121,12 +121,12 @@ class BuildersTile : TileService() {
             .addContent(text(if (free == 1) "builder free" else "builders free", 14f, MUTED))
         if (free == 0 && next != null) {
             col.addContent(Spacer.Builder().setHeight(dp(4f)).build())
-            col.addContent(text("next " + DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(next)), 14f, GOLD, bold = true))
+            col.addContent(text("next " + whenAt(next, t), 14f, GOLD, bold = true))
         }
         // Lab and pets in one line.
         val others = s.slots.filter { it.key == "LAB" || it.key == "PET" }.joinToString("  ·  ") { o ->
             val n = o.nextFree(t)
-            o.label + " " + if (n == null) "free" else DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(n))
+            o.label + " " + if (n == null) "free" else whenAt(n, t)
         }
         if (others.isNotEmpty()) {
             col.addContent(Spacer.Builder().setHeight(dp(8f)).build())
@@ -135,6 +135,16 @@ class BuildersTile : TileService() {
         return Box.Builder().setWidth(expand()).setHeight(expand()).setModifiers(openApp())
             .addContent(ring).addContent(fill).addContent(col.build())
             .build()
+    }
+
+    /** "16:00" today, otherwise with the weekday ("Wed 16:00"). */
+    private fun whenAt(ms: Long, now: Long): String {
+        val time = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(ms))
+        val a = java.util.Calendar.getInstance().apply { timeInMillis = ms }
+        val b = java.util.Calendar.getInstance().apply { timeInMillis = now }
+        val sameDay = a.get(java.util.Calendar.YEAR) == b.get(java.util.Calendar.YEAR) &&
+            a.get(java.util.Calendar.DAY_OF_YEAR) == b.get(java.util.Calendar.DAY_OF_YEAR)
+        return if (sameDay) time else java.text.SimpleDateFormat("EEE", java.util.Locale.getDefault()).format(Date(ms)) + " " + time
     }
 
     companion object {
