@@ -296,4 +296,5 @@
     <string name="battery_ok">Sans restriction</string>
     <string name="notify_about">Me prévenir quand ceci se termine</string>
     <string name="notify_about_d">Désactive ce dont tu n\'as pas besoin, comme les boosts et les recharges des assistants.</string>
+    <string name="next_builder_on">Prochain ouvrier libre %s</string>
 </resources>

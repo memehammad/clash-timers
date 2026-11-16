@@ -37,15 +37,18 @@ object Format {
         }
     }
 
-    /** "18:45", "Tomorrow 12:30" ("Tmrw" when [short]), "Wed 09:10", "5 Nov 14:00". */
-    fun at(endMs: Long, nowMs: Long, short: Boolean = false): String {
+    /**
+     * "18:45", "Tomorrow 12:30" ("Tmrw" when [short]), "Wed 09:10", "5 Nov 14:00".
+     * With [weekday], tomorrow is shown as a weekday too, so text that isn't refreshed at midnight stays right.
+     */
+    fun at(endMs: Long, nowMs: Long, short: Boolean = false, weekday: Boolean = false): String {
         val time = SimpleDateFormat(if (is24) "HH:mm" else "h:mm a", Locale.getDefault()).format(Date(endMs))
         val end = Calendar.getInstance().apply { timeInMillis = endMs }
         val today = Calendar.getInstance().apply { timeInMillis = nowMs }
         val days = dayIndex(end) - dayIndex(today)
         return when {
             days <= 0 -> time
-            days == 1L -> "${tr(if (short) R.string.tmrw else R.string.tomorrow)} $time"
+            days == 1L && !weekday -> "${tr(if (short) R.string.tmrw else R.string.tomorrow)} $time"
             days < 7 -> "${SimpleDateFormat("EEE", Locale.getDefault()).format(Date(endMs))} $time"
             else -> "${SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(endMs))} $time"
         }

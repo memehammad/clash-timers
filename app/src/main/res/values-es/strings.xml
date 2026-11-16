@@ -296,4 +296,5 @@
     <string name="battery_ok">Sin restricciones</string>
     <string name="notify_about">Avisarme cuando terminen</string>
     <string name="notify_about_d">Desactiva lo que no necesites, como potenciadores y enfriamientos de ayudantes.</string>
+    <string name="next_builder_on">Próximo constructor libre el %s</string>
 </resources>

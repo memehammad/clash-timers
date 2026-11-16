@@ -296,4 +296,5 @@
     <string name="battery_ok">Sem restrições</string>
     <string name="notify_about">Avisar quando terminarem</string>
     <string name="notify_about_d">Desative o que não precisar, como impulsos e recargas de ajudantes.</string>
+    <string name="next_builder_on">Próximo construtor livre %s</string>
 </resources>

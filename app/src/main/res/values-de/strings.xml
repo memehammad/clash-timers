@@ -289,4 +289,5 @@
     <string name="battery_ok">Unbeschränkt</string>
     <string name="notify_about">Benachrichtigen, wenn hier etwas fertig ist</string>
     <string name="notify_about_d">Schalte aus, was du nicht brauchst, zum Beispiel Boosts und Helfer-Abklingzeiten.</string>
+    <string name="next_builder_on">Nächster Bauarbeiter frei %s</string>
 </resources>

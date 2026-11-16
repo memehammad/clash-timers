@@ -56,11 +56,14 @@ object LiveStatus {
             b.setContentText(tr(R.string.n_of_m_working, s.busy, s.total))
             chip = trq(R.plurals.p_free, s.free)
         } else if (next != null) {
-            // Clock time in the text never goes out of date; the header shows the live countdown.
-            val at = android.text.format.DateFormat.getTimeFormat(context).format(java.util.Date(next * 1000))
+            // Finish time with its day when it isn't today ("Wed 16:00"), so the text never goes out of date;
+            // the header shows the live countdown.
+            Format.configure(context)
+            val at = Format.at(next * 1000, now, short = true, weekday = true)
             val nextJob = village.timers.firstOrNull { it.slot == Slot.BUILDER && !it.extra && it.endSec == next }
             b.setContentTitle(tr(R.string.all_busy))
-            b.setContentText(tr(R.string.next_builder_at, at) + (nextJob?.let { " · ${it.name}" } ?: ""))
+            val line = if (at.first().isDigit()) tr(R.string.next_builder_at, at) else tr(R.string.next_builder_on, at)
+            b.setContentText(line + (nextJob?.let { " · ${it.name}" } ?: ""))
             b.setWhen(next * 1000)
             b.setShowWhen(true)
             b.setUsesChronometer(true)

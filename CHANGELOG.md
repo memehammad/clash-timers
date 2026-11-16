@@ -3,6 +3,13 @@
 The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
 version number: a new heading makes a new release.
 
+## 1.2.4
+
+- **Fixed:** the "all builders busy" notification said "next builder free at 16:00" even when
+  that was days away. It now shows the day too, like "Wed 16:00".
+- **Import button:** on by default, but hidden while Shizuku auto-import is on, since it isn't
+  needed then. You can still turn it on or off per widget.
+
 ## 1.2.2
 
 **Pick what you get notified about.** In the settings, under "Notify me when these finish",
