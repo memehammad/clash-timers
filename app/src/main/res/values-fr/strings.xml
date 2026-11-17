@@ -297,4 +297,12 @@
     <string name="notify_about">Me prévenir quand ceci se termine</string>
     <string name="notify_about_d">Désactive ce dont tu n\'as pas besoin, comme les boosts et les recharges des assistants.</string>
     <string name="next_builder_on">Prochain ouvrier libre %s</string>
+    <string name="new_building">Nouveau bâtiment</string>
+    <string name="new_trap">Nouveau piège</string>
+    <string name="new_troop">Nouvelle troupe</string>
+    <string name="new_spell">Nouveau sort</string>
+    <string name="new_hero">Nouveau héros</string>
+    <string name="new_pet">Nouveau familier</string>
+    <string name="new_siege">Nouvel engin de siège</string>
+    <string name="new_equipment">Nouvel équipement</string>
 </resources>

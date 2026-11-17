@@ -290,4 +290,12 @@
     <string name="notify_about">Benachrichtigen, wenn hier etwas fertig ist</string>
     <string name="notify_about_d">Schalte aus, was du nicht brauchst, zum Beispiel Boosts und Helfer-Abklingzeiten.</string>
     <string name="next_builder_on">Nächster Bauarbeiter frei %s</string>
+    <string name="new_building">Neues Gebäude</string>
+    <string name="new_trap">Neue Falle</string>
+    <string name="new_troop">Neue Truppe</string>
+    <string name="new_spell">Neuer Zauber</string>
+    <string name="new_hero">Neuer Held</string>
+    <string name="new_pet">Neuer Begleiter</string>
+    <string name="new_siege">Neue Belagerungsmaschine</string>
+    <string name="new_equipment">Neue Ausrüstung</string>
 </resources>

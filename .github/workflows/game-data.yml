@@ -1,0 +1,46 @@
+name: Game data update
+
+# Once a week (and on demand), checks for new game data, e.g. after a Town Hall update.
+# If anything changed, it opens a pull request. Nothing is released until that is merged
+# together with a new CHANGELOG.md section.
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+  push:
+    branches: [game-data-run]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Refresh data
+        id: data
+        run: echo "result=$(tools/update_data.sh | tail -1)" >> "$GITHUB_OUTPUT"
+      - name: Open a pull request
+        if: steps.data.outputs.result == 'changed'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          versions=$(cat tools/data_versions.json)
+          git config user.name "game data bot"
+          git config user.email "game-data-bot@users.noreply.github.com"
+          git checkout -B game-data-update
+          git add app/src/main/assets tools/data_versions.json
+          git commit -qm "Game data update: $versions"
+          git push -f origin game-data-update
+          body="New game data: $versions. Names, upgrade times and translations are regenerated. Merging this does not make a release; add a CHANGELOG.md section for that."
+          gh pr create --base main --head game-data-update --title "Game data update" --body "$body" \
+            || gh pr edit game-data-update --body "$body" \
+            || gh issue create --title "Game data update ready" --body "$body Branch: game-data-update (Actions may not be allowed to open pull requests in this repo)."

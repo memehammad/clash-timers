@@ -176,14 +176,13 @@ base64-encoded as the `SIGNING_KEY` repository secret. Never commit the key.
 
 ### Updating game data
 
-`app/src/main/assets/coc_data.json` is generated from the
-[clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data)
-package:
+The game data (names, upgrade times and their in-game translations) lives in
+`app/src/main/assets/coc_data.json` and `coc_names.json`. It comes from the
+[clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data) package and the
+game's own language files ([coc-assets](https://github.com/Enjoyop/coc-assets)).
 
-```
-npm pack clash-of-clans-data && tar xzf clash-of-clans-data-*.tgz
-python3 tools/build_table.py package/data app/src/main/assets/coc_data.json
-```
+The "Game data update" workflow checks for new data every Monday and opens a pull request when
+something changed. To run it by hand: `tools/update_data.sh`.
 
 ## Credits
 

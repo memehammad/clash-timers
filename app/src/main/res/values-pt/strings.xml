@@ -297,4 +297,12 @@
     <string name="notify_about">Avisar quando terminarem</string>
     <string name="notify_about_d">Desative o que não precisar, como impulsos e recargas de ajudantes.</string>
     <string name="next_builder_on">Próximo construtor livre %s</string>
+    <string name="new_building">Nova construção</string>
+    <string name="new_trap">Nova armadilha</string>
+    <string name="new_troop">Nova tropa</string>
+    <string name="new_spell">Novo feitiço</string>
+    <string name="new_hero">Novo herói</string>
+    <string name="new_pet">Novo animal</string>
+    <string name="new_siege">Nova máquina de cerco</string>
+    <string name="new_equipment">Novo equipamento</string>
 </resources>

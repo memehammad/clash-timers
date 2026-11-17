@@ -139,7 +139,8 @@ object VillageParser {
             val obj = array.optJSONObject(i) ?: continue
             val id = obj.optLong("data", -1L)
             val level = obj.optInt("lvl", 0)
-            val name = data[id]?.name ?: continue
+            // A hero the bundled data doesn't know yet still counts.
+            val name = data[id]?.name ?: tr(R.string.new_hero)
             val back = if (obj.optLong("timer", 0L) > 0L) {
                 timers.firstOrNull { it.key.startsWith("heroes:$id:") }?.endSec
             } else null
@@ -230,6 +231,22 @@ object VillageParser {
             return if (n == 0) base else "$base#$n"
         }
 
+        /** Something the bundled game data doesn't know yet (e.g. right after a Town Hall update). */
+        private fun unknownName(key: String, id: Long): String {
+            val res = when (key.removeSuffix("2")) {
+                "buildings" -> R.string.new_building
+                "traps" -> R.string.new_trap
+                "units" -> R.string.new_troop
+                "spells" -> R.string.new_spell
+                "heroes" -> R.string.new_hero
+                "pets" -> R.string.new_pet
+                "siege_machines" -> R.string.new_siege
+                "equipment" -> R.string.new_equipment
+                else -> 0
+            }
+            return if (res == 0) tr(R.string.unknown_n, id) else tr(res)
+        }
+
         fun scanArray(array: JSONArray, key: String, section: Section, slot: Slot, parentName: String?) {
             for (i in 0 until array.length()) {
                 val obj = array.optJSONObject(i) ?: continue
@@ -239,7 +256,7 @@ object VillageParser {
 
         private fun scanObject(obj: JSONObject, key: String, section: Section, slot: Slot, parentName: String?) {
             val id = obj.optLong("data", -1L)
-            val baseName = data[id]?.name ?: tr(R.string.unknown_n, id)
+            val baseName = data[id]?.name ?: unknownName(key, id)
             val name = if (parentName != null) "$parentName · $baseName" else baseName
             if (obj.has("timer")) addUpgrade(obj, key, section, slot, id, name)
 
