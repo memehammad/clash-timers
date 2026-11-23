@@ -1,0 +1,7 @@
+- Town Hall 19: the new buildings, levels and upgrade times are now known, including the
+  Squad Barracks, its squads and the new spells, in all app languages.
+- Unknown items: anything the game data doesn't know yet shows as "New building",
+  "New troop" and so on instead of a number.
+- License: Clash Timers is now GPL-3.0, because the game data now comes from
+  ClashKingAssets. Thanks to ClashKing!
+
