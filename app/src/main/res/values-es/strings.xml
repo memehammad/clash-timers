@@ -161,7 +161,7 @@
     <string name="get_it">Obtener</string>
     <string name="how_it_works">Cómo funciona</string>
     <string name="on_github">Clash Timers en GitHub</string>
-    <string name="version_line">Versión %s · código abierto, MIT</string>
+    <string name="version_line">Versión %s · código abierto, GPL-3.0</string>
     <string name="not_affiliated">No está afiliado ni respaldado por Supercell.</string>
     <string name="show_times_as">Mostrar tiempos como</string>
     <string name="show_times_d">Una cuenta atrás o cuándo termina (p. ej. Mañana 12:30).</string>

@@ -22,9 +22,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
       - name: Refresh data
         id: data
         run: echo "result=$(tools/update_data.sh | tail -1)" >> "$GITHUB_OUTPUT"
@@ -40,7 +37,7 @@ jobs:
           git add app/src/main/assets tools/data_versions.json
           git commit -qm "Game data update: $versions"
           git push -f origin game-data-update
-          body="New game data: $versions. Names, upgrade times and translations are regenerated. Merging this does not make a release; add a CHANGELOG.md section for that."
+          body="New game data: $versions. Names, upgrade times and translations are regenerated from ClashKingAssets. Merging this does not make a release; add a CHANGELOG.md section for that."
           gh pr create --base main --head game-data-update --title "Game data update" --body "$body" \
             || gh pr edit game-data-update --body "$body" \
             || gh issue create --title "Game data update ready" --body "$body Branch: game-data-update (Actions may not be allowed to open pull requests in this repo)."

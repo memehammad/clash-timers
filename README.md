@@ -177,9 +177,8 @@ base64-encoded as the `SIGNING_KEY` repository secret. Never commit the key.
 ### Updating game data
 
 The game data (names, upgrade times and their in-game translations) lives in
-`app/src/main/assets/coc_data.json` and `coc_names.json`. It comes from the
-[clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data) package and the
-game's own language files ([coc-assets](https://github.com/Enjoyop/coc-assets)).
+`app/src/main/assets/coc_data.json` and `coc_names.json`, built from
+[ClashKingAssets](https://github.com/ClashKingInc/ClashKingAssets) by `tools/build_data.py`.
 
 The "Game data update" workflow checks for new data every Monday and opens a pull request when
 something changed. To run it by hand: `tools/update_data.sh`.
@@ -188,13 +187,14 @@ something changed. To run it by hand: `tools/update_data.sh`.
 
 - Background clipboard access: [Shizuku](https://github.com/RikkaApps/Shizuku)
   and [HiddenApiBypass](https://github.com/LSPosed/AndroidHiddenApiBypass).
-- Game data: [clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data)
-  by Christopher Pezza (MIT).
+- Game data and in-game translations: [ClashKingAssets](https://github.com/ClashKingInc/ClashKingAssets)
+  by ClashKing (GPL-3.0). Earlier data came from
+  [clash-of-clans-data](https://github.com/chiefpansancolt/clash-of-clans-data) by Christopher Pezza.
 
 ## License
 
-[MIT](LICENSE). Game data, names and Clash of Clans itself remain the property
-of Supercell.
+[GPL-3.0](LICENSE). Versions up to 1.2.4 were released under the MIT license.
+Game data, names and Clash of Clans itself remain the property of Supercell.
 
 ## Disclaimer
 

@@ -3,6 +3,15 @@
 The newest section is used as the release notes on GitHub (and shown in Obtainium). Its heading is the
 version number: a new heading makes a new release.
 
+## 1.2.5
+
+- **Town Hall 19:** the new buildings, levels and upgrade times are now known, including the
+  Squad Barracks, its squads and the new spells, in all app languages.
+- **Unknown items:** anything the game data doesn't know yet shows as "New building",
+  "New troop" and so on instead of a number.
+- **License:** Clash Timers is now GPL-3.0, because the game data now comes from
+  [ClashKingAssets](https://github.com/ClashKingInc/ClashKingAssets). Thanks to ClashKing!
+
 ## 1.2.4
 
 - **Fixed:** the "all builders busy" notification said "next builder free at 16:00" even when

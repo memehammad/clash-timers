@@ -169,9 +169,9 @@ T = {
     "Is there an iPhone version?": ("Gibt es eine iPhone-Version?", "¿Hay versión para iPhone?", "Existe-t-il une version iPhone ?", "Existe versão para iPhone?"),
     "No, Clash Timers is for Android 12 and newer.": ("Nein, Clash Timers ist für Android 12 und neuer.", "No, Clash Timers es para Android 12 y posteriores.",
                                                       "Non, Clash Timers est pour Android 12 et plus récent.", "Não, o Clash Timers é para Android 12 ou mais recente."),
-    "Clash Timers is free and open source under the MIT license.": (
-        "Clash Timers ist kostenlos und Open Source unter der MIT-Lizenz.", "Clash Timers es gratis y de código abierto con licencia MIT.",
-        "Clash Timers est gratuit et open source sous licence MIT.", "O Clash Timers é grátis e de código aberto sob a licença MIT."),
+    "Clash Timers is free and open source under the GPL-3.0 license.": (
+        "Clash Timers ist kostenlos und Open Source unter der GPL-3.0-Lizenz.", "Clash Timers es gratis y de código abierto con licencia GPL-3.0.",
+        "Clash Timers est gratuit et open source sous licence GPL-3.0.", "O Clash Timers é grátis e de código aberto sob a licença GPL-3.0."),
     "Source code on GitHub": ("Quellcode auf GitHub", "Código fuente en GitHub", "Code source sur GitHub", "Código-fonte no GitHub"),
     ">Privacy policy<": (">Datenschutz<", ">Privacidad<", ">Confidentialité<", ">Privacidade<"),
     ">Guides<": (">Anleitungen (EN)<", ">Guías (EN)<", ">Guides (EN)<", ">Guias (EN)<"),
